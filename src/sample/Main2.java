@@ -3,12 +3,15 @@ package sample;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
+import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -20,10 +23,13 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import static java.lang.String.format;
+
 public class Main2 extends Application {
 
     private final static double viewGridStepA = 16.0D * 4.0D;
     private final static double viewGridStepA2 = viewGridStepA / 2.0D;
+    private final static double viewGridStepA4 = viewGridStepA / 4.0D;
     private final static double viewGridStepH = Math.sqrt(3.0D)/2.0D*viewGridStepA;
 
     public static void main(String[] args) {
@@ -39,27 +45,38 @@ public class Main2 extends Application {
         final Group root = new Group();
         //final Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
+        root.setTranslateX(viewGridStepA4);
+        root.setTranslateY(viewGridStepA4);
+        root.setTranslateZ(70);
+
         final ObservableList<Node> rootChildList = root.getChildren();
 
         //-----------------------------------------------------------------------------
         final int xSizeGrid = 16;
         final int ySizeGrid = 16;
-        final int zSizeGrid = 2;
+        final int zSizeGrid = 3;
         generateViewGrid(rootChildList, xSizeGrid, ySizeGrid, zSizeGrid);
 
         //-----------------------------------------------------------------------------
-        final PerspectiveCamera camera = new PerspectiveCamera(false);
+        final PerspectiveCamera camera = new PerspectiveCamera(true);
 
-        camera.setTranslateX(0);
-        camera.setTranslateY(0);
-        camera.setTranslateZ(0);
+        camera.setTranslateX(xSizeGrid / 2 * viewGridStepA);
+        camera.setTranslateY(ySizeGrid / 2 * viewGridStepH);
+        camera.setTranslateZ(-900.0D);
+
+        camera.setRotationAxis(Rotate.Y_AXIS);
+        camera.setRotate(0.0D);
+
+        camera.setFarClip(8000.0D);
+        camera.setFieldOfView(50.0D);
 
         //-----------------------------------------------------------------------------
         final Scene scene = new Scene(root,
-                xSizeGrid * viewGridStepA, ySizeGrid * viewGridStepH,
+                xSizeGrid * viewGridStepA + viewGridStepA2, ySizeGrid * viewGridStepH,
                 true, SceneAntialiasing.BALANCED);
 
         scene.setCamera(camera);
+        scene.setOnMouseMoved(new MouseLook(camera));
 
         primaryStage.setScene(scene);
 
@@ -74,10 +91,17 @@ public class Main2 extends Application {
             for (int yPos = 0; yPos < ySizeGrid; yPos++) {
                 for (int xPos = 0; xPos < xSizeGrid; xPos++) {
                     final Color color;
-                    if (zPos % 2 == 0) {
-                        color = Color.DARKSLATEBLUE;
-                    } else {
-                        color = Color.DARKGOLDENROD;
+                    switch (zPos % 3) {
+                        case 0 -> { // A
+                            color = Color.DARKSLATEBLUE;
+                        }
+                        case 1 -> { // B
+                            color = Color.DARKGOLDENROD;
+                        }
+                        case 2 -> { // C
+                            color = Color.DARKOLIVEGREEN;
+                        }
+                        default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
                     }
                     final Point3D point3D = createViewGridPoint3D(xPos, yPos, zPos);
                     final Box box = createGidBox(point3D, color);
@@ -91,6 +115,25 @@ public class Main2 extends Application {
                         final Point3D lyPoint3D = createViewGridPoint3D(xPos, yPos - 1, zPos);
                         rootChildList.add(createConnection(lyPoint3D, point3D));
                     }
+                    if (zPos > 0) {
+                        if (yPos % 2 == 0) {
+                            if (zPos % 2 == 0) {
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos - 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos, zPos - 1), point3D));
+                            } else {
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos - 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos - 1), point3D));
+                            }
+                        } else {
+                            if (zPos % 2 == 0) {
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos - 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos - 1), point3D));
+                            } else {
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos - 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos, zPos - 1), point3D));
+                            }
+                        }
+                    }
                     if (zPos % 2 == 0) {
                         if (xPos > 0) {
                             if (yPos % 2 == 0) {
@@ -103,10 +146,6 @@ public class Main2 extends Application {
                                     rootChildList.add(createConnection(lxPoint3D, point3D));
                                 }
                             }
-                        }
-                        if (zPos > 0) {
-                            final Point3D lzPoint3D = createViewGridPoint3D(xPos, yPos, zPos - 1);
-                            rootChildList.add(createConnection(lzPoint3D, point3D));
                         }
                     } else {
                         if (xPos > 0) {
@@ -131,6 +170,18 @@ public class Main2 extends Application {
         final double x;
         final double y;
         final double z;
+        switch (zPos % 3) {
+            case 0 -> { // A
+
+            }
+            case 1 -> { // B
+
+            }
+            case 2 -> { // C
+
+            }
+            default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
+        }
         if (zPos % 2 == 0) {
             if (yPos % 2 == 0) {
                 x = xPos * viewGridStepA;
@@ -148,7 +199,7 @@ public class Main2 extends Application {
             y = yPos * viewGridStepH;
             z = zPos * viewGridStepH;
         }
-        final Point3D point3D = new Point3D(x + viewGridStepA2 / 2.0D, y + viewGridStepA2, z);
+        final Point3D point3D = new Point3D(x, y, z);
         return point3D;
     }
 
