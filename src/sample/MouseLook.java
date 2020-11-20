@@ -5,9 +5,8 @@ import javafx.scene.Camera;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Rotate;
 
-public class MouseLook implements EventHandler<MouseEvent> {
-    private Rotate rotation;
-    private int oldX, newX;
+public class MouseLook {
+    private int oldX, oldY;
     private boolean alreadyMoved = false;
     private final Camera camera;
 
@@ -15,31 +14,33 @@ public class MouseLook implements EventHandler<MouseEvent> {
         this.camera = camera;
     }
 
-    @Override
-    public void handle(MouseEvent event) {
-        if ( alreadyMoved ) {
-            newX = (int) event.getScreenX();
-
-            if ( oldX < newX ) { // if mouse moved to right
-                rotation = new Rotate( 0.1D,
+    public void handle(final MouseEvent event) {
+        if (this.alreadyMoved) {
+            final int newX = (int) event.getScreenX();
+            final int xDiff = this.oldX - newX;
+            if (xDiff != 0) {
+                final Rotate rotation = new Rotate(xDiff / 32.0D,
                         // camera rotates around its location
-                        camera.getTranslateX(), camera.getTranslateY(), camera.getTranslateZ(),
-                        Rotate.Y_AXIS );
-
-
-            } else if ( oldX > newX ) { // if mouse moved to left
-                rotation = new Rotate( -0.1D,
-                        // camera rotates around its location
-                        camera.getTranslateX(), camera.getTranslateY(), camera.getTranslateZ(),
-                        Rotate.Y_AXIS );
-
+                        this.camera.getTranslateX(), this.camera.getTranslateY(), this.camera.getTranslateZ(), Rotate.Y_AXIS);
+                this.camera.getTransforms().addAll(rotation);
             }
-            camera.getTransforms().addAll( rotation );
-
-            oldX = newX;
+            this.oldX = newX;
+            final int newY = (int) event.getScreenY();
+            final int yDiff = newY - this.oldY;
+            if (yDiff != 0) {
+                final Rotate rotation = new Rotate(yDiff / 32.0D,
+                        // camera rotates around its location
+                        this.camera.getTranslateX(), this.camera.getTranslateY(), this.camera.getTranslateZ(), Rotate.X_AXIS);
+                this.camera.getTransforms().addAll(rotation);
+            }
+            this.oldY = newY;
         } else {
-            oldX = (int) event.getScreenX();
-            alreadyMoved = true;
+            this.oldX = (int) event.getScreenX();
+            this.oldY = (int) event.getScreenY();
+            this.alreadyMoved = true;
         }
+    }
+    public void movedFinished() {
+        this.alreadyMoved = false;
     }
 }
