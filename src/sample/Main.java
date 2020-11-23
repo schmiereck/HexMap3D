@@ -1,27 +1,21 @@
 package sample;
 
-import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
-import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.DrawMode;
-import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import static java.lang.String.format;
 
@@ -31,7 +25,8 @@ public class Main extends Application {
     private final static double viewGridStepA2 = viewGridStepA / 2.0D;
     private final static double viewGridStepA4 = viewGridStepA / 4.0D;
     private final static double viewGridStepH = viewGridStepA*Math.sqrt(3.0D)/2.0D;
-    private final static double viewGridStepH2 = viewGridStepH/2.0D;
+    private final static double viewGridStepMa = viewGridStepA/Math.sqrt(12.0D);
+    private final static double viewGridStepMb = viewGridStepH-viewGridStepMa;
     private final static double viewGridStepZ = (viewGridStepA/3.0D)*Math.sqrt(6.0D);
 
     public static void main(String[] args) {
@@ -107,72 +102,84 @@ public class Main extends Application {
                     final Color color;
                     switch (zPos % 3) {
                         case 0 -> { // A
-                            color = Color.DARKSLATEBLUE;
+                            color = Color.DARKRED;
                         }
                         case 1 -> { // B
-                            color = Color.DARKGOLDENROD;
+                            color = Color.DARKOLIVEGREEN;
                         }
                         case 2 -> { // C
-                            color = Color.DARKOLIVEGREEN;
+                            color = Color.DARKSLATEBLUE;
                         }
                         default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
                     }
                     final Point3D point3D = createViewGridPoint3D(xPos, yPos, zPos);
                     final Box box = createGidBox(point3D, color);
                     rootChildList.add(box);
-                    if (xPos > 0) {
-                        final Point3D lxPoint3D = createViewGridPoint3D(xPos - 1, yPos, zPos);
-                        rootChildList.add(createConnection(lxPoint3D, point3D));
-                    }
-                    if (yPos > 0) {
-                        final Point3D lyPoint3D = createViewGridPoint3D(xPos, yPos - 1, zPos);
-                        rootChildList.add(createConnection(lyPoint3D, point3D));
-                    }
-                    if (zPos > 0) {
-                        if (yPos % 2 == 0) {
-                            if (zPos % 2 == 0) {
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos - 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos, zPos - 1), point3D));
-                            } else {
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos - 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos - 1), point3D));
-                            }
-                        } else {
-                            if (zPos % 2 == 0) {
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos - 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos - 1), point3D));
-                            } else {
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos - 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos, zPos - 1), point3D));
-                            }
-                        }
-                    }
-                    if (zPos % 2 == 0) {
-                        if (xPos > 0) {
+                    switch (zPos % 3) {
+                        case 0 -> { // A
                             if (yPos % 2 == 0) {
-                                if (yPos < ySizeGrid - 1) {
-                                    final Point3D lxPoint3D = createViewGridPoint3D(xPos - 1, yPos + 1, zPos);
-                                    rootChildList.add(createConnection(lxPoint3D, point3D));
-                                }
-                                if (yPos > 0) {
-                                    final Point3D lxPoint3D = createViewGridPoint3D(xPos - 1, yPos - 1, zPos);
-                                    rootChildList.add(createConnection(lxPoint3D, point3D));
-                                }
+                                // A -> A
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos + 1, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                // A -> B
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos + 1), point3D));
+                            } else {
+                                // A -> A
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos + 1, zPos), point3D));
+                                // A -> B
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos + 1), point3D));
                             }
                         }
-                    } else {
-                        if (xPos > 0) {
-                            if (yPos % 2 == 1) {
-                                if (yPos < ySizeGrid - 1) {
-                                    final Point3D lxPoint3D = createViewGridPoint3D(xPos - 1, yPos + 1, zPos);
-                                    rootChildList.add(createConnection(lxPoint3D, point3D));
-                                }
-                                if (yPos > 0) {
-                                    final Point3D lxPoint3D = createViewGridPoint3D(xPos - 1, yPos - 1, zPos);
-                                    rootChildList.add(createConnection(lxPoint3D, point3D));
-                                }
+                        case 1 -> { // B
+                            if (yPos % 2 == 0) {
+                                // B -> B
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos + 1, zPos), point3D));
+                                // B -> C
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos + 1), point3D));
+                            } else {
+                                // B -> B
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos + 1, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                // B -> C
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos + 1), point3D));
                             }
                         }
+                        case 2 -> { // C
+                            if (yPos % 2 == 0) {
+                                // C -> C
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos + 1, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                // C -> A
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos - 1, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos - 1, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
+                            } else {
+                                // C -> C
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos + 1, zPos), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                // C -> A
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos - 1, zPos + 1), point3D));
+                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos - 1, zPos + 1), point3D));
+                            }
+                        }
+                        default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
                     }
                 }
             }
@@ -195,20 +202,20 @@ public class Main extends Application {
             }
             case 1 -> { // B
                 if (yPos % 2 == 0) {
-                    x = xPos * viewGridStepA;
-                    y = yPos * viewGridStepH + viewGridStepH2;
-                } else {
                     x = xPos * viewGridStepA + viewGridStepA2;
-                    y = yPos * viewGridStepH + viewGridStepH2;
+                    y = yPos * viewGridStepH - viewGridStepMa;
+                } else {
+                    x = xPos * viewGridStepA;
+                    y = yPos * viewGridStepH - viewGridStepMa;
                 }
             }
             case 2 -> { // C
                 if (yPos % 2 == 0) {
-                    x = xPos * viewGridStepA + viewGridStepA2;
-                    y = yPos * viewGridStepH + viewGridStepH2;
-                } else {
                     x = xPos * viewGridStepA;
-                    y = yPos * viewGridStepH + viewGridStepH2;
+                    y = yPos * viewGridStepH - viewGridStepMb;
+                } else {
+                    x = xPos * viewGridStepA + viewGridStepA2;
+                    y = yPos * viewGridStepH - viewGridStepMb;
                 }
             }
             default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
