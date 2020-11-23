@@ -51,7 +51,7 @@ public class Main extends Application {
         //-----------------------------------------------------------------------------
         final int xSizeGrid = 16;
         final int ySizeGrid = 16;
-        final int zSizeGrid = 16;
+        final int zSizeGrid = 3;//16;
         generateViewGrid(rootChildList, xSizeGrid, ySizeGrid, zSizeGrid);
 
         //-----------------------------------------------------------------------------
@@ -119,14 +119,52 @@ public class Main extends Application {
                         case 0 -> { // A
                             if (yPos % 2 == 0) {
                                 // A -> A
-                                createConnections(rootChildList, point3D, xPos, yPos, zPos, +1, -1, 0, 0, +1, 0);
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
                                 // A -> B
-                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, +1, 0, +1);
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 1, 0, +1);
+
+                                final int[][] conArr = //new int[2][12];
+                                        {
+                                                // A -> A
+                                                {1, 0, 0},
+                                                {-1, 0, 0},
+                                                {0, 1, 0},
+                                                {-1, 1, 0},
+                                                {0, -1, 0},
+                                                {-1, -1, 0},
+                                                // A -> B
+                                                {0, 1, 1},
+                                                {0, 0, 1},
+                                                {-1, 0, 1},
+                                                {0, 0, -1},
+                                                {0, 1, -1},
+                                                {-1, 1, -1}
+                                        };
+                                createOutputs(rootChildList, point3D, xPos, yPos, zPos, conArr);
                             } else {
                                 // A -> A
-                                createConnections(rootChildList, point3D, xPos, yPos, zPos, +1, 0, +1, 0, +1, 0);
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 1, 0, +1, 0, +1, 0);
                                 // A -> B
-                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, 1, 0, +1, 0, +1);
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, 1, 0, 1, 0, +1);
+
+                                final int[][] conArr = //new int[2][12];
+                                        {
+                                                // A -> A
+                                                {1, 0, 0},
+                                                {-1, 0, 0},
+                                                {0, 1, 0},
+                                                {1, 1, 0},
+                                                {0, -1, 0},
+                                                {1, -1, 0},
+                                                // A -> B
+                                                {0, 1, 1},
+                                                {0, 0, 1},
+                                                {1, 0, 1},
+                                                {0, 0, -1},
+                                                {0, 1, -1},
+                                                {1, 1, -1}
+                                        };
+                                createOutputs(rootChildList, point3D, xPos, yPos, zPos, conArr);
                             }
                         }
                         case 1 -> { // B
@@ -162,6 +200,12 @@ public class Main extends Application {
         }
     }
 
+    private static void createOutputs(final ObservableList<Node> rootChildList, final Point3D point3D, final int xPos, final int yPos, final int zPos, final int[][] conArr) {
+        for (final int[] con : conArr) {
+            rootChildList.add(createOutput(point3D, createViewGridPoint3D(xPos + con[0], yPos + con[1], zPos + con[2])));
+        }
+    }
+
     private static void createConnections(final ObservableList<Node> rootChildList, final Point3D point3D,
             final int xPos, final int yPos, final int zPos,
             final int x1d, final int x2d, final int x3d,
@@ -186,7 +230,7 @@ public class Main extends Application {
                     y = yPos * viewGridStepH;
                 }
             }
-            case 1 -> { // B
+            case 1, -2 -> { // B
                 if (yPos % 2 == 0) {
                     x = xPos * viewGridStepA + viewGridStepA2;
                     y = yPos * viewGridStepH - viewGridStepMa;
@@ -195,7 +239,7 @@ public class Main extends Application {
                     y = yPos * viewGridStepH - viewGridStepMa;
                 }
             }
-            case 2 -> { // C
+            case 2, -1 -> { // C
                 if (yPos % 2 == 0) {
                     x = xPos * viewGridStepA;
                     y = yPos * viewGridStepH - viewGridStepMb;
@@ -215,9 +259,9 @@ public class Main extends Application {
     private static Box createGidBox(final Point3D point3D, final Color color) {
         final Box box = new Box();
 
-        box.setWidth(10.0);
-        box.setHeight(10.0);
-        box.setDepth(10.0);
+        box.setWidth(16.0);
+        box.setHeight(16.0);
+        box.setDepth(16.0);
 
         box.setTranslateX(point3D.getX());
         box.setTranslateY(point3D.getY());
@@ -233,7 +277,7 @@ public class Main extends Application {
     }
 
     private static Cylinder createConnection(final Point3D origin, final Point3D target) {
-        final Point3D yAxis = new Point3D(0, 1, 0);
+        final Point3D yAxis = new Point3D(0.0D, 1.0D, 0.0D);
         final Point3D diff = target.subtract(origin);
         final double height = diff.magnitude();
 
@@ -244,10 +288,30 @@ public class Main extends Application {
         final double angle = Math.acos(diff.normalize().dotProduct(yAxis));
         final Rotate rotateAroundCenter = new Rotate(-Math.toDegrees(angle), axisOfRotation);
 
-        final Cylinder line = new Cylinder(1, height);
+        final Cylinder line = new Cylinder(1.0D, height);
 
         line.getTransforms().addAll(moveToMidpoint, rotateAroundCenter);
 
         return line;
+    }
+
+    private static Box createOutput(final Point3D origin, final Point3D target) {
+        final Point3D yAxis = new Point3D(0.0D, 1.0D, 0.0D);
+        final Point3D target2 = target.midpoint(origin);
+        final Point3D diff = target2.subtract(origin);
+        final double height = diff.magnitude();
+
+        final Point3D mid = target2.midpoint(origin);
+        final Translate moveToMidpoint = new Translate(mid.getX(), mid.getY(), mid.getZ());
+
+        final Point3D axisOfRotation = diff.crossProduct(yAxis);
+        final double angle = Math.acos(diff.normalize().dotProduct(yAxis));
+        final Rotate rotateAroundCenter = new Rotate(-Math.toDegrees(angle), axisOfRotation);
+
+        final Box box = new Box(6.0D, height, 6.0D);
+
+        box.getTransforms().addAll(moveToMidpoint, rotateAroundCenter);
+        //box.setHeight(height/2);
+        return box;
     }
 }
