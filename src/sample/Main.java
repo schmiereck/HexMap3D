@@ -51,7 +51,7 @@ public class Main extends Application {
         //-----------------------------------------------------------------------------
         final int xSizeGrid = 16;
         final int ySizeGrid = 16;
-        final int zSizeGrid = 3;
+        final int zSizeGrid = 16;
         generateViewGrid(rootChildList, xSizeGrid, ySizeGrid, zSizeGrid);
 
         //-----------------------------------------------------------------------------
@@ -119,64 +119,40 @@ public class Main extends Application {
                         case 0 -> { // A
                             if (yPos % 2 == 0) {
                                 // A -> A
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos + 1, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, +1, -1, 0, 0, +1, 0);
                                 // A -> B
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos + 1), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, +1, 0, +1);
                             } else {
                                 // A -> A
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos + 1, zPos), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, +1, 0, +1, 0, +1, 0);
                                 // A -> B
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos + 1), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, 1, 0, +1, 0, +1);
                             }
                         }
                         case 1 -> { // B
                             if (yPos % 2 == 0) {
                                 // B -> B
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos + 1, zPos), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 1, 0, 1, 0, 1, 0);
                                 // B -> C
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos + 1), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, 0, 1, 1, 0, 1);
                             } else {
                                 // B -> B
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos + 1, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
                                 // B -> C
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos + 1), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 1, 0, 1);
                             }
                         }
                         case 2 -> { // C
                             if (yPos % 2 == 0) {
                                 // C -> C
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos + 1, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
                                 // C -> A
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos - 1, yPos - 1, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos - 1, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 0, -1, 1);
                             } else {
                                 // C -> C
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos + 1, zPos), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos + 1, zPos), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, 1, 0, 0, 1, 0);
                                 // C -> A
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos, yPos - 1, zPos + 1), point3D));
-                                rootChildList.add(createConnection(createViewGridPoint3D(xPos + 1, yPos - 1, zPos + 1), point3D));
+                                createConnections(rootChildList, point3D, xPos, yPos, zPos, 0, 0, 1, 0, -1, 1);
                             }
                         }
                         default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
@@ -184,6 +160,16 @@ public class Main extends Application {
                 }
             }
         }
+    }
+
+    private static void createConnections(final ObservableList<Node> rootChildList, final Point3D point3D,
+            final int xPos, final int yPos, final int zPos,
+            final int x1d, final int x2d, final int x3d,
+            final int y1d, final int y2d,
+            final int zd) {
+        rootChildList.add(createConnection(createViewGridPoint3D(xPos + x1d, yPos + y1d, zPos + zd), point3D));
+        rootChildList.add(createConnection(createViewGridPoint3D(xPos + x2d, yPos + y2d, zPos + zd), point3D));
+        rootChildList.add(createConnection(createViewGridPoint3D(xPos + x3d, yPos + y2d, zPos + zd), point3D));
     }
 
     private static Point3D createViewGridPoint3D(final int xPos, final int yPos, final int zPos) {
