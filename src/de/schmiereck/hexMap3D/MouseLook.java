@@ -1,4 +1,4 @@
-package sample;
+package de.schmiereck.hexMap3D;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point3D;

@@ -1,4 +1,4 @@
-package sample;
+package de.schmiereck.hexMap3D;
 
 public class GridUtils {
 

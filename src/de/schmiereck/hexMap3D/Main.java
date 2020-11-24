@@ -1,27 +1,14 @@
-package sample;
+package de.schmiereck.hexMap3D;
 
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.geometry.Point3D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 import static java.lang.String.format;
-import static sample.GridViewUtils.viewGridStepA;
-import static sample.GridViewUtils.viewGridStepA2;
-import static sample.GridViewUtils.viewGridStepA4;
-import static sample.GridViewUtils.viewGridStepH;
 
 public class Main extends Application {
 
@@ -38,8 +25,8 @@ public class Main extends Application {
         final Group rootGroup = new Group();
         //final Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
-        rootGroup.setTranslateX(viewGridStepA4);
-        rootGroup.setTranslateY(viewGridStepA4);
+        rootGroup.setTranslateX(GridViewUtils.viewGridStepA4);
+        rootGroup.setTranslateY(GridViewUtils.viewGridStepA4);
         rootGroup.setTranslateZ(70);
 
         //-----------------------------------------------------------------------------
@@ -51,8 +38,8 @@ public class Main extends Application {
         //-----------------------------------------------------------------------------
         final PerspectiveCamera camera = new PerspectiveCamera(true);
 
-        camera.setTranslateX(xSizeGrid / 2 * viewGridStepA);
-        camera.setTranslateY(ySizeGrid / 2 * viewGridStepH);
+        camera.setTranslateX(xSizeGrid / 2 * GridViewUtils.viewGridStepA);
+        camera.setTranslateY(ySizeGrid / 2 * GridViewUtils.viewGridStepH);
         camera.setTranslateZ(-900.0D);
 
         camera.setRotationAxis(Rotate.Y_AXIS);
@@ -63,7 +50,7 @@ public class Main extends Application {
 
         //-----------------------------------------------------------------------------
         final Scene scene = new Scene(rootGroup,
-                xSizeGrid * viewGridStepA + viewGridStepA2, ySizeGrid * viewGridStepH,
+                xSizeGrid * GridViewUtils.viewGridStepA + GridViewUtils.viewGridStepA2, ySizeGrid * GridViewUtils.viewGridStepH,
                 true, SceneAntialiasing.BALANCED);
 
         scene.setCamera(camera);

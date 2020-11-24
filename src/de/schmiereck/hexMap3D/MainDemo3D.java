@@ -1,4 +1,4 @@
-package sample;
+package de.schmiereck.hexMap3D;
 
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
