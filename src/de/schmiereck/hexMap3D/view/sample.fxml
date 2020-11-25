@@ -7,4 +7,6 @@
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
   <Button text="Start"
       onAction="#handleSubmitButtonAction"/>
+  <Button text="Step +1"
+      onAction="#handleSubmitButtonAction"/>
 </GridPane>
