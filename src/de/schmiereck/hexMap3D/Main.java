@@ -42,7 +42,7 @@ public class Main {
         //-----------------------------------------------------------------------------
         final GridViewApplication gridViewApplication = new GridViewApplication();
 
-        gridViewApplication.init(universe, xSizeGrid, ySizeGrid, zSizeGrid);
+        gridViewApplication.init(() -> engine.run(), universe, xSizeGrid, ySizeGrid, zSizeGrid);
 
         Platform.startup(() -> {
             // create primary stage
@@ -55,17 +55,8 @@ public class Main {
             }
         });
          //-----------------------------------------------------------------------------
-        universe.calcNext();
-        universe.calcReality();
+        engine.runInit();
 
-        final boolean showSpaceCells = true;
-        final boolean showReality = true;
-        long runNr = 0;
-        while (runNr < 3) {
-            gridViewApplication.updateReality();
-            engine.run();
-            runNr++;
-        }
          //-----------------------------------------------------------------------------
     }
 }

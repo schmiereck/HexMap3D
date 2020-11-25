@@ -11,6 +11,7 @@ import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
 public class Engine {
     private final Universe universe;
     private final List<Wave> waveList = new ArrayList<>();
+    private long runNr = 0;
 
     public Engine(final Universe universe) {
         this.universe = universe;
@@ -22,6 +23,11 @@ public class Engine {
 
     public List<Wave> getWaveList() {
         return this.waveList;
+    }
+
+    public void runInit() {
+        this.universe.calcNext();
+        this.universe.calcReality();
     }
 
     public void run() {
@@ -53,6 +59,7 @@ public class Engine {
         });
         this.universe.calcNext();
         this.universe.calcReality();
+        this.runNr++;
     }
 
     private void calcNewState(final Cell sourceCell, final Cell targetCell, final Wave sourceWave, final Cell.Dir calcDir) {

@@ -1,5 +1,6 @@
 package de.schmiereck.hexMap3D.view;
 
+import de.schmiereck.hexMap3D.service.Engine;
 import de.schmiereck.hexMap3D.service.Universe;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,13 +28,20 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 public class GridViewApplication extends Application {
+    private RunStepCallback runStepCallback;
     private Universe universe;
     private int xSizeGrid;
     private int ySizeGrid;
     private int zSizeGrid;
     private GridViewNodeSpace nodeSpace;
 
-    public void init(final Universe universe, final int xSizeGrid, final int ySizeGrid, final int zSizeGrid) {
+    @FunctionalInterface
+    public interface RunStepCallback {
+        void run();
+    }
+
+    public void init(final RunStepCallback runStepCallback, final Universe universe, final int xSizeGrid, final int ySizeGrid, final int zSizeGrid) {
+        this.runStepCallback = runStepCallback;
         this.universe = universe;
         this.xSizeGrid = xSizeGrid;
         this.ySizeGrid = ySizeGrid;
@@ -58,7 +66,7 @@ public class GridViewApplication extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         final Parent sampleGui = loader.load();
         final GridViewController gridViewController = loader.<GridViewController>getController();
-        gridViewController.setGridViewApplication(this);
+        gridViewController.init(this.runStepCallback, this);
         //rootGroup.getChildren().add(sampleGui);
 
         //-----------------------------------------------------------------------------
@@ -143,6 +151,9 @@ public class GridViewApplication extends Application {
         gridScene.setOnScroll((event) -> {
             mouseLook.handleMouseScrolling(event);
         });
+        //-----------------------------------------------------------------------------
+        this.updateReality();
+
         //-----------------------------------------------------------------------------
     }
 
