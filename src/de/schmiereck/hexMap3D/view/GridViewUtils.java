@@ -1,5 +1,9 @@
-package de.schmiereck.hexMap3D;
+package de.schmiereck.hexMap3D.view;
 
+import java.util.Objects;
+
+import de.schmiereck.hexMap3D.GridUtils;
+import de.schmiereck.hexMap3D.service.Cell;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
@@ -105,9 +109,9 @@ public class GridViewUtils {
         }
     }
 
-    private static void createOutputs(final ObservableList<Node> rootChildList, final Point3D point3D, final int xPos, final int yPos, final int zPos, final int[][] conArr) {
-        for (final int[] con : conArr) {
-            rootChildList.add(createOutput(point3D, createViewGridPoint3D(xPos + con[0], yPos + con[1], zPos + con[2])));
+    private static void createOutputs(final ObservableList<Node> rootChildList, final Point3D point3D, final int xPos, final int yPos, final int zPos, final GridUtils.OutputDir[] conArr) {
+        for (final GridUtils.OutputDir con : conArr) {
+            rootChildList.add(createOutput(point3D, createViewGridPoint3D(xPos + con.x, yPos + con.y, zPos + con.z), con.dir));
         }
     }
 
@@ -201,6 +205,30 @@ public class GridViewUtils {
     }
 
     private static Box createOutput(final Point3D origin, final Point3D target) {
+        return createOutput(origin, target, (Color)null);
+    }
+
+    private static Box createOutput(final Point3D origin, final Point3D target, Cell.Dir dir) {
+        final Color color;
+        switch (dir) {
+            case DB_P -> color = Color.DARKBLUE;
+            case DB_N -> color = Color.DARKBLUE;
+            case OR_P -> color = Color.ORANGE;
+            case OR_N -> color = Color.ORANGE;
+            case RE_P -> color = Color.RED;
+            case RE_N -> color = Color.RED;
+            case LB_P -> color = Color.CORNFLOWERBLUE;
+            case LB_N -> color = Color.CORNFLOWERBLUE;
+            case GR_P -> color = Color.GREEN;
+            case GR_N -> color = Color.GREEN;
+            case LG_P -> color = Color.LIGHTGREEN;
+            case LG_N -> color = Color.LIGHTGREEN;
+            default -> throw new RuntimeException(format("Unexpected dir \"%s\".", dir));
+        }
+        return createOutput(origin, target, color);
+    }
+
+    private static Box createOutput(final Point3D origin, final Point3D target, final Color color) {
         final Point3D yAxis = new Point3D(0.0D, 1.0D, 0.0D);
         final Point3D target2 = target.midpoint(origin);
         final Point3D diff = target2.subtract(origin);
@@ -214,6 +242,12 @@ public class GridViewUtils {
         final Rotate rotateAroundCenter = new Rotate(-Math.toDegrees(angle), axisOfRotation);
 
         final Box box = new Box(6.0D, height, 6.0D);
+
+        if (color != null) {
+            PhongMaterial material = new PhongMaterial();
+            material.setDiffuseColor(color);
+            box.setMaterial(material);
+        }
 
         box.getTransforms().addAll(moveToMidpoint, rotateAroundCenter);
         //box.setHeight(height/2);

@@ -1,5 +1,8 @@
 package de.schmiereck.hexMap3D;
 
+import de.schmiereck.hexMap3D.service.Universe;
+import de.schmiereck.hexMap3D.view.GridViewUtils;
+import de.schmiereck.hexMap3D.view.MouseLook;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -19,6 +22,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         //-----------------------------------------------------------------------------
+        final int xSizeGrid = 16;
+        final int ySizeGrid = 16;
+        final int zSizeGrid = 3;//16;
+
+        final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);
+
+        //-----------------------------------------------------------------------------
         primaryStage.setTitle("Hello World");
 
         //-----------------------------------------------------------------------------
@@ -30,9 +40,6 @@ public class Main extends Application {
         rootGroup.setTranslateZ(70);
 
         //-----------------------------------------------------------------------------
-        final int xSizeGrid = 16;
-        final int ySizeGrid = 16;
-        final int zSizeGrid = 16;
         GridViewUtils.generateViewGrid(rootGroup, xSizeGrid, ySizeGrid, zSizeGrid);
 
         //-----------------------------------------------------------------------------
