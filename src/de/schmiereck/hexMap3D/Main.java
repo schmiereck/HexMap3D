@@ -1,89 +1,79 @@
 package de.schmiereck.hexMap3D;
 
+import de.schmiereck.hexMap3D.service.Cell;
+import de.schmiereck.hexMap3D.service.Engine;
+import de.schmiereck.hexMap3D.service.Event;
 import de.schmiereck.hexMap3D.service.Universe;
-import de.schmiereck.hexMap3D.view.GridViewUtils;
-import de.schmiereck.hexMap3D.view.MouseLook;
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
-import javafx.scene.transform.Rotate;
+import de.schmiereck.hexMap3D.service.Wave;
+import de.schmiereck.hexMap3D.view.GridViewApplication;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import static java.lang.String.format;
 
-public class Main extends Application {
+public class Main {
 
     public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception{
         //-----------------------------------------------------------------------------
         final int xSizeGrid = 16;
         final int ySizeGrid = 16;
-        final int zSizeGrid = 3;//16;
+        final int zSizeGrid = 16;
 
+        //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);
+        final Engine engine = new Engine(universe);
 
         //-----------------------------------------------------------------------------
-        primaryStage.setTitle("Hello World");
+        // Extend Test:
+        {
+            final Event particleEvent = new Event(engine, 1);
+            final Wave wave = particleEvent.createWave(100);
+            //wave.setDir(Cell.Dir.Right);
+            universe.addEvent(8, 8, 8, particleEvent);
 
+            // For Testing:
+            // Add a sharp Barrier...
+            final Event barrierEvent = new Event(engine, 0);
+            // ...to the right...
+            universe.addBariere(barrierEvent, 10, 0, 0, 11, 15, 15);
+            // and to the left.
+            universe.addBariere(barrierEvent, 1, 0, 0, 2, 15, 15);
+        }
         //-----------------------------------------------------------------------------
-        final Group rootGroup = new Group();
-        //final Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        final GridViewApplication gridViewApplication = new GridViewApplication();
 
-        rootGroup.setTranslateX(GridViewUtils.viewGridStepA4);
-        rootGroup.setTranslateY(GridViewUtils.viewGridStepA4);
-        rootGroup.setTranslateZ(70);
+        gridViewApplication.init(universe, xSizeGrid, ySizeGrid, zSizeGrid);
 
-        //-----------------------------------------------------------------------------
-        GridViewUtils.generateViewGrid(rootGroup, xSizeGrid, ySizeGrid, zSizeGrid);
+        Platform.startup(() -> {
+            // create primary stage
+            final Stage primaryStage = new Stage();
 
-        //-----------------------------------------------------------------------------
-        final PerspectiveCamera camera = new PerspectiveCamera(true);
-
-        camera.setTranslateX(xSizeGrid / 2 * GridViewUtils.viewGridStepA);
-        camera.setTranslateY(ySizeGrid / 2 * GridViewUtils.viewGridStepH);
-        camera.setTranslateZ(-900.0D);
-
-        camera.setRotationAxis(Rotate.Y_AXIS);
-        camera.setRotate(0.0D);
-
-        camera.setFarClip(8000.0D);
-        camera.setFieldOfView(50.0D);
-
-        //-----------------------------------------------------------------------------
-        final Scene scene = new Scene(rootGroup,
-                xSizeGrid * GridViewUtils.viewGridStepA + GridViewUtils.viewGridStepA2, ySizeGrid * GridViewUtils.viewGridStepH,
-                true, SceneAntialiasing.BALANCED);
-
-        scene.setCamera(camera);
-        primaryStage.setScene(scene);
-
-        //-----------------------------------------------------------------------------
-        primaryStage.show();
-
-        //-----------------------------------------------------------------------------
-        final MouseLook mouseLook = new MouseLook(camera);
-        scene.setOnMousePressed((event) -> {
-            event.setDragDetect(true);
+            try {
+                gridViewApplication.start(primaryStage);
+            } catch (Exception e) {
+                throw new RuntimeException("JavaFX startup.", e);
+            }
         });
-        scene.setOnMouseReleased((event) -> {
-            //event.setDragDetect(false);
-            mouseLook.movedFinished();
-        });
-        //scene.setOnMouseMoved(new MouseLook(camera));
-        scene.setOnMouseDragged((event) -> {
-            mouseLook.handle(event);
-            event.setDragDetect(false);
-        });
+         //-----------------------------------------------------------------------------
+        universe.calcNext();
+        universe.calcReality();
 
-        scene.setOnScroll((event) -> {
-            mouseLook.handleMouseScrolling(event);
-        });
-        //-----------------------------------------------------------------------------
+        final boolean showSpaceCells = true;
+        final boolean showReality = true;
+        long runNr = 0;
+        while (runNr < 7) {
+            //final RealityCell realityCell = universe.getRealityCell(cellPos);
+            //if (realityCell.getBarrier(spacePos)) {
+            //    System.out.printf("|##");
+            //} else {
+            //    final int waveCount = realityCell.getWaveCount(spacePos);
+            //    System.out.printf("|%2d", waveCount);
+            //    spaceWaveCount += waveCount;
+            //}
+            gridViewApplication.updateReality();
+            engine.run();
+            runNr++;
+        }
+         //-----------------------------------------------------------------------------
     }
 }

@@ -24,7 +24,7 @@ public class Event {
         this.engine.addWave(wave);
     }
 
-    public List<Wave> getTickList() {
+    public List<Wave> getWaveList() {
         return this.waveList;
     }
 

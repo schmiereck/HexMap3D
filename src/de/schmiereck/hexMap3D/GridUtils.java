@@ -182,16 +182,32 @@ public class GridUtils {
                         outputDir = a0ConArr[calcDir.dir()];
                     }
                     case 1, -1 -> { // 1
-                        outputDir = null;
+                        outputDir = a1ConArr[calcDir.dir()];
                     }
                     default -> throw new RuntimeException(format("Unexpected yPos \"%d\".", yPos));
                 }
             }
             case 1, -1 -> { // B
-                outputDir = null;
+                switch (yPos % 2) {
+                    case 0 -> { // 0
+                        outputDir = b0ConArr[calcDir.dir()];
+                    }
+                    case 1, -1 -> { // 1
+                        outputDir = b1ConArr[calcDir.dir()];
+                    }
+                    default -> throw new RuntimeException(format("Unexpected yPos \"%d\".", yPos));
+                }
             }
             case 2, -2 -> { // C
-                outputDir = null;
+                switch (yPos % 2) {
+                    case 0 -> { // 0
+                        outputDir = c0ConArr[calcDir.dir()];
+                    }
+                    case 1, -1 -> { // 1
+                        outputDir = c1ConArr[calcDir.dir()];
+                    }
+                    default -> throw new RuntimeException(format("Unexpected yPos \"%d\".", yPos));
+                }
             }
             default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
         }
