@@ -46,7 +46,7 @@ public class Engine {
                     final Event sourceEvent = sourceWave.getEvent();
                     // Source-Cell-Wave is a Particle?
                     if (sourceEvent.getEventType() == 1) {
-                        calcNewState(targetCell, sourceCell, sourceWave, calcDir);
+                        calcNewState(sourceCell, targetCell, sourceWave, calcDir);
                      }
                 });
             }
@@ -55,15 +55,8 @@ public class Engine {
         this.universe.calcReality();
     }
 
-    private void calcNewState(final Cell targetCell, final Cell sourceCell, final Wave sourceWave, final Cell.Dir calcDir) {
-        if (sourceWave.getExtendCalculated()) {
-            // Source-Wave has no target but is already extend?
-            // I want to extend 50% to this target cell.
-            // Extend 50% to target cell.
-            targetCell.addWave(sourceWave.createWave());
-            // Have no last Target, than do this 50% also.
-            targetCell.addWave(sourceWave.createWave());
-        }
+    private void calcNewState(final Cell sourceCell, final Cell targetCell, final Wave sourceWave, final Cell.Dir calcDir) {
+        targetCell.addWave(sourceWave.createWave());
     }
 
     private boolean checkIsBarrier(final Cell cell) {

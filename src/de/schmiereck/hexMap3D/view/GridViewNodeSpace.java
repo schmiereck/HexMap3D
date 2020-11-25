@@ -7,6 +7,7 @@ import de.schmiereck.hexMap3D.service.Cell;
 import de.schmiereck.hexMap3D.service.RealityCell;
 import de.schmiereck.hexMap3D.service.Universe;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Cylinder;
 
 import static java.util.Objects.nonNull;
 
@@ -44,6 +45,9 @@ public class GridViewNodeSpace {
                 if (nonNull(outputBox)) {
                     outputBox.setVisible(false);
                 }
+            }
+            for (final Cylinder connectionCylinder : gridNode.getConnectionList()) {
+                connectionCylinder.setVisible(false);
             }
         });
     }

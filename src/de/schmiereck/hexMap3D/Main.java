@@ -61,15 +61,7 @@ public class Main {
         final boolean showSpaceCells = true;
         final boolean showReality = true;
         long runNr = 0;
-        while (runNr < 7) {
-            //final RealityCell realityCell = universe.getRealityCell(cellPos);
-            //if (realityCell.getBarrier(spacePos)) {
-            //    System.out.printf("|##");
-            //} else {
-            //    final int waveCount = realityCell.getWaveCount(spacePos);
-            //    System.out.printf("|%2d", waveCount);
-            //    spaceWaveCount += waveCount;
-            //}
+        while (runNr < 3) {
             gridViewApplication.updateReality();
             engine.run();
             runNr++;

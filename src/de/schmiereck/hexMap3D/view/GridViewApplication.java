@@ -39,7 +39,11 @@ public class GridViewApplication extends Application {
         rootGroup.setTranslateZ(70);
 
         //-----------------------------------------------------------------------------
-        final Parent sampleGui = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        //final Parent sampleGui = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        final Parent sampleGui = loader.load();
+        final GridViewController gridViewController = loader.<GridViewController>getController();
+        gridViewController.setGridViewApplication(this);
         rootGroup.getChildren().add(sampleGui);
 
         //-----------------------------------------------------------------------------
