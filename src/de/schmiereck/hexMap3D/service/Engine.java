@@ -47,7 +47,7 @@ public class Engine {
             }
             final Cell targetCell = this.universe.getCell(xPos, yPos, zPos);
             for (final Cell.Dir calcDir : Cell.Dir.values()) {
-                final Cell sourceCell = this.universe.getCell(calcXDirOffset(xPos, yPos, zPos, calcDir), calcYDirOffset(xPos, yPos, zPos, calcDir), zPos + calcZDirOffset(xPos, yPos, zPos, calcDir));
+                final Cell sourceCell = this.universe.getCell(calcXDirOffset(xPos, yPos, zPos, calcDir), calcYDirOffset(xPos, yPos, zPos, calcDir), calcZDirOffset(xPos, yPos, zPos, calcDir));
                 sourceCell.getWaveListStream().forEach((sourceWave) -> {
                     final Event sourceEvent = sourceWave.getEvent();
                     // Source-Cell-Wave is a Particle?

@@ -75,21 +75,22 @@ public class GridViewApplication extends Application {
         //-----------------------------------------------------------------------------
         final PerspectiveCamera camera = new PerspectiveCamera(true);
 
-        camera.setTranslateX(xSizeGrid / 2 * GridViewUtils.viewGridStepA);
-        camera.setTranslateY(ySizeGrid / 2 * GridViewUtils.viewGridStepH);
-        camera.setTranslateZ(-900.0D);
-
         camera.setRotationAxis(Rotate.Y_AXIS);
         camera.setRotate(0.0D);
 
         camera.setFarClip(8000.0D);
         camera.setFieldOfView(50.0D);
+        camera.setVerticalFieldOfView(true);
+
+        final Group cameraGroup = new Group();
+        rootGroup.getChildren().add(cameraGroup);
+        cameraGroup.getChildren().add(camera);
 
         //-----------------------------------------------------------------------------
-        Group lightGroup = new Group();
+        final Group lightGroup = new Group();
 
         {
-            PointLight light = new PointLight();
+            final PointLight light = new PointLight();
             light.setColor(Color.WHITE);
             light.setRotate(45);
             light.getTransforms().add(new Translate(0,-50,50));
@@ -112,12 +113,12 @@ public class GridViewApplication extends Application {
 
         final double w2 = 120;
         final double h2 = 100;
-        SubScene guiScene = new SubScene(sampleGui,w2,h2);
+        final SubScene guiScene = new SubScene(sampleGui,w2,h2);
 
         final double w3 = 10.0D;
-        HBox root = new HBox(w3);
+        final HBox root = new HBox(w3);
         root.setAlignment(Pos.TOP_LEFT);
-        Pane guiPane = new Pane(guiScene);
+        final Pane guiPane = new Pane(guiScene);
         final double w4 = 2.0D;
         //guiPane.relocate(15, 15);
         //guiPane.setTranslateX(15);
@@ -125,7 +126,7 @@ public class GridViewApplication extends Application {
         guiPane.setBorder(new Border(new BorderStroke(Color.CORNFLOWERBLUE, BorderStrokeStyle.SOLID,  CornerRadii.EMPTY, new BorderWidths(2.0D))));
         root.getChildren().addAll(gridScene, guiPane);
 
-        Scene mainScene = new Scene(root,w1 + w2 + w3 + w4*2, h1);
+        final Scene mainScene = new Scene(root,w1 + w2 + w3 + w4*2, h1);
         primaryStage.setScene(mainScene);
 
         //primaryStage.setScene(scene);
@@ -134,7 +135,15 @@ public class GridViewApplication extends Application {
         primaryStage.show();
 
         //-----------------------------------------------------------------------------
-        final MouseLook mouseLook = new MouseLook(camera);
+        final MouseLook mouseLook = new MouseLook(cameraGroup, camera);
+
+        //cameraGroup.setTranslateX(xSizeGrid / 2 * GridViewUtils.viewGridStepA);
+        //cameraGroup.setTranslateY(ySizeGrid / 2 * GridViewUtils.viewGridStepH);
+        //cameraGroup.setTranslateZ(-900.0D);
+        mouseLook.strafeRight(xSizeGrid / 2 * GridViewUtils.viewGridStepA);
+        mouseLook.moveDown(ySizeGrid / 2 * GridViewUtils.viewGridStepH);
+        mouseLook.moveForward(-900.0D);
+
         gridScene.setOnMousePressed((event) -> {
             event.setDragDetect(true);
         });

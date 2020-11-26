@@ -3,52 +3,108 @@ package de.schmiereck.hexMap3D.view;
 import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Camera;
+import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
+import javafx.scene.transform.Translate;
 import javafx.util.Callback;
 
 import static java.lang.StrictMath.cos;
 import static java.lang.StrictMath.sin;
 
 public class MouseLook {
-    private int oldX, oldY;
+    private double oldX, oldY;
     private boolean alreadyMoved = false;
+    private final Group cameraGroup;
     private final Camera camera;
 
-    public MouseLook(final Camera camera) {
+    public MouseLook(final Group cameraGroup, final Camera camera) {
+        this.cameraGroup = cameraGroup;
         this.camera = camera;
+        this.cameraGroup.getTransforms().add(affine);
+        this.camera.getTransforms().add(rotateAffine);
     }
 
     public void handle(final MouseEvent event) {
         if (this.alreadyMoved) {
-            final int newX = (int) event.getScreenX();
-            final int xDiff = this.oldX - newX;
-            if (xDiff != 0) {
-                final Rotate rotation = new Rotate(xDiff / 32.0D,
-                        // camera rotates around its location
-                        this.camera.getTranslateX(), this.camera.getTranslateY(), this.camera.getTranslateZ(), Rotate.Y_AXIS);
-                this.camera.getTransforms().addAll(rotation);
-            }
+            final double newX = event.getSceneX();
+            final double xDiff = this.oldX - newX;
             this.oldX = newX;
-            final int newY = (int) event.getScreenY();
-            final int yDiff = newY - this.oldY;
-            if (yDiff != 0) {
-                final Rotate rotation = new Rotate(yDiff / 32.0D,
-                        // camera rotates around its location
-                        this.camera.getTranslateX(), this.camera.getTranslateY(), this.camera.getTranslateZ(), Rotate.X_AXIS);
-                this.camera.getTransforms().addAll(rotation);
-            }
+            final double newY = event.getSceneY();
+            final double yDiff = this.oldY - newY;
             this.oldY = newY;
+            //rotate2(xDiff, yDiff);
+            rotate(xDiff, -yDiff, 0.9D);
+
         } else {
-            this.oldX = (int) event.getScreenX();
-            this.oldY = (int) event.getScreenY();
+            this.oldX = (int) event.getSceneX();
+            this.oldY = (int) event.getSceneY();
             this.alreadyMoved = true;
         }
     }
+
     public void movedFinished() {
         this.alreadyMoved = false;
+    }
+
+    private final Translate t = new Translate(0, 0, 0);
+    private final Affine affine = new Affine();
+    private final Affine rotateAffine = new Affine();
+    private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
+    private final Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
+    private final Rotate rotateZ = new Rotate(0, Rotate.Z_AXIS);
+    private double mouseModifier = 0.1;
+
+    private void rotate(final double mouseDeltaX, final double mouseDeltaY, final double mouseSpeed) {
+        if ((mouseDeltaX != 0.0D) || (mouseDeltaY != 0)) {
+            //final Point3D position = this.getPosition();
+            //t.setX(position.getX());
+            //t.setY(position.getY());
+            //t.setZ(position.getZ());
+
+            //affine.setToIdentity();
+/*
+            //rotateY.setAngle(clamp(-360, ((rotateY.getAngle() + mouseDeltaX * (mouseSpeed * mouseModifier)) % 360 + 540) % 360 - 180, 360)); // horizontal
+            //rotateX.setAngle(clamp(-45, ((rotateX.getAngle() - mouseDeltaY * (mouseSpeed * mouseModifier)) % 360 + 540) % 360 - 180, 35)); // vertical
+            rotateX.setAngle(mouseDeltaY * (mouseSpeed * mouseModifier)); // horizontal
+            rotateY.setAngle(mouseDeltaX * (mouseSpeed * mouseModifier)); // horizontal
+            //affine.prepend(t.createConcatenation(rotateY.createConcatenation(rotateX)));
+            //rotateAffine.prepend(rotateY.createConcatenation(rotateX));
+            rotateAffine.prepend(rotateX);
+            rotateAffine.prepend(rotateY);
+*/
+            final Point3D n = getN();
+            //rotateAffine.appendRotation(mouseDeltaX * (mouseSpeed * mouseModifier), getN(), Rotate.Y_AXIS);
+            rotateAffine.appendRotation(mouseDeltaX * (mouseSpeed * mouseModifier),
+                    n.getX(),
+                    n.getY(),
+                    0,//n.getZ(),
+                    Rotate.Y_AXIS.getX(), Rotate.Y_AXIS.getY(), Rotate.Y_AXIS.getZ());
+            //rotateAffine.appendRotation(mouseDeltaY * (mouseSpeed * mouseModifier), getN(), Rotate.X_AXIS);
+            rotateAffine.appendRotation(mouseDeltaY * (mouseSpeed * mouseModifier),
+                    n.getX(),
+                    0,//n.getY(),
+                    n.getZ(),
+                    Rotate.X_AXIS.getX(), Rotate.X_AXIS.getY(), Rotate.X_AXIS.getZ());
+        }
+    }
+
+    private void rotate2(final double xDiff, final double yDiff) {
+        if (xDiff != 0) {
+            final Rotate rotation = new Rotate(xDiff / 32.0D,
+            // camera rotates around its location
+                    this.camera.getTranslateX(), this.camera.getTranslateY(), this.camera.getTranslateZ(), Rotate.Y_AXIS);
+            this.camera.getTransforms().addAll(rotation);
+        }
+        if (yDiff != 0) {
+            final Rotate rotation = new Rotate(yDiff / 32.0D,
+            // camera rotates around its location
+                    this.camera.getTranslateX(), this.camera.getTranslateY(), this.camera.getTranslateZ(), Rotate.X_AXIS);
+            this.camera.getTransforms().addAll(rotation);
+        }
     }
 
     public void handleMouseScrolling(final ScrollEvent event) {
@@ -57,40 +113,47 @@ public class MouseLook {
 
     // https://github.com/FXyz/FXyz/blob/58913cc1328ad95af40b2fbf39044c126c71584b/FXyz-Core/src/main/java/org/fxyz3d/scene/SimpleFPSCamera.java#L465
 
-    private void moveForward(final double moveSpeed) {
-        camera.setTranslateX(camera.getTranslateX() + moveSpeed * getN().getX());
-        camera.setTranslateY(camera.getTranslateY() + moveSpeed * getN().getY());
-        camera.setTranslateZ(camera.getTranslateZ() + moveSpeed * getN().getZ());
+    public void moveForward(final double moveSpeed) {
+        final Point3D position = this.getPosition();
+        final Point3D n = getN();
+        //affine.setTx(position.getX() + moveSpeed * n.getX());
+        //affine.setTy(position.getY() + moveSpeed * n.getY());
+        //affine.setTz(position.getZ() + moveSpeed * n.getZ());
+
+        //affine.setTx(1.0D);
+        affine.setTx(affine.getTx() + moveSpeed * n.getX());
+        affine.setTy(affine.getTy() + moveSpeed * n.getY());
+        affine.setTz(affine.getTz() + moveSpeed * n.getZ());
     }
 
-    private void moveBack(final double moveSpeed) {
-        camera.setTranslateX(camera.getTranslateX() + moveSpeed * -getN().getX());
-        camera.setTranslateY(camera.getTranslateY() + moveSpeed * -getN().getY());
-        camera.setTranslateZ(camera.getTranslateZ() + moveSpeed * -getN().getZ());
+    public void moveBack(final double moveSpeed) {
+        affine.setTx(affine.getTx() + moveSpeed * -getN().getX());
+        affine.setTy(affine.getTy() + moveSpeed * -getN().getY());
+        affine.setTz(affine.getTz() + moveSpeed * -getN().getZ());
     }
 
-    private void strafeLeft(final double moveSpeed) {
-        camera.setTranslateX(camera.getTranslateX() + moveSpeed * -getU().getX());
-        camera.setTranslateY(camera.getTranslateY() + moveSpeed * -getU().getY());
-        camera.setTranslateZ(camera.getTranslateZ() + moveSpeed * -getU().getZ());
+    public void strafeLeft(final double moveSpeed) {
+        affine.setTx(affine.getTx() + moveSpeed * -getU().getX());
+        affine.setTy(affine.getTy() + moveSpeed * -getU().getY());
+        affine.setTz(affine.getTz() + moveSpeed * -getU().getZ());
     }
 
-    private void strafeRight(final double moveSpeed) {
-        camera.setTranslateX(camera.getTranslateX() + moveSpeed * getU().getX());
-        camera.setTranslateY(camera.getTranslateY() + moveSpeed * getU().getY());
-        camera.setTranslateZ(camera.getTranslateZ() + moveSpeed * getU().getZ());
-    }
-    
-    private void moveUp(final double moveSpeed) {
-        camera.setTranslateX(camera.getTranslateX() + moveSpeed * -getV().getX());
-        camera.setTranslateY(camera.getTranslateY() + moveSpeed * -getV().getY());
-        camera.setTranslateZ(camera.getTranslateZ() + moveSpeed * -getV().getZ());
+    public void strafeRight(final double moveSpeed) {
+        affine.setTx(affine.getTx() + moveSpeed * getU().getX());
+        affine.setTy(affine.getTy() + moveSpeed * getU().getY());
+        affine.setTz(affine.getTz() + moveSpeed * getU().getZ());
     }
 
-    private void moveDown(final double moveSpeed) {
-        camera.setTranslateX(camera.getTranslateX() + moveSpeed * getV().getX());
-        camera.setTranslateY(camera.getTranslateY() + moveSpeed * getV().getY());
-        camera.setTranslateZ(camera.getTranslateZ() + moveSpeed * getV().getZ());
+    public void moveUp(final double moveSpeed) {
+        affine.setTx(affine.getTx() + moveSpeed * -getV().getX());
+        affine.setTy(affine.getTy() + moveSpeed * -getV().getY());
+        affine.setTz(affine.getTz() + moveSpeed * -getV().getZ());
+    }
+
+    public void moveDown(final double moveSpeed) {
+        affine.setTx(affine.getTx() + moveSpeed * getV().getX());
+        affine.setTy(affine.getTy() + moveSpeed * getV().getY());
+        affine.setTz(affine.getTz() + moveSpeed * getV().getZ());
     }
 
     //Forward / look direction
@@ -120,16 +183,19 @@ public class MouseLook {
         return new Point3D(a.getTx(), a.getTy(), a.getTz());
     };
 
+    public static double clamp(double input, double min, double max) {
+        return (input < min) ? min : (input > max) ? max : input;
+    }
 
     private Point3D getF() {
-        return F.call(this.camera.getLocalToSceneTransform());
+        return F.call(this.getLocalToSceneTransform());
     }
 
     public Point3D getLookDirection() {
         return getF();
     }
     private Point3D getN() {
-        return N.call(this.camera.getLocalToSceneTransform());
+        return N.call(this.getLocalToSceneTransform());
     }
 
     public Point3D getLookNormal() {
@@ -137,21 +203,32 @@ public class MouseLook {
     }
 
     private Point3D getR() {
-        return R.call(this.camera.getLocalToSceneTransform());
+        return R.call(this.getLocalToSceneTransform());
     }
 
     private Point3D getU() {
-        return U.call(this.camera.getLocalToSceneTransform());
+        return U.call(this.getLocalToSceneTransform());
     }
 
     private Point3D getUp() {
-        return UP.call(this.camera.getLocalToSceneTransform());
+        return UP.call(this.getLocalToSceneTransform());
     }
 
     private Point3D getV() {
-        return V.call(this.camera.getLocalToSceneTransform());
+        return V.call(this.getLocalToSceneTransform());
     }
 
     public final Point3D getPosition() {
-        return P.call(this.camera.getLocalToSceneTransform());
-    }}
+        return P.call(this.getLocalToSceneTransform());
+    }
+
+    public final Transform getLocalToSceneTransform() {
+        //return t;
+        //return this.camera.getParent().getLocalToSceneTransform();
+        //return this.camera.getLocalToSceneTransform();
+        return this.camera.getLocalToSceneTransform();
+        //return this.cameraGroup.getLocalToParentTransform();
+        //return this.cameraGroup.getParent().getLocalToSceneTransform();
+        //return this.camera.getLocalToParentTransform();
+    }
+}
