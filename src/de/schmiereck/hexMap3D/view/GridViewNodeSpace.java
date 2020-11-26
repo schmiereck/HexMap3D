@@ -33,21 +33,18 @@ public class GridViewNodeSpace {
         forEachNode((final int xPos, final int yPos, final int zPos) -> {
             final GridNode gridNode = getGridNode(xPos, yPos, zPos);
             final RealityCell realityCell = gridNode.getRealityCell();
+            final boolean visible = realityCell.getWaveCount() > 0;
             final Box gridBox = gridNode.getGridBox();
             if (nonNull(gridBox)) {
-                if (realityCell.getWaveCount() > 0) {
-                    gridBox.setVisible(true);
-                } else {
-                    gridBox.setVisible(false);
-                }
+                gridBox.setVisible(visible);
             }
             for (final Box outputBox : gridNode.getOutputArr()) {
                 if (nonNull(outputBox)) {
-                    outputBox.setVisible(false);
+                    outputBox.setVisible(visible);
                 }
             }
             for (final Cylinder connectionCylinder : gridNode.getConnectionList()) {
-                connectionCylinder.setVisible(false);
+                connectionCylinder.setVisible(visible);
             }
         });
     }

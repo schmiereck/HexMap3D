@@ -75,9 +75,6 @@ public class GridViewApplication extends Application {
         //-----------------------------------------------------------------------------
         final PerspectiveCamera camera = new PerspectiveCamera(true);
 
-        camera.setRotationAxis(Rotate.Y_AXIS);
-        camera.setRotate(0.0D);
-
         camera.setFarClip(8000.0D);
         camera.setFieldOfView(50.0D);
         camera.setVerticalFieldOfView(true);
@@ -92,8 +89,19 @@ public class GridViewApplication extends Application {
         {
             final PointLight light = new PointLight();
             light.setColor(Color.WHITE);
-            light.setRotate(45);
-            light.getTransforms().add(new Translate(0,-50,50));
+            light.getTransforms().add(new Translate(-100,-450,-800));
+            lightGroup.getChildren().add(light);
+        }
+        {
+            final PointLight light = new PointLight();
+            light.setColor(Color.DARKGRAY);
+            light.getTransforms().add(new Translate(1000,2450,1500));
+            lightGroup.getChildren().add(light);
+        }
+        {
+            final PointLight light = new PointLight();
+            light.setColor(Color.DARKORANGE);
+            light.getTransforms().add(new Translate(0,-2450,0));
             lightGroup.getChildren().add(light);
         }
         {

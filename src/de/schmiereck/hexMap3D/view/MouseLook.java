@@ -1,6 +1,5 @@
 package de.schmiereck.hexMap3D.view;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Camera;
 import javafx.scene.Group;
@@ -12,9 +11,6 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.util.Callback;
 
-import static java.lang.StrictMath.cos;
-import static java.lang.StrictMath.sin;
-
 public class MouseLook {
     private double oldX, oldY;
     private boolean alreadyMoved = false;
@@ -25,7 +21,8 @@ public class MouseLook {
         this.cameraGroup = cameraGroup;
         this.camera = camera;
         this.cameraGroup.getTransforms().add(affine);
-        this.camera.getTransforms().add(rotateAffine);
+        this.cameraGroup.getTransforms().add(rotateAffineY);
+        this.cameraGroup.getTransforms().add(rotateAffineX);
     }
 
     public void handle(final MouseEvent event) {
@@ -52,11 +49,12 @@ public class MouseLook {
 
     private final Translate t = new Translate(0, 0, 0);
     private final Affine affine = new Affine();
-    private final Affine rotateAffine = new Affine();
+    private final Affine rotateAffineY = new Affine();
+    private final Affine rotateAffineX = new Affine();
     private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
     private final Rotate rotateZ = new Rotate(0, Rotate.Z_AXIS);
-    private double mouseModifier = 0.1;
+    private double mouseModifier = 0.1D;
 
     private void rotate(final double mouseDeltaX, final double mouseDeltaY, final double mouseSpeed) {
         if ((mouseDeltaX != 0.0D) || (mouseDeltaY != 0)) {
@@ -76,18 +74,19 @@ public class MouseLook {
             rotateAffine.prepend(rotateX);
             rotateAffine.prepend(rotateY);
 */
+            final Point3D n2 = getN();
+            rotateAffineY.appendRotation(mouseDeltaX * (mouseSpeed * mouseModifier),
+                    0,//n2.getX(),
+                    0,//n2.getY(),
+                    0,//n2.getZ(),
+                    Rotate.Y_AXIS.getX(), Rotate.Y_AXIS.getY(), Rotate.Y_AXIS.getZ());
             final Point3D n = getN();
             //rotateAffine.appendRotation(mouseDeltaX * (mouseSpeed * mouseModifier), getN(), Rotate.Y_AXIS);
-            rotateAffine.appendRotation(mouseDeltaX * (mouseSpeed * mouseModifier),
-                    n.getX(),
-                    n.getY(),
-                    0,//n.getZ(),
-                    Rotate.Y_AXIS.getX(), Rotate.Y_AXIS.getY(), Rotate.Y_AXIS.getZ());
             //rotateAffine.appendRotation(mouseDeltaY * (mouseSpeed * mouseModifier), getN(), Rotate.X_AXIS);
-            rotateAffine.appendRotation(mouseDeltaY * (mouseSpeed * mouseModifier),
-                    n.getX(),
+            rotateAffineX.appendRotation(mouseDeltaY * (mouseSpeed * mouseModifier),
+                    0,//n.getX(),
                     0,//n.getY(),
-                    n.getZ(),
+                    0,//n.getZ(),
                     Rotate.X_AXIS.getX(), Rotate.X_AXIS.getY(), Rotate.X_AXIS.getZ());
         }
     }
