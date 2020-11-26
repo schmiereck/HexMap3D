@@ -28,16 +28,16 @@ public class Main {
         {
             final Event particleEvent = new Event(engine, 1);
             final Wave wave = particleEvent.createWave(100);
-            //wave.setDir(Cell.Dir.Right);
+            wave.setDir(Cell.Dir.OR_P);
             universe.addEvent(8, 8, 8, particleEvent);
 
             // For Testing:
             // Add a sharp Barrier...
-            final Event barrierEvent = new Event(engine, 0);
+            //final Event barrierEvent = new Event(engine, 0);
             // ...to the right...
-            universe.addBariere(barrierEvent, 10, 0, 0, 11, 15, 15);
+            //universe.addBariere(barrierEvent, 10, 0, 0, 11, 15, 15);
             // and to the left.
-            universe.addBariere(barrierEvent, 1, 0, 0, 2, 15, 15);
+            //universe.addBariere(barrierEvent, 1, 0, 0, 2, 15, 15);
         }
         //-----------------------------------------------------------------------------
         final GridViewApplication gridViewApplication = new GridViewApplication();

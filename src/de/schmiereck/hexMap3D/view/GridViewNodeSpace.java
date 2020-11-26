@@ -40,7 +40,7 @@ public class GridViewNodeSpace {
             }
             for (final Box outputBox : gridNode.getOutputArr()) {
                 if (nonNull(outputBox)) {
-                    outputBox.setVisible(visible);
+                    outputBox.setVisible(false);
                 }
             }
             for (final Cylinder connectionCylinder : gridNode.getConnectionList()) {

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import de.schmiereck.hexMap3D.GridUtils;
+
 import static de.schmiereck.hexMap3D.GridUtils.calcXDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcYDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
@@ -34,35 +36,46 @@ public class Engine {
         this.universe.clearReality();
 
         this.universe.forEachCell((final int xPos, final int yPos, final int zPos) -> {
+            final Cell targetCell = this.universe.getCell(xPos, yPos, zPos);
             // Stay (Barrier):
             {
-                final Cell sourceCell = this.universe.getCell(xPos, yPos, zPos);
-                sourceCell.getWaveListStream().forEach((sourceWave) -> {
-                    final Event sourceEvent = sourceWave.getEvent();
-                    // Source-Cell-Wave is a Barrier?
-                    if (sourceEvent.getEventType() == 0) {
-                        sourceCell.addWave(sourceWave);
+                targetCell.getWaveListStream().forEach((targetWave) -> {
+                    final Event targetEvent = targetWave.getEvent();
+                    // Target-Cell-Wave is a Barrier?
+                    if (targetEvent.getEventType() == 0) {
+                        targetCell.addWave(targetWave);
                     }
                 });
             }
-            final Cell targetCell = this.universe.getCell(xPos, yPos, zPos);
-            for (final Cell.Dir calcDir : Cell.Dir.values()) {
-                final Cell sourceCell = this.universe.getCell(calcXDirOffset(xPos, yPos, zPos, calcDir), calcYDirOffset(xPos, yPos, zPos, calcDir), calcZDirOffset(xPos, yPos, zPos, calcDir));
-                sourceCell.getWaveListStream().forEach((sourceWave) -> {
-                    final Event sourceEvent = sourceWave.getEvent();
-                    // Source-Cell-Wave is a Particle?
-                    if (sourceEvent.getEventType() == 1) {
-                        calcNewState(sourceCell, targetCell, sourceWave, calcDir);
-                     }
-                });
-            }
+            calcNewState(xPos, yPos, zPos, targetCell);
         });
         this.universe.calcNext();
         this.universe.calcReality();
         this.runNr++;
     }
 
-    private void calcNewState(final Cell sourceCell, final Cell targetCell, final Wave sourceWave, final Cell.Dir calcDir) {
+    private void calcNewState(final int xPos, final int yPos, final int zPos, final Cell targetCell) {
+        for (final Cell.Dir calcDir : Cell.Dir.values()) {
+            final Cell sourceCell = this.universe.getCell(calcXDirOffset(xPos, yPos, zPos, calcDir), calcYDirOffset(xPos, yPos, zPos, calcDir), calcZDirOffset(xPos, yPos, zPos, calcDir));
+            final Cell.Dir oppositeCalcDir = GridUtils.calcOppositeDir(calcDir);
+            sourceCell.getWaveListStream()
+                .filter(sourceWave -> sourceWave.getDir().equals(oppositeCalcDir))
+                .forEach((sourceWave) -> {
+                final Event sourceEvent = sourceWave.getEvent();
+                // Source-Cell-Wave is a Particle?
+                if (sourceEvent.getEventType() == 1) {
+                    //calcNewState1(sourceCell, targetCell, sourceWave, calcDir);
+                    calcNewState2(sourceCell, targetCell, sourceWave, calcDir);
+                 }
+            });
+        }
+    }
+
+    private void calcNewState1(final Cell sourceCell, final Cell targetCell, final Wave sourceWave, final Cell.Dir calcDir) {
+        targetCell.addWave(sourceWave.createWave());
+    }
+
+    private void calcNewState2(final Cell sourceCell, final Cell targetCell, final Wave sourceWave, final Cell.Dir calcDir) {
         targetCell.addWave(sourceWave.createWave());
     }
 

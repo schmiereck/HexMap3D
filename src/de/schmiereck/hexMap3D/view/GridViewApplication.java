@@ -88,25 +88,25 @@ public class GridViewApplication extends Application {
 
         {
             final PointLight light = new PointLight();
-            light.setColor(Color.WHITE);
-            light.getTransforms().add(new Translate(-100,-450,-800));
+            light.setColor(new Color(1.0D, 1.0D, 1.0D, 1.0D));
+            light.getTransforms().add(new Translate(-1000,1450,-800));
             lightGroup.getChildren().add(light);
         }
         {
             final PointLight light = new PointLight();
-            light.setColor(Color.DARKGRAY);
-            light.getTransforms().add(new Translate(1000,2450,1500));
+            light.setColor(new Color(1.0D, 1.0D, 1.0D, 0.4D));
+            light.getTransforms().add(new Translate(1500,-450,1500));
             lightGroup.getChildren().add(light);
         }
         {
             final PointLight light = new PointLight();
-            light.setColor(Color.DARKORANGE);
-            light.getTransforms().add(new Translate(0,-2450,0));
+            light.setColor(new Color(0.3D, 0.3D, 0.3D, 1.0D));
+            light.getTransforms().add(new Translate(0,2450,0));
             lightGroup.getChildren().add(light);
         }
         {
             final AmbientLight light = new AmbientLight();
-            light.setColor(Color.DARKGRAY);
+            light.setColor(new Color(0.5D, 0.5D, 0.5D, 0.5D));
             lightGroup.getChildren().add(light);
         }
         rootGroup.getChildren().add(lightGroup);
@@ -121,7 +121,7 @@ public class GridViewApplication extends Application {
 
         final double w2 = 120;
         final double h2 = 100;
-        final SubScene guiScene = new SubScene(sampleGui,w2,h2);
+        final SubScene guiScene = new SubScene(sampleGui, w2, h2);
 
         final double w3 = 10.0D;
         final HBox root = new HBox(w3);
@@ -150,7 +150,7 @@ public class GridViewApplication extends Application {
         //cameraGroup.setTranslateZ(-900.0D);
         mouseLook.strafeRight(xSizeGrid / 2 * GridViewUtils.viewGridStepA);
         mouseLook.moveDown(ySizeGrid / 2 * GridViewUtils.viewGridStepH);
-        mouseLook.moveForward(-900.0D);
+        mouseLook.moveForward(900.0D);
 
         gridScene.setOnMousePressed((event) -> {
             event.setDragDetect(true);

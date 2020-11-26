@@ -213,4 +213,25 @@ public class GridUtils {
         }
         return outputDir;
     }
+
+    public static Cell.Dir calcOppositeDir(final Cell.Dir dir) {
+        final Cell.Dir oppositeDir;
+        switch (dir) {
+            case DB_P -> oppositeDir = DB_N;
+            case DB_N -> oppositeDir = DB_P;
+            case OR_P -> oppositeDir = OR_N;
+            case OR_N -> oppositeDir = OR_P;
+            case RE_P -> oppositeDir = RE_N;
+            case RE_N -> oppositeDir = RE_P;
+            case LB_P -> oppositeDir = LB_N;
+            case LB_N -> oppositeDir = LB_P;
+            case GR_P -> oppositeDir = GR_N;
+            case GR_N -> oppositeDir = GR_P;
+            case LG_P -> oppositeDir = LG_N;
+            case LG_N -> oppositeDir = LG_P;
+            default -> throw new RuntimeException(format("Unexpected dir \"%s\".", dir));
+        }
+        return oppositeDir;
+    }
+
 }

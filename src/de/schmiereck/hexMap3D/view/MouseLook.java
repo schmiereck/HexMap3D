@@ -20,6 +20,16 @@ public class MouseLook {
     public MouseLook(final Group cameraGroup, final Camera camera) {
         this.cameraGroup = cameraGroup;
         this.camera = camera;
+        // sets the camera to have the view upside down instead of the default JavaFX 2D Y-down. So the scene is viewed as a Y-up (Y-axis pointing up) scene.
+        // https://docs.oracle.com/javafx/8/3d_graphics/camera.htm
+        // https://docs.oracle.com/javafx/8/3d_graphics/sampleapp.htm
+        // https://stackoverflow.com/questions/24985582/coordinate-transformations-in-javafx
+        {
+            final Rotate rz = new Rotate();
+            rz.setAxis(Rotate.Z_AXIS);
+            rz.setAngle(180.0D);
+            this.cameraGroup.getTransforms().add(rz);
+        }
         this.cameraGroup.getTransforms().add(affine);
         this.cameraGroup.getTransforms().add(rotateAffineY);
         this.cameraGroup.getTransforms().add(rotateAffineX);
@@ -107,7 +117,7 @@ public class MouseLook {
     }
 
     public void handleMouseScrolling(final ScrollEvent event) {
-        moveForward(event.getDeltaY() * 2.0D);
+        moveForward(event.getDeltaY() * -2.0D);
     }
 
     // https://github.com/FXyz/FXyz/blob/58913cc1328ad95af40b2fbf39044c126c71584b/FXyz-Core/src/main/java/org/fxyz3d/scene/SimpleFPSCamera.java#L465
@@ -122,7 +132,7 @@ public class MouseLook {
         //affine.setTx(1.0D);
         affine.setTx(affine.getTx() + moveSpeed * n.getX());
         affine.setTy(affine.getTy() + moveSpeed * n.getY());
-        affine.setTz(affine.getTz() + moveSpeed * n.getZ());
+        affine.setTz(affine.getTz() + moveSpeed * -n.getZ());
     }
 
     public void moveBack(final double moveSpeed) {
