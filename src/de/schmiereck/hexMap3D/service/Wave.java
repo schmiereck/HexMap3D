@@ -1,9 +1,14 @@
 package de.schmiereck.hexMap3D.service;
 
+import java.util.Arrays;
+
+import de.schmiereck.hexMap3D.service.Cell.Dir;
+
 public class Wave {
     private final Event event;
     private Cell cell;
-    private Cell.Dir dir = null;
+    //private Cell.Dir dir = null;
+    private Dir[] dirArr = new Dir[3];
     private final ProbabilityCalc placePulseProbCalc;
 
     private boolean extendCalculated = false;
@@ -48,13 +53,13 @@ public class Wave {
     }
 
     public Wave createWave() {
-        final Wave wave = createWave(this.dir, this.placePulseProbCalc);
+        final Wave wave = createWave(this.dirArr, this.placePulseProbCalc);
         this.event.addWave(wave);
         return wave;
     }
 
-    public Wave createWave(final Cell.Dir dir) {
-        final Wave wave = createWave(dir, this.placePulseProbCalc);
+    public Wave createWave(final Dir[] dirArr) {
+        final Wave wave = createWave(dirArr, this.placePulseProbCalc);
         this.event.addWave(wave);
         return wave;
     }
@@ -62,17 +67,25 @@ public class Wave {
     /**
      * Copy and calc next Probability-Tick-Pos.
      */
-    public Wave createWave(final Cell.Dir dir, final ProbabilityCalc placePulseProbCalc) {
+    public Wave createWave(final Dir[] dirArr, final ProbabilityCalc placePulseProbCalc) {
         final Wave wave = new Wave(this.event, placePulseProbCalc);
-        wave.setDir(dir);
+        wave.setDirArr(dirArr);
         return wave;
     }
 
-    public Cell.Dir getDir() {
-        return this.dir;
+    public Dir getDir(final int dirNo) {
+        return this.dirArr[dirNo];
     }
 
-    public void setDir(final Cell.Dir dir) {
-        this.dir = dir;
+    public void setDirArr(final Dir[] dirArr) {
+        System.arraycopy(dirArr, 0, this.dirArr, 0 , dirArr.length);
+    }
+
+    public Dir[] getDirArr() {
+        return this.dirArr;
+    }
+
+    public void setDir(final int dirNo, final Dir dir) {
+        this.dirArr[dirNo] = dir;
     }
 }

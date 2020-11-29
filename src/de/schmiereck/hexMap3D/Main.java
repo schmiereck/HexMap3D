@@ -28,7 +28,9 @@ public class Main {
         {
             final Event particleEvent = new Event(engine, 1);
             final Wave wave = particleEvent.createWave(100);
-            wave.setDir(Cell.Dir.OR_P);
+            wave.setDir(0, Cell.Dir.OR_P);
+            wave.setDir(1, Cell.Dir.LB_P);
+            wave.setDir(2, Cell.Dir.DB_P);
             universe.addEvent(8, 8, 8, particleEvent);
 
             // For Testing:
