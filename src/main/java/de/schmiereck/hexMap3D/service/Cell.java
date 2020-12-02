@@ -60,6 +60,7 @@ public class Cell {
     }
 
     public void clearWaveList() {
+        this.waveList[this.universe.getActCalcPos()].stream().forEach(wave -> wave.getEvent().removeWave(wave));
         this.waveList[this.universe.getActCalcPos()].clear();
     }
 

@@ -158,6 +158,25 @@ public class GridUtils {
         c1ConArr[LG_N.dir()] = new OutputDir(LG_N, 0, -1, -1);
     }
 
+    /**
+     * For every direction [12] there are [5] neighbours a spin can rotate around for this direction.
+     */
+    public static final int[][] spinArr = new int[12][5];
+    static {
+        // DB_P
+        spinArr[DB_P.dir()][0] = LG_N.dir();
+        spinArr[DB_P.dir()][1] = LB_P.dir();
+        spinArr[DB_P.dir()][2] = OR_P.dir();
+        spinArr[DB_P.dir()][3] = LG_N.dir();
+        spinArr[DB_P.dir()][4] = GR_N.dir();
+        // OR_P
+        spinArr[OR_P.dir()][0] = LB_P.dir();
+        spinArr[OR_P.dir()][1] = GR_P.dir();
+        spinArr[OR_P.dir()][2] = RE_P.dir();
+        spinArr[OR_P.dir()][3] = LG_N.dir();
+        spinArr[OR_P.dir()][4] = DB_P.dir();
+    }
+
     public static int calcXDirOffset(final int xPos, final int yPos, final int zPos, final Cell.Dir calcDir) {
         final OutputDir outputDir = calcDirOffset(xPos, yPos, zPos, calcDir);
         return xPos + outputDir.x;

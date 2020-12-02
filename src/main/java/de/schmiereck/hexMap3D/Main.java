@@ -2,10 +2,11 @@ package de.schmiereck.hexMap3D;
 
 import de.schmiereck.hexMap3D.service.Cell;
 import de.schmiereck.hexMap3D.service.Engine;
-import de.schmiereck.hexMap3D.service.Event;
 import de.schmiereck.hexMap3D.service.Universe;
-import de.schmiereck.hexMap3D.service.Wave;
+import de.schmiereck.hexMap3D.service.WaveMoveCalcDir;
 import de.schmiereck.hexMap3D.view.GridViewApplication;
+import de.schmiereck.hexMap3D.service.Event;
+import de.schmiereck.hexMap3D.service.Wave;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -27,10 +28,12 @@ public class Main {
         // Extend Test:
         {
             final Event particleEvent = new Event(engine, 1);
-            final Wave wave = particleEvent.createWave(100);
-            wave.setDir(0, Cell.Dir.OR_P);
-            wave.setDir(1, Cell.Dir.LB_P);
-            wave.setDir(2, Cell.Dir.DB_P);
+            final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[3];
+            moveCalcDirArr[0] = new WaveMoveCalcDir(Cell.Dir.OR_P, 75, 100);
+            moveCalcDirArr[1] = new WaveMoveCalcDir(Cell.Dir.LG_N, 25, 0);
+            moveCalcDirArr[2] = new WaveMoveCalcDir(Cell.Dir.DB_P, 0, 0);
+            final Wave wave = particleEvent.createWave(0, moveCalcDirArr);
+
             universe.addEvent(8, 8, 8, particleEvent);
 
             // For Testing:

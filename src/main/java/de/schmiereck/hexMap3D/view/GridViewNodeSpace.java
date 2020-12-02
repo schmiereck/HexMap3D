@@ -1,6 +1,6 @@
 package de.schmiereck.hexMap3D.view;
 
-import java.util.Objects;
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import de.schmiereck.hexMap3D.service.Cell;
@@ -9,6 +9,7 @@ import de.schmiereck.hexMap3D.service.Universe;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 
+import static de.schmiereck.hexMap3D.view.GridViewUtils.viewGridStepA2;
 import static java.util.Objects.nonNull;
 
 public class GridViewNodeSpace {
@@ -38,10 +39,19 @@ public class GridViewNodeSpace {
             if (nonNull(gridBox)) {
                 gridBox.setVisible(visible);
             }
-            for (final Box outputBox : gridNode.getOutputArr()) {
-                if (nonNull(outputBox)) {
-                    outputBox.setVisible(false);
-                }
+            {
+                final int[] outputs = realityCell.getOutputs();
+                final Box[] outputArr = gridNode.getOutputArr();
+                Arrays.stream(Cell.Dir.values()).forEach(dir -> {
+                    final Box outputBox = outputArr[dir.dir()];
+                    final int output = outputs[dir.dir()];
+                    if (output > 0) {
+                        outputBox.setVisible(true);
+                        outputBox.setHeight(((output > 100 ? 100 : output) * viewGridStepA2) / 100.0D);
+                    } else {
+                        outputBox.setVisible(false);
+                    }
+                });
             }
             for (final Cylinder connectionCylinder : gridNode.getConnectionList()) {
                 connectionCylinder.setVisible(visible);

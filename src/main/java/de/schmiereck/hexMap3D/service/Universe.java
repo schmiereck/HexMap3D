@@ -1,6 +1,9 @@
 package de.schmiereck.hexMap3D.service;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
+
+import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 
 public class Universe {
     private final int xUniverseSize;
@@ -52,20 +55,6 @@ public class Universe {
         return (this.calcPos + 1) % 2;
     }
 
-    public static int wrap(final int pos, final int range) {
-        final int ret;
-        if (pos < 0) {
-            ret = range + pos;
-        } else {
-            if (pos >= range) {
-                ret = pos - range;
-            } else {
-                ret = pos;
-            }
-        }
-        return ret;
-    }
-
     public void clearReality() {
         forEachCell((final int xPos, final int yPos, final int zPos) -> this.getRealityCell(xPos, yPos, zPos).clearReality());
     }
@@ -78,15 +67,31 @@ public class Universe {
         return this.grid[wrap(zPos, this.zUniverseSize)][wrap(yPos, this.yUniverseSize)][wrap(xPos, this.xUniverseSize)];
     }
 
-    public void calcReality() {
+    public void calcReality(final boolean showActualWaveMoveCalcDir) {
         forEachCell((final int xPos, final int yPos, final int zPos) -> {
             final RealityCell realityCell = this.getRealityCell(xPos, yPos, zPos);
             final Cell cell = this.getCell(xPos, yPos, zPos);
-            final int particleCount = (int) cell.getWaveListStream().filter((wave) -> wave.getEvent().getEventType() == 1).count();
-            final int barrierCount = (int) cell.getWaveListStream().filter((wave) -> wave.getEvent().getEventType() == 0).count();
+
+            final int particleCount = (int) cell.getWaveListStream().filter(wave -> wave.getEvent().getEventType() == 1).count();
             realityCell.addWaveCount(particleCount);
+
+            final int barrierCount = (int) cell.getWaveListStream().filter(wave -> wave.getEvent().getEventType() == 0).count();
             if (barrierCount > 0) {
                 realityCell.setBarrier(true);
+            }
+
+            final int[] outputs = realityCell.getOutputs();
+            if (showActualWaveMoveCalcDir) {
+                cell.getWaveListStream().forEach(wave -> {
+                    final WaveMoveCalcDir waveMoveCalcDir = wave.getActualWaveMoveCalcDir();
+                    outputs[waveMoveCalcDir.getDir().dir()] = waveMoveCalcDir.getDirCalcPropSum();
+                });
+            } else {
+                cell.getWaveListStream().forEach(wave -> {
+                    Arrays.stream(wave.getMoveCalcDirArr()).forEach(moveCalcDir -> {
+                        outputs[moveCalcDir.getDir().dir()] = moveCalcDir.getDirCalcPropSum();
+                    });
+                });
             }
         });
     }
@@ -102,15 +107,16 @@ public class Universe {
     public void addEvent(final int xPos, final int yPos, final int zPos, final Event event) {
         final Cell cell = this.getCell(xPos, yPos, zPos);
 
-        event.getWaveList().forEach((wave) -> cell.addWave(wave));
+        event.getWaveList().forEach(wave -> cell.addWave(wave));
     }
 
     public void addBariere(final Event event, final int x1Pos, final int y1Pos, final int z1Pos, final int x2Pos, final int y2Pos, final int z2Pos) {
-        IntStream.rangeClosed(z1Pos, z2Pos).forEach((zPos) -> {
-            IntStream.rangeClosed(y1Pos, y2Pos).forEach((yPos) -> {
-                IntStream.rangeClosed(x1Pos, x2Pos).forEach((xPos) -> {
+        IntStream.rangeClosed(z1Pos, z2Pos).forEach(zPos -> {
+            IntStream.rangeClosed(y1Pos, y2Pos).forEach(yPos -> {
+                IntStream.rangeClosed(x1Pos, x2Pos).forEach(xPos -> {
                     final Cell cell = this.getCell(xPos, yPos, zPos);
-                    cell.addWave(event.createWave(100));
+                    final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[3];
+                    cell.addWave(event.createWave(0, moveCalcDirArr));
                 });
             });
         });

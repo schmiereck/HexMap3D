@@ -1,6 +1,5 @@
 package de.schmiereck.hexMap3D.view;
 
-import de.schmiereck.hexMap3D.service.Engine;
 import de.schmiereck.hexMap3D.service.Universe;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +20,7 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 

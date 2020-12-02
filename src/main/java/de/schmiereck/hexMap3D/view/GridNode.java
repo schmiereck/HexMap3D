@@ -1,12 +1,11 @@
 package de.schmiereck.hexMap3D.view;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import de.schmiereck.hexMap3D.GridUtils;
 import de.schmiereck.hexMap3D.service.Cell;
 import de.schmiereck.hexMap3D.service.RealityCell;
+import de.schmiereck.hexMap3D.GridUtils;
 import javafx.scene.Node;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;

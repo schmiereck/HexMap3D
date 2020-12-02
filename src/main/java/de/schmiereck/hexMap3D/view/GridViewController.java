@@ -2,7 +2,6 @@ package de.schmiereck.hexMap3D.view;
 
 import java.util.Objects;
 
-import de.schmiereck.hexMap3D.service.Engine;
 import javafx.event.ActionEvent;
 
 public class GridViewController {

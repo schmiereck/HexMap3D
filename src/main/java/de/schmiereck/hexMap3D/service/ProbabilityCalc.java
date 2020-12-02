@@ -2,8 +2,22 @@ package de.schmiereck.hexMap3D.service;
 
 public class ProbabilityCalc {
     // Init:
+    /**
+     * Its the value range the Execute-Ticks are placed in.
+     * 50%:
+     * 012345678901     012345678901
+     * 1.1.1.1.1.1.     1.1.1.1.1.1.
+     */
     public int valueRange = 12;
+    /**
+     * Is the base the probabiltity is calculated on.
+     * If the base is 100 (100%), a {@link #probability} of 50 corresponds to 50%.
+     * If the base is 200 (100%), a {@link #probability} of 50 corresponds to 25%.
+     */
     public int probabilityBase = 100;
+    /**
+     * Is the probability in relation to {@link #probabilityBase}.
+     */
     public int probability;
     public int targetProbRange;
 

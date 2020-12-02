@@ -13,15 +13,14 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public Wave createWave(final int placePulseProb) {
-        final Wave wave = new Wave(this, placePulseProb);
+    public Wave createWave(final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr) {
+        final Wave wave = new Wave(this, dirCalcPos, moveCalcDirArr);
         this.addWave(wave);
         return wave;
     }
 
     public void addWave(final Wave wave) {
         this.waveList.add(wave);
-        this.engine.addWave(wave);
     }
 
     public List<Wave> getWaveList() {
@@ -30,5 +29,9 @@ public class Event {
 
     public int getEventType() {
         return this.eventType;
+    }
+
+    public void removeWave(final Wave wave) {
+        this.waveList.remove(wave);
     }
 }
