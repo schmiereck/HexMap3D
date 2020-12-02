@@ -13,6 +13,9 @@ public class Universe {
     private final RealityCell[][][] realityCellGrid;
     private int calcPos = 0;
 
+    public boolean showActualWaveMoveCalcDir = false;
+    public boolean showGrid = false;
+
     public Universe(final int xUniverseSize, final int yUniverseSize, final int zUniverseSize) {
         this.xUniverseSize = xUniverseSize;
         this.yUniverseSize = yUniverseSize;
@@ -67,7 +70,7 @@ public class Universe {
         return this.grid[wrap(zPos, this.zUniverseSize)][wrap(yPos, this.yUniverseSize)][wrap(xPos, this.xUniverseSize)];
     }
 
-    public void calcReality(final boolean showActualWaveMoveCalcDir) {
+    public void calcReality() {
         forEachCell((final int xPos, final int yPos, final int zPos) -> {
             final RealityCell realityCell = this.getRealityCell(xPos, yPos, zPos);
             final Cell cell = this.getCell(xPos, yPos, zPos);
@@ -80,8 +83,10 @@ public class Universe {
                 realityCell.setBarrier(true);
             }
 
+            realityCell.setShowGrid(this.showGrid);
+
             final int[] outputs = realityCell.getOutputs();
-            if (showActualWaveMoveCalcDir) {
+            if (this.showActualWaveMoveCalcDir) {
                 cell.getWaveListStream().forEach(wave -> {
                     final WaveMoveCalcDir waveMoveCalcDir = wave.getActualWaveMoveCalcDir();
                     outputs[waveMoveCalcDir.getDir().dir()] = waveMoveCalcDir.getDirCalcPropSum();
@@ -120,5 +125,9 @@ public class Universe {
                 });
             });
         });
+    }
+
+    public void setShowGrid(final boolean showGrid) {
+        this.showGrid = showGrid;
     }
 }

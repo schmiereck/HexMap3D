@@ -54,7 +54,7 @@ public class GridViewNodeSpace {
                 });
             }
             for (final Cylinder connectionCylinder : gridNode.getConnectionList()) {
-                connectionCylinder.setVisible(visible);
+                connectionCylinder.setVisible(realityCell.getShowGrid());
             }
         });
     }

@@ -9,8 +9,6 @@ import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
 public class Engine {
     public static final int DIR_CALC_MAX_PROP = 100;
 
-    public boolean showActualWaveMoveCalcDir = false;
-
     private final Universe universe;
     private long runNr = 0;
 
@@ -20,7 +18,7 @@ public class Engine {
 
     public void runInit() {
         this.universe.calcNext();
-        this.universe.calcReality(showActualWaveMoveCalcDir);
+        this.universe.calcReality();
     }
 
     public void run() {
@@ -41,7 +39,7 @@ public class Engine {
             calcNewState(xPos, yPos, zPos, targetCell);
         });
         this.universe.calcNext();
-        this.universe.calcReality(showActualWaveMoveCalcDir);
+        this.universe.calcReality();
         this.runNr++;
     }
 

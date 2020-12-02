@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class RealityCell {
     private int waveCount;
     private boolean barrier;
+    private boolean showGrid;
     private final int[] outputs;
 
     RealityCell() {
@@ -43,5 +44,13 @@ public class RealityCell {
         Arrays.stream(Cell.Dir.values()).forEach(dir -> {
             this.outputs[dir.dir()] = 0;
         });
+    }
+
+    public void setShowGrid(final boolean showGrid) {
+        this.showGrid = showGrid;
+    }
+
+    public boolean getShowGrid() {
+        return this.showGrid;
     }
 }

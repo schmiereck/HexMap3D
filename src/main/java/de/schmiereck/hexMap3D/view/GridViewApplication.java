@@ -59,8 +59,8 @@ public class GridViewApplication extends Application {
         rootGroup.setTranslateZ(70);
 
         //-----------------------------------------------------------------------------
-        //final Parent sampleGui = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        //final Parent sampleGui = FXMLLoader.load(getClass().getResource("gridControll.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gridControll.fxml"));
         final Parent sampleGui = loader.load();
         final GridViewController gridViewController = loader.<GridViewController>getController();
         gridViewController.init(this.runStepCallback, this);
@@ -117,7 +117,7 @@ public class GridViewApplication extends Application {
         gridScene.setCamera(camera);
 
         final double w2 = 120;
-        final double h2 = 100;
+        final double h2 = 200;
         final SubScene guiScene = new SubScene(sampleGui, w2, h2);
 
         final double w3 = 10.0D;
@@ -169,6 +169,14 @@ public class GridViewApplication extends Application {
         this.updateReality();
 
         //-----------------------------------------------------------------------------
+    }
+
+    public void setShowGrid(final boolean showGrid) {
+        this.universe.setShowGrid(showGrid);
+    }
+
+    public void calcReality() {
+        this.universe.calcReality();
     }
 
     public void updateReality() {

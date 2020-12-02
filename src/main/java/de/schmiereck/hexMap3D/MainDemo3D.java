@@ -99,7 +99,7 @@ public class MainDemo3D extends Application {
 
         //-----------------------------------------------------------------------------
         final Group root = new Group();
-        //final Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        //final Parent root = FXMLLoader.load(getClass().getResource("gridControll.fxml"));
 
         root.getChildren().add(sphere1);
         root.getChildren().add(box);
