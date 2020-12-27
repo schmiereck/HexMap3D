@@ -36,26 +36,32 @@ public class Engine {
                     }
                 });
             }
-            calcNewState(xPos, yPos, zPos, targetCell);
+            calcNewStateForTargetCell(xPos, yPos, zPos, targetCell);
         });
         this.universe.calcNext();
         this.universe.calcReality();
         this.runNr++;
     }
 
-    private void calcNewState(final int xPos, final int yPos, final int zPos, final Cell targetCell) {
+    private boolean calcOnlyActualWaveMove = true;
+
+    private void calcNewStateForTargetCell(final int xPos, final int yPos, final int zPos, final Cell targetCell) {
         for (final Cell.Dir calcDir : Cell.Dir.values()) {
             final Cell sourceCell = this.universe.getCell(calcXDirOffset(xPos, yPos, zPos, calcDir), calcYDirOffset(xPos, yPos, zPos, calcDir), calcZDirOffset(xPos, yPos, zPos, calcDir));
             final Cell.Dir oppositeCalcDir = GridUtils.calcOppositeDir(calcDir);
             sourceCell.getWaveListStream()
-                .filter(sourceWave -> checkSourceWaveHasOutput(sourceWave, oppositeCalcDir))
+                //.filter(sourceWave -> checkSourceWaveHasOutput(sourceWave, oppositeCalcDir))
                 .forEach((sourceWave) -> {
                 final Event sourceEvent = sourceWave.getEvent();
                 // Source-Cell-Wave is a Particle?
-                if (sourceEvent.getEventType() == 1) {
+                if ((sourceEvent.getEventType() == 1) && checkSourceWaveHasOutput(sourceWave, oppositeCalcDir)) {
                     final WaveMoveCalcDir actualWaveMoveCalcDir = sourceWave.getActualWaveMoveCalcDir();
                     actualWaveMoveCalcDir.setDirCalcPropSum(actualWaveMoveCalcDir.getDirCalcPropSum() - DIR_CALC_MAX_PROP);
-                    targetCell.addWave(sourceWave.createWave());
+                    final Wave newTargetWave = sourceWave.createWave();
+                    if (this.calcOnlyActualWaveMove == true) {
+                        newTargetWave.calcActualWaveMoveCalcDir();
+                    }
+                    targetCell.addWave(newTargetWave);
                  }
             });
         }
@@ -66,8 +72,37 @@ public class Engine {
     }
 
     private boolean checkSourceWaveHasOutput(final Wave sourceWave, final Cell.Dir calcDir) {
-        final WaveMoveCalcDir actualWaveMoveCalcDir = sourceWave.getActualWaveMoveCalcDir();
-        return (actualWaveMoveCalcDir.getDirCalcPropSum() >= DIR_CALC_MAX_PROP) &&
-                calcDir.equals(actualWaveMoveCalcDir.getDir());
+        final boolean ret;
+        final WaveMoveCalcDir sourceWaveActualWaveMoveCalcDir = sourceWave.getActualWaveMoveCalcDir();
+        if (calcDir == sourceWave.getActualDirCalcPos()) {
+            if (this.calcOnlyActualWaveMove) {
+                ret = (sourceWaveActualWaveMoveCalcDir.getDirCalcPropSum() >= DIR_CALC_MAX_PROP);
+            } else {
+                ret = true;
+            }
+        } else {
+            ret = false;
+        }
+        return ret;
+    }
+
+    private Wave createMoveRotatedWave(final Wave sourceWave,
+                                       final int xRotPercent,
+                                       final int yRotPercent,
+                                       final int zRotPercent) {
+        final Wave newWave;
+
+        // Rotate all move outputs in their rotation planes in the given direction.
+        // Move the output from cross node or to cross node.
+        // If a rotation plane contains only one node create a new node in the given direction.
+        // If the cross node is empty create a new cross node in the given direction.
+
+        newWave = sourceWave.createWave();
+
+        if (xRotPercent != 0) {
+
+        }
+
+        return newWave;
     }
 }

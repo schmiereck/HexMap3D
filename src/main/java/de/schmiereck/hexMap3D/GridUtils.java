@@ -177,6 +177,28 @@ public class GridUtils {
         spinArr[OR_P.dir()][4] = DB_P.dir();
     }
 
+    /**
+     * rotation X-Axis.
+     */
+    public static final int[][] xRotArr = new int[3][4];
+    static {
+        // Middle
+        xRotArr[0][0] = OR_P.dir();
+        xRotArr[0][1] = GR_P.dir();
+        xRotArr[0][2] = OR_N.dir();
+        xRotArr[0][3] = GR_N.dir();
+        // Left
+        xRotArr[1][0] = RE_P.dir();
+        xRotArr[1][1] = DB_P.dir();
+        xRotArr[1][2] = LB_N.dir();
+        xRotArr[1][3] = LG_N.dir();
+        // Right
+        xRotArr[2][0] = LB_P.dir();
+        xRotArr[2][1] = LG_P.dir();
+        xRotArr[2][2] = RE_N.dir();
+        xRotArr[2][3] = DB_N.dir();
+    }
+
     public static int calcXDirOffset(final int xPos, final int yPos, final int zPos, final Cell.Dir calcDir) {
         final OutputDir outputDir = calcDirOffset(xPos, yPos, zPos, calcDir);
         return xPos + outputDir.x;

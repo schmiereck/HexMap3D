@@ -13,7 +13,7 @@ public class Universe {
     private final RealityCell[][][] realityCellGrid;
     private int calcPos = 0;
 
-    public boolean showActualWaveMoveCalcDir = false;
+    public boolean showActualWaveMoveCalcDir = true;
     public boolean showGrid = false;
 
     public Universe(final int xUniverseSize, final int yUniverseSize, final int zUniverseSize) {
@@ -89,12 +89,17 @@ public class Universe {
             if (this.showActualWaveMoveCalcDir) {
                 cell.getWaveListStream().forEach(wave -> {
                     final WaveMoveCalcDir waveMoveCalcDir = wave.getActualWaveMoveCalcDir();
-                    outputs[waveMoveCalcDir.getDir().dir()] = waveMoveCalcDir.getDirCalcPropSum();
+                    outputs[wave.getActualDirCalcPos().dir()] = waveMoveCalcDir.getDirCalcPropSum();
                 });
             } else {
+//                cell.getWaveListStream().forEach(wave -> {
+//                    Arrays.stream(wave.getMoveCalcDirArr()).forEach(moveCalcDir -> {
+//                        outputs[moveCalcDir.getDir().dir()] = moveCalcDir.getDirCalcPropSum();
+//                    });
+//                });
                 cell.getWaveListStream().forEach(wave -> {
-                    Arrays.stream(wave.getMoveCalcDirArr()).forEach(moveCalcDir -> {
-                        outputs[moveCalcDir.getDir().dir()] = moveCalcDir.getDirCalcPropSum();
+                    Arrays.stream(Cell.Dir.values()).forEach(dir -> {
+                        outputs[dir.dir()] = wave.getMoveCalcDirArr()[dir.dir()].getDirCalcPropSum();
                     });
                 });
             }

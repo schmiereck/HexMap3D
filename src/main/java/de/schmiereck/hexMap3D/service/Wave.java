@@ -9,7 +9,7 @@ public class Wave {
     private Cell cell;
     //private Cell.Dir dir = null;
     private int dirCalcPos;
-    private WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[3];
+    private WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
 
     public Wave(final Event event, final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr) {
         this.event = event;
@@ -18,7 +18,6 @@ public class Wave {
             this.moveCalcDirArr[pos] = new WaveMoveCalcDir(moveCalcDirArr[pos]);
             this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcPropSum() + this.moveCalcDirArr[pos].getDirCalcProp());
         });
-        this.calcActualWaveMoveCalcDir();
     }
 
     public void setCell(final Cell cell) {
@@ -39,9 +38,9 @@ public class Wave {
         return MapMathUtils.wrap(this.dirCalcPos + 1, this.moveCalcDirArr.length);
     }
 
-    public void setDir(final int dirNo, final Cell.Dir dir, final int dirCalcProp) {
-        this.moveCalcDirArr[dirNo].setDir(dir);
-        this.moveCalcDirArr[dirNo].setDirCalcProp(dirCalcProp);
+    public void setDir(final Cell.Dir dir, final int dirCalcProp) {
+        //this.moveCalcDirArr[dirNo].setDir(dir);
+        this.moveCalcDirArr[dir.dir()].setDirCalcProp(dirCalcProp);
     }
 
     public WaveMoveCalcDir[] getMoveCalcDirArr() {
@@ -53,8 +52,13 @@ public class Wave {
     }
 
     public void calcActualWaveMoveCalcDir() {
-        while (this.moveCalcDirArr[this.dirCalcPos].getDirCalcPropSum() < Engine.DIR_CALC_MAX_PROP) {
+        while ((this.moveCalcDirArr[this.dirCalcPos] == null) ||
+               (this.moveCalcDirArr[this.dirCalcPos].getDirCalcPropSum() < Engine.DIR_CALC_MAX_PROP)) {
             this.dirCalcPos = nextDirCalcPos();
         }
+    }
+
+    public Cell.Dir getActualDirCalcPos() {
+        return Cell.Dir.values()[this.dirCalcPos];
     }
 }

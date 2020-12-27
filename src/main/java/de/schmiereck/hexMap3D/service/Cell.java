@@ -6,6 +6,17 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Cell {
+    /**
+     *   +---OR---+
+     *   |   RD   |    LB
+     *   |        |  +---DG---+
+     *  LG       DB  |        |
+     *   |        |  |        |
+     *   |        |  DB       LG
+     *   +---DG---+  |        |
+     *     LB        |  RD    |
+     *               +---OR---+
+     */
     public enum Dir {
         DB_P(0), // Dark-Blue 1
         DB_N(1), // Dark-Blue 2
