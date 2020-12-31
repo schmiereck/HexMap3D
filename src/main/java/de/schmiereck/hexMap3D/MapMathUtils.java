@@ -4,13 +4,17 @@ public class MapMathUtils {
 
     public static int wrap(final int pos, final int rangeExclusive) {
         final int ret;
-        if (pos < 0) {
-            ret = rangeExclusive + pos;
+        if (rangeExclusive <= 1) {
+            ret = 0;
         } else {
-            if (pos >= rangeExclusive) {
-                ret = pos - rangeExclusive;
+            if (pos < 0) {
+                ret = -(pos % rangeExclusive);
             } else {
-                ret = pos;
+                if (pos >= rangeExclusive) {
+                    ret = pos % rangeExclusive;
+                } else {
+                    ret = pos;
+                }
             }
         }
         return ret;
@@ -22,10 +26,10 @@ public class MapMathUtils {
             ret = 0;
         } else {
             if (pos < 0) {
-                ret = rangeInclusive + pos;
+                ret = -(pos % (rangeInclusive + 1));
             } else {
                 if (pos > rangeInclusive) {
-                    ret = pos - rangeInclusive;
+                    ret = pos % (rangeInclusive + 1);
                 } else {
                     ret = pos;
                 }

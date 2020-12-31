@@ -37,7 +37,7 @@ public class Main {
             moveCalcDirArr[Cell.Dir.DB_P.dir()] = new WaveMoveCalcDir(0, 0);
             final Wave wave = particleEvent.createWave(0, moveCalcDirArr);
             wave.calcActualWaveMoveCalcDir();
-            
+
             universe.addEvent(8, 8, 8, particleEvent);
 
             // For Testing:

@@ -2,9 +2,14 @@ package de.schmiereck.hexMap3D.service;
 
 import de.schmiereck.hexMap3D.GridUtils;
 
+import java.util.Arrays;
+
 import static de.schmiereck.hexMap3D.GridUtils.calcXDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcYDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
+import static de.schmiereck.hexMap3D.MapLogicUtils.*;
+import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
+import static de.schmiereck.hexMap3D.MapMathUtils.wrapInclusive;
 
 public class Engine {
     public static final int DIR_CALC_MAX_PROP = 100;
@@ -100,9 +105,35 @@ public class Engine {
         newWave = sourceWave.createWave();
 
         if (xRotPercent != 0) {
-
+            final int rotDir;
+            final int rotStartPos;
+            final int rotEndPos;
+            if (xRotPercent > 0) {
+                rotDir = +1;
+                rotStartPos = 0;
+                rotEndPos = 3;
+            } else {
+                rotDir = -1;
+                rotStartPos = 3;
+                rotEndPos = 0;
+            }
+            final int[] rotArr = GridUtils.xRotArr[0];
+            final int propSum = calcPropSum(rotArr);
+            // Search last zero:
+            if (propSum > 0) {
+                final int zeroPos =
+                    calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
+                        return ((rotArr[pos] == 0) && (rotArr[wrapInclusive(pos + rotDir, 3)] > 0));
+                    });
+            }
+            final int moveAmount = (propSum * 100) / xRotPercent;
+            // Solange in Richtung Dir verschieben, bis moveAmount "aufgebraucht" ist.
+            // Test erstellen!!!
         }
-
         return newWave;
+    }
+
+    private int calcPropSum(final int[] rotArr) {
+        return Arrays.stream(rotArr).sum();
     }
 }
