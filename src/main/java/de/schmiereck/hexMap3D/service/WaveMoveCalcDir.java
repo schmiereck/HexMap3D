@@ -43,6 +43,10 @@ public class WaveMoveCalcDir {
         this.dirCalcProp = dirCalcProp;
     }
 
+    public void addDirCalcProp(final int dirCalcProp) {
+        this.dirCalcProp += dirCalcProp;
+    }
+
     public int getDirCalcPropSum() {
         return this.dirCalcPropSum;
     }

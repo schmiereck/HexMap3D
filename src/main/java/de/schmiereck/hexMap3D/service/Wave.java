@@ -47,6 +47,10 @@ public class Wave {
         return this.moveCalcDirArr;
     }
 
+    public WaveMoveCalcDir getMoveCalcDir(final Cell.Dir dir) {
+        return this.moveCalcDirArr[dir.dir()];
+    }
+
     public WaveMoveCalcDir getActualWaveMoveCalcDir() {
         return this.moveCalcDirArr[this.dirCalcPos];
     }

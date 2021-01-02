@@ -3,6 +3,7 @@ package de.schmiereck.hexMap3D.service;
 import de.schmiereck.hexMap3D.GridUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static de.schmiereck.hexMap3D.GridUtils.calcXDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcYDirOffset;
@@ -91,10 +92,10 @@ public class Engine {
         return ret;
     }
 
-    private Wave createMoveRotatedWave(final Wave sourceWave,
-                                       final int xRotPercent,
-                                       final int yRotPercent,
-                                       final int zRotPercent) {
+    protected static Wave createMoveRotatedWave(final Wave sourceWave,
+                                                final int xRotPercent,
+                                                final int yRotPercent,
+                                                final int zRotPercent) {
         final Wave newWave;
 
         // Rotate all move outputs in their rotation planes in the given direction.
@@ -117,23 +118,53 @@ public class Engine {
                 rotStartPos = 3;
                 rotEndPos = 0;
             }
-            final int[] rotArr = GridUtils.xRotArr[0];
-            final int propSum = calcPropSum(rotArr);
+            final Cell.Dir[] rotArr = GridUtils.xRotArr[0]; // Middle
+            final int propSum = calcPropSum(newWave, rotArr);
             // Search last zero:
             if (propSum > 0) {
                 final int zeroPos =
                     calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
-                        return ((rotArr[pos] == 0) && (rotArr[wrapInclusive(pos + rotDir, 3)] > 0));
+                        final WaveMoveCalcDir moveCalcDir = newWave.getMoveCalcDir(rotArr[pos]);
+                        final WaveMoveCalcDir nextMoveCalcDir = newWave.getMoveCalcDir(rotArr[wrap(pos + rotDir, rotArr.length)]);
+                        return ((moveCalcDir.getDirCalcProp() == 0) && (nextMoveCalcDir.getDirCalcProp() > 0));
                     });
+                final int moveAmount = getMoveAmount(xRotPercent, propSum);
+                final AtomicInteger actMoveAmount = new AtomicInteger(moveAmount);
+                // Move propability in given direction until "moveAmount" is zero.
+                calcBreakLoopWrap2(zeroPos, rotArr.length, rotDir, pos -> {
+                    final WaveMoveCalcDir moveCalcDir = newWave.getMoveCalcDir(rotArr[pos]);
+                    final WaveMoveCalcDir nextMoveCalcDir = newWave.getMoveCalcDir(rotArr[wrap(pos + rotDir, rotArr.length)]);
+                    final int prop = moveCalcDir.getDirCalcProp();
+                    final int newProp, propDif;
+                    if (prop <= actMoveAmount.get()) {
+                        propDif = prop;
+                        newProp = 0;
+                        actMoveAmount.addAndGet(-prop);
+                    } else {
+                        propDif = actMoveAmount.get();
+                        newProp = prop - propDif;
+                        actMoveAmount.set(0);
+                    }
+                    moveCalcDir.setDirCalcProp(newProp);
+                    nextMoveCalcDir.addDirCalcProp(propDif);
+                    return actMoveAmount.get() == 0;
+                });
+                // Test erstellen!!!
             }
-            final int moveAmount = (propSum * 100) / xRotPercent;
-            // Solange in Richtung Dir verschieben, bis moveAmount "aufgebraucht" ist.
-            // Test erstellen!!!
         }
         return newWave;
     }
 
-    private int calcPropSum(final int[] rotArr) {
-        return Arrays.stream(rotArr).sum();
+    public static int getMoveAmount(int xRotPercent, int propSum) {
+        return (propSum * xRotPercent) / 100;
+    }
+
+    private static int calcPropSum(final Wave wave, final Cell.Dir[] rotArr) {
+        int propSum = 0;
+        for (int pos = 0; pos < rotArr.length; pos++) {
+            final WaveMoveCalcDir moveCalcDir = wave.getMoveCalcDir(rotArr[pos]);
+            propSum += moveCalcDir.getDirCalcProp();
+        }
+        return propSum;
     }
 }

@@ -36,4 +36,30 @@ public class MapLogicUtils {
         }
         return retPos;
     }
+
+    public static int calcBreakLoopWrap2(final int startPos, final int length, final int dir, final CalcBreakLoopInterface calcBreakLoopInterface) {
+        int retPos = startPos;
+        int pos = startPos;
+        for (int count = 0; count < length; count++) {
+            //dir > 0 ? pos <= endPos : pos >= endPos;
+            if (calcBreakLoopInterface.calc(pos)) {
+                retPos = pos;
+                break;
+            }
+            if (dir > 0) {
+                if ((pos + 1) < length) {
+                    pos++;
+                } else {
+                    pos = 0;
+                }
+            } else {
+                if ((pos - 1) > 0) {
+                    pos--;
+                } else {
+                    pos = length - 1;
+                }
+            }
+        }
+        return retPos;
+    }
 }
