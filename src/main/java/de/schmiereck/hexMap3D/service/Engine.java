@@ -111,6 +111,12 @@ public class Engine {
                 calcRotationOnAxis(xRotPercent, newWave, rotArr);
             }
         }
+        if (yRotPercent != 0) {
+            for (int axisPos = 0; axisPos < GridUtils.yRotArr.length; axisPos++) {
+                final Cell.Dir[] rotArr = GridUtils.yRotArr[axisPos];
+                calcRotationOnAxis(yRotPercent, newWave, rotArr);
+            }
+        }
         return newWave;
     }
 

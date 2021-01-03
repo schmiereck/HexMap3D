@@ -191,12 +191,34 @@ public class GridUtils {
         xRotArr[1][0] = RE_P;
         xRotArr[1][1] = DB_P;
         xRotArr[1][2] = LB_N;
-        xRotArr[1][3] = LG_N;
+        xRotArr[1][3] = LG_P;
         // Right
         xRotArr[2][0] = LB_P;
-        xRotArr[2][1] = LG_P;
+        xRotArr[2][1] = LG_N;
         xRotArr[2][2] = RE_N;
         xRotArr[2][3] = DB_N;
+    }
+
+    /**
+     * rotation Y-Axis.
+     */
+    public static final Cell.Dir[][] yRotArr = new Cell.Dir[3][4];
+    static {
+        // Middle
+        yRotArr[0][0] = LB_P;
+        yRotArr[0][1] = RE_P;
+        yRotArr[0][2] = LB_N;
+        yRotArr[0][3] = RE_N;
+        // Left
+        yRotArr[1][0] = OR_P;
+        yRotArr[1][1] = LG_P;
+        yRotArr[1][2] = GR_N;
+        yRotArr[1][3] = DB_N;
+        // Right
+        yRotArr[2][0] = GR_P;
+        yRotArr[2][1] = DB_P;
+        yRotArr[2][2] = OR_N;
+        yRotArr[2][3] = LG_N;
     }
 
     public static int calcXDirOffset(final int xPos, final int yPos, final int zPos, final Cell.Dir calcDir) {
