@@ -8,7 +8,7 @@ public class MapMathUtils {
             ret = 0;
         } else {
             if (pos < 0) {
-                ret = -(pos % rangeExclusive);
+                ret = (rangeExclusive + (pos % rangeExclusive)) % rangeExclusive;
             } else {
                 if (pos >= rangeExclusive) {
                     ret = pos % rangeExclusive;
@@ -26,7 +26,7 @@ public class MapMathUtils {
             ret = 0;
         } else {
             if (pos < 0) {
-                ret = -(pos % (rangeInclusive + 1));
+                ret = (rangeInclusive + 1) + (pos % (rangeInclusive + 1));
             } else {
                 if (pos > rangeInclusive) {
                     ret = pos % (rangeInclusive + 1);

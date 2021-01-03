@@ -28,8 +28,8 @@ class MapMathUtilsTest {
         assertEquals(1, wrapInclusive(1, 2));
         assertEquals(2, wrapInclusive(2, 2));
         assertEquals(0, wrapInclusive(3, 2));
-        assertEquals(1, wrapInclusive(-1, 2));
-        assertEquals(2, wrapInclusive(-2, 2));
+        assertEquals(2, wrapInclusive(-1, 2));
+        assertEquals(1, wrapInclusive(-2, 2));
         assertEquals(0, wrapInclusive(-3, 2));
     }
 
@@ -55,8 +55,8 @@ class MapMathUtilsTest {
         assertEquals(1, wrap(1, 3));
         assertEquals(2, wrap(2, 3));
         assertEquals(0, wrap(3, 3));
-        assertEquals(1, wrap(-1, 3));
-        assertEquals(2, wrap(-2, 3));
+        assertEquals(2, wrap(-1, 3));
+        assertEquals(1, wrap(-2, 3));
         assertEquals(0, wrap(-3, 3));
     }
 }

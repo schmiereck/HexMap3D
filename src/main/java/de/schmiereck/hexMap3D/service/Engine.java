@@ -106,53 +106,61 @@ public class Engine {
         newWave = sourceWave.createWave();
 
         if (xRotPercent != 0) {
-            final int rotDir;
-            final int rotStartPos;
-            final int rotEndPos;
-            if (xRotPercent > 0) {
-                rotDir = +1;
-                rotStartPos = 0;
-                rotEndPos = 3;
-            } else {
-                rotDir = -1;
-                rotStartPos = 3;
-                rotEndPos = 0;
-            }
-            final Cell.Dir[] rotArr = GridUtils.xRotArr[0]; // Middle
-            final int propSum = calcPropSum(newWave, rotArr);
-            // Search last zero:
-            if (propSum > 0) {
-                final int zeroPos =
-                    calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
-                        final WaveMoveCalcDir moveCalcDir = newWave.getMoveCalcDir(rotArr[pos]);
-                        final WaveMoveCalcDir nextMoveCalcDir = newWave.getMoveCalcDir(rotArr[wrap(pos + rotDir, rotArr.length)]);
-                        return ((moveCalcDir.getDirCalcProp() == 0) && (nextMoveCalcDir.getDirCalcProp() > 0));
-                    });
-                final int moveAmount = getMoveAmount(xRotPercent, propSum);
-                final AtomicInteger actMoveAmount = new AtomicInteger(moveAmount);
-                // Move propability in given direction until "moveAmount" is zero.
-                calcBreakLoopWrap2(zeroPos, rotArr.length, rotDir, pos -> {
-                    final WaveMoveCalcDir moveCalcDir = newWave.getMoveCalcDir(rotArr[pos]);
-                    final WaveMoveCalcDir nextMoveCalcDir = newWave.getMoveCalcDir(rotArr[wrap(pos + rotDir, rotArr.length)]);
-                    final int prop = moveCalcDir.getDirCalcProp();
-                    final int newProp, propDif;
-                    if (prop <= actMoveAmount.get()) {
-                        propDif = prop;
-                        newProp = 0;
-                        actMoveAmount.addAndGet(-prop);
-                    } else {
-                        propDif = actMoveAmount.get();
-                        newProp = prop - propDif;
-                        actMoveAmount.set(0);
-                    }
-                    moveCalcDir.setDirCalcProp(newProp);
-                    nextMoveCalcDir.addDirCalcProp(propDif);
-                    return actMoveAmount.get() == 0;
-                });
-                // Test erstellen!!!
+            for (int axisPos = 0; axisPos < GridUtils.xRotArr.length; axisPos++) {
+                final Cell.Dir[] rotArr = GridUtils.xRotArr[axisPos];
+                calcRotationOnAxis(xRotPercent, newWave, rotArr);
             }
         }
         return newWave;
+    }
+
+    private static void calcRotationOnAxis(int xRotPercent, Wave newWave, Cell.Dir[] rotArr) {
+        final int rotDir;
+        final int rotStartPos;
+        final int rotEndPos;
+        final int rotPercent;
+        if (xRotPercent > 0) {
+            rotPercent = xRotPercent;
+            rotDir = +1;
+            rotStartPos = 0;
+            rotEndPos = rotArr.length - 1;
+        } else {
+            rotPercent = -xRotPercent;
+            rotDir = -1;
+            rotStartPos = rotArr.length - 1;
+            rotEndPos = 0;
+        }
+        final int propSum = calcPropSum(newWave, rotArr);
+        // Search last zero:
+        if (propSum > 0) {
+            final int notZeroPos =
+                calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
+                    final WaveMoveCalcDir moveCalcDir = newWave.getMoveCalcDir(rotArr[pos]);
+                    final WaveMoveCalcDir bevorMoveCalcDir = newWave.getMoveCalcDir(rotArr[wrap(pos - rotDir, rotArr.length)]);
+                    return ((moveCalcDir.getDirCalcProp() > 0) && (bevorMoveCalcDir.getDirCalcProp() == 0));
+                });
+            final int moveAmount = getMoveAmount(rotPercent, propSum);
+            final AtomicInteger actMoveAmount = new AtomicInteger(moveAmount);
+            // Move propability in given direction until "moveAmount" is zero.
+            calcBreakLoopWrap2(notZeroPos, rotArr.length, rotDir, pos -> {
+                final WaveMoveCalcDir moveCalcDir = newWave.getMoveCalcDir(rotArr[pos]);
+                final WaveMoveCalcDir nextMoveCalcDir = newWave.getMoveCalcDir(rotArr[wrap(pos + rotDir, rotArr.length)]);
+                final int prop = moveCalcDir.getDirCalcProp();
+                final int newProp, propDif;
+                if (prop <= actMoveAmount.get()) {
+                    propDif = prop;
+                    newProp = 0;
+                    actMoveAmount.addAndGet(-prop);
+                } else {
+                    propDif = actMoveAmount.get();
+                    newProp = prop - propDif;
+                    actMoveAmount.set(0);
+                }
+                moveCalcDir.setDirCalcProp(newProp);
+                nextMoveCalcDir.addDirCalcProp(propDif);
+                return actMoveAmount.get() == 0;
+            });
+        }
     }
 
     public static int getMoveAmount(int xRotPercent, int propSum) {
