@@ -6,28 +6,29 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Cell {
-    /**
-     *   +---OR---+
-     *   |   RD   |    LB
-     *   |        |  +---DG---+
-     *  LG       DB  |        |
-     *   |        |  |        |
-     *   |        |  DB       LG
-     *   +---DG---+  |        |
-     *     LB        |  RD    |
-     *               +---OR---+
+    /**        (+)
+     *     +---OR---+    (+)
+     *     |   RE   |    LB
+     *     |        |  +---GR---+
+     * (+)LG    (-)DB  |   (+)  |
+     *     |        |  |        |
+     *     |   (-)  |  DB(+)    LG(-)
+     *     +---GR---+  |        |
+     *       LB(-)     |  RE    |
+     *                 +---OR---+
+     *                     (-)
      */
     public enum Dir {
         DB_P(0), // Dark-Blue 1
         DB_N(1), // Dark-Blue 2
         OR_P(2), // Orange 1
         OR_N(3), // Orange 2
-        RE_P(4), // Red 1
-        RE_N(5), // Red 2
+        RE_P(4), // Red 1 (RD)
+        RE_N(5), // Red 2 (RD)
         LB_P(6), // Light-Blue 1
         LB_N(7), // Light-Blue 2
-        GR_P(8), // Green 1
-        GR_N(9), // Green 2
+        GR_P(8), // Green 1 (DG:Dark-Green)
+        GR_N(9), // Green 2 (DG:Dark-Green)
         LG_P(10), // Light-Green 1
         LG_N(11); // Light-Green 2
 

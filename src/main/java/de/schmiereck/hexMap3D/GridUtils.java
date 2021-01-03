@@ -182,16 +182,16 @@ public class GridUtils {
      */
     public static final Cell.Dir[][] xRotArr = new Cell.Dir[3][4];
     static {
-        // Middle
-        xRotArr[0][0] = OR_P;
-        xRotArr[0][1] = GR_P;
-        xRotArr[0][2] = OR_N;
-        xRotArr[0][3] = GR_N;
         // Left
-        xRotArr[1][0] = RE_P;
-        xRotArr[1][1] = DB_P;
-        xRotArr[1][2] = LB_N;
-        xRotArr[1][3] = LG_P;
+        xRotArr[0][0] = RE_P;
+        xRotArr[0][1] = DB_P;
+        xRotArr[0][2] = LB_N;
+        xRotArr[0][3] = LG_P;
+        // Middle
+        xRotArr[1][0] = OR_P;
+        xRotArr[1][1] = GR_P;
+        xRotArr[1][2] = OR_N;
+        xRotArr[1][3] = GR_N;
         // Right
         xRotArr[2][0] = LB_P;
         xRotArr[2][1] = LG_N;
@@ -204,16 +204,16 @@ public class GridUtils {
      */
     public static final Cell.Dir[][] yRotArr = new Cell.Dir[3][4];
     static {
-        // Middle
-        yRotArr[0][0] = LB_P;
-        yRotArr[0][1] = RE_P;
-        yRotArr[0][2] = LB_N;
-        yRotArr[0][3] = RE_N;
         // Left
-        yRotArr[1][0] = OR_P;
-        yRotArr[1][1] = LG_P;
-        yRotArr[1][2] = GR_N;
-        yRotArr[1][3] = DB_N;
+        yRotArr[0][0] = OR_P;
+        yRotArr[0][1] = LG_P;
+        yRotArr[0][2] = GR_N;
+        yRotArr[0][3] = DB_N;
+        // Middle
+        yRotArr[1][0] = LB_P;
+        yRotArr[1][1] = RE_P;
+        yRotArr[1][2] = LB_N;
+        yRotArr[1][3] = RE_N;
         // Right
         yRotArr[2][0] = GR_P;
         yRotArr[2][1] = DB_P;

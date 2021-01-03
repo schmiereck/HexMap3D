@@ -28,10 +28,10 @@ class EngineTest {
 
         // Assert
         final int expectedProps[][] = {
-                // Middle
-                { 90, 10, 0, 0},
                 // Left
                 { 0, 0, 0, 0},
+                // Middle
+                { 90, 10, 0, 0},
                 // Right
                 { 0, 0, 0, 0}
         };
@@ -57,10 +57,10 @@ class EngineTest {
 
         // Assert
         final int expectedProps[][] = {
-                // Middle
-                { 90, 0, 0, 10},
                 // Left
                 { 0, 0, 0, 0},
+                // Middle
+                { 90, 0, 0, 10},
                 // Right
                 { 0, 0, 0, 0}
         };
@@ -86,10 +86,10 @@ class EngineTest {
 
         // Assert
         final int expectedProps[][] = {
-                // Middle
-                { 0, 90, 10, 0},
                 // Left
                 { 0, 0, 0, 0},
+                // Middle
+                { 0, 90, 10, 0},
                 // Right
                 { 0, 0, 0, 0}
         };
@@ -115,12 +115,12 @@ class EngineTest {
 
         // Assert
         final int expectedProps[][] = {
+                // Left
+                { 0, 0, 0, 10},
                 // Middle
                 { 90, 0, 0, 0},
-                // Left
-                { 0, 0, 0, 0},
                 // Right
-                { 0, 10, 0, 0}
+                { 0, 0, 0, 0}
         };
         assertWaveProps(newWave, expectedProps);
     }
@@ -134,7 +134,7 @@ class EngineTest {
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         moveCalcDirArr[Cell.Dir.GR_P.dir()] = new WaveMoveCalcDir(100, 100);
         final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
-        final int xRotPercent = 10;
+        final int xRotPercent = 20;
         final int yRotPercent = 10;
         final int zRotPercent = 0;
 
@@ -144,10 +144,10 @@ class EngineTest {
 
         // Assert
         final int expectedProps[][] = {
-                // Middle
-                { 0, 81, 9, 0},
                 // Left
-                { 0, 9, 1, 0},
+                { 0, 10, 0, 0},
+                // Middle
+                { 0, 70, 20, 0},
                 // Right
                 { 0, 0, 0, 0}
         };
