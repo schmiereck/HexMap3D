@@ -221,6 +221,28 @@ public class GridUtils {
         yRotArr[2][3] = LG_N;
     }
 
+    /**
+     * rotation Z-Axis.
+     */
+    public static final Cell.Dir[][] zRotArr = new Cell.Dir[3][4];
+    static {
+        // Left
+        zRotArr[0][0] = OR_P;
+        zRotArr[0][1] = RE_P;
+        zRotArr[0][2] = GR_P;
+        zRotArr[0][3] = LB_P;
+        // Middle
+        zRotArr[1][0] = LG_P;
+        zRotArr[1][1] = DB_P;
+        zRotArr[1][2] = LG_N;
+        zRotArr[1][3] = DB_N;
+        // Right
+        zRotArr[2][0] = GR_N;
+        zRotArr[2][1] = LB_N;
+        zRotArr[2][2] = OR_N;
+        zRotArr[2][3] = RE_N;
+    }
+
     public static int calcXDirOffset(final int xPos, final int yPos, final int zPos, final Cell.Dir calcDir) {
         final OutputDir outputDir = calcDirOffset(xPos, yPos, zPos, calcDir);
         return xPos + outputDir.x;

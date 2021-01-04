@@ -117,21 +117,27 @@ public class Engine {
                 calcRotationOnAxis(yRotPercent, newWave, rotArr);
             }
         }
+        if (zRotPercent != 0) {
+            for (int axisPos = 0; axisPos < GridUtils.zRotArr.length; axisPos++) {
+                final Cell.Dir[] rotArr = GridUtils.zRotArr[axisPos];
+                calcRotationOnAxis(zRotPercent, newWave, rotArr);
+            }
+        }
         return newWave;
     }
 
-    private static void calcRotationOnAxis(int xRotPercent, Wave newWave, Cell.Dir[] rotArr) {
+    private static void calcRotationOnAxis(final int signedRotPercent, final Wave newWave, final Cell.Dir[] rotArr) {
         final int rotDir;
         final int rotStartPos;
         final int rotEndPos;
         final int rotPercent;
-        if (xRotPercent > 0) {
-            rotPercent = xRotPercent;
+        if (signedRotPercent > 0) {
+            rotPercent = signedRotPercent;
             rotDir = +1;
             rotStartPos = 0;
             rotEndPos = rotArr.length - 1;
         } else {
-            rotPercent = -xRotPercent;
+            rotPercent = -signedRotPercent;
             rotDir = -1;
             rotStartPos = rotArr.length - 1;
             rotEndPos = 0;
@@ -142,8 +148,8 @@ public class Engine {
             final int notZeroPos =
                 calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
                     final WaveMoveCalcDir moveCalcDir = newWave.getMoveCalcDir(rotArr[pos]);
-                    final WaveMoveCalcDir bevorMoveCalcDir = newWave.getMoveCalcDir(rotArr[wrap(pos - rotDir, rotArr.length)]);
-                    return ((moveCalcDir.getDirCalcProp() > 0) && (bevorMoveCalcDir.getDirCalcProp() == 0));
+                    final WaveMoveCalcDir beforMoveCalcDir = newWave.getMoveCalcDir(rotArr[wrap(pos - rotDir, rotArr.length)]);
+                    return ((moveCalcDir.getDirCalcProp() > 0) && (beforMoveCalcDir.getDirCalcProp() == 0));
                 });
             final int moveAmount = getMoveAmount(rotPercent, propSum);
             final AtomicInteger actMoveAmount = new AtomicInteger(moveAmount);
@@ -169,8 +175,29 @@ public class Engine {
         }
     }
 
-    public static int getMoveAmount(int xRotPercent, int propSum) {
-        return (propSum * xRotPercent) / 100;
+    public static int getMoveAmount(int rotPercent, int propSum) {
+        final int a = (propSum * rotPercent);
+        final int ret;
+        if (a != 0) {
+            final int b = (a / 100);
+            if (b == 0) {
+                final int c = (a % 100);
+                if (c == 0) {
+                    ret = 0;
+                } else {
+                    if (c > 0) {
+                        ret = +1;
+                    } else {
+                        ret = -1;
+                    }
+                }
+            } else {
+                ret = b;
+            }
+        } else {
+            ret = 0;
+        }
+        return ret;
     }
 
     private static int calcPropSum(final Wave wave, final Cell.Dir[] rotArr) {
