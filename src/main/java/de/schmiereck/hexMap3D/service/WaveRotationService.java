@@ -10,6 +10,23 @@ import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 
 public class WaveRotationService {
 
+    // Rotation X, Y, Z:
+    final static int[][] r =
+            {
+              // X   Y   Z
+              {  1,  0,  0 },
+              {  1,  1,  0 },
+              {  0,  1,  0 },
+              {  0,  1,  1 },
+              {  0,  0,  1 },
+              { -1,  0,  1 },
+              { -1,  0,  0 },
+              { -1, -1,  0 },
+              {  0, -1,  0 },
+              {  0, -1, -1 },
+              {  0,  0, -1 },
+              {  1,  0, -1 },
+            };
     protected static Wave createMoveRotatedWave(final Wave sourceWave,
                                                 final int xRotPercent,
                                                 final int yRotPercent,
