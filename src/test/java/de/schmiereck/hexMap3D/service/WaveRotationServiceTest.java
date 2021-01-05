@@ -9,7 +9,7 @@ import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
 import static de.schmiereck.hexMap3D.service.Cell.Dir.LG_N;
 import static org.junit.jupiter.api.Assertions.*;
 
-class EngineTest {
+class WaveRotationServiceTest {
 
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveFirstMiddlePositive() {
@@ -26,16 +26,13 @@ class EngineTest {
 
         // Act
         final Wave newWave =
-            Engine.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
 
         // Assert
         final int expectedProps[][] = {
-                // Left
-                { 0, 0, 0, 0},
-                // Middle
-                { 90, 10, 0, 0},
-                // Right
-                { 0, 0, 0, 0}
+                {     0,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
+                { 90,   10,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    0,    0 }  //  Right:      RE_P    DB_P    LB_N    LG_P
         };
         assertWaveProps(newWave, expectedProps);
     }
@@ -55,16 +52,13 @@ class EngineTest {
 
         // Act
         final Wave newWave =
-            Engine.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
 
         // Assert
         final int expectedProps[][] = {
-                // Left
-                { 0, 0, 0, 0},
-                // Middle
-                { 90, 0, 0, 10},
-                // Right
-                { 0, 0, 0, 0}
+                {     0,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
+                { 90,    0,    0,   10    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    0,    0 }  //  Right:      RE_P    DB_P    LB_N    LG_P
         };
         assertWaveProps(newWave, expectedProps);
     }
@@ -84,16 +78,13 @@ class EngineTest {
 
         // Act
         final Wave newWave =
-            Engine.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
 
         // Assert
         final int expectedProps[][] = {
-                // Left
-                { 0, 0, 0, 0},
-                // Middle
-                { 0, 90, 10, 0},
-                // Right
-                { 0, 0, 0, 0}
+                {     0,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
+                {  0,   90,   10,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    0,    0 }  //  Right:      RE_P    DB_P    LB_N    LG_P
         };
         assertWaveProps(newWave, expectedProps);
     }
@@ -113,16 +104,13 @@ class EngineTest {
 
         // Act
         final Wave newWave =
-            Engine.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
 
         // Assert
         final int expectedProps[][] = {
-                // Left
-                { 0, 0, 0, 10},
-                // Middle
-                { 90, 0, 0, 0},
-                // Right
-                { 0, 0, 0, 0}
+                {     0,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
+                { 90,    0,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    0,   10 }  //  Right:      RE_P    DB_P    LB_N    LG_P
         };
         assertWaveProps(newWave, expectedProps);
     }
@@ -142,13 +130,13 @@ class EngineTest {
 
         // Act
         final Wave newWave =
-            Engine.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
 
         // Assert
         final int expectedProps[][] = {
-                { 0, 0, 0, 0}, // Left
-                { 0, 0, 90, 0}, // Middle
-                { 0, 10, 0, 0} // Right
+                {     0,   10,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
+                {  0,    0,   90,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    0,    0 }  //  Right:      RE_P    DB_P    LB_N    LG_P
         };
         assertWaveProps(newWave, expectedProps);
     }
@@ -168,15 +156,41 @@ class EngineTest {
 
         // Act
         final Wave newWave =
-            Engine.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
 
         // Assert
         final int expectedXProps[][] = {
-                { 0, 10, 0, 0},  //   Left: RE_P, DB_P, LB_N, LG_P
-                { 0, 70, 20, 0}, // Middle: OR_P, GR_P, OR_N, GR_N
-                { 0, 0, 0, 0}    //  Right: LB_P, LG_N, RE_N, DB_N
+                {     0,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
+                {  0,   70,   20,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,   10,    0,    0 }  //  Right:      RE_P    DB_P    LB_N    LG_P
         };
         assertWaveProps(newWave, expectedXProps);
+    }
+
+    @org.junit.jupiter.api.Test
+    void createMoveRotatedWaveMiddle0ZPositive() {
+        // Arrange
+        final Engine engine = null;
+        final Event particleEvent = new Event(engine, 1);
+        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
+        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
+        moveCalcDirArr[Cell.Dir.OR_P.dir()] = new WaveMoveCalcDir(100, 100);
+        final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
+        final int xRotPercent = 0;
+        final int yRotPercent = 0;
+        final int zRotPercent = 10;
+
+        // Act
+        final Wave newWave =
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+
+        // Assert
+        final int expectedProps[][] = {
+                {     0,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
+                { 90,    0,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {    10,    0,    0,    0 }  //  Right:      RE_P    DB_P    LB_N    LG_P
+        };
+        assertWaveProps(newWave, expectedProps);
     }
 
     private void assertWaveProps(Wave newWave, int[][] expectedProps) {
@@ -192,24 +206,24 @@ class EngineTest {
     @org.junit.jupiter.api.Test
     public void getMoveAmount() {
         // Assert
-        assertEquals(100, Engine.getMoveAmount(100, 100));
-        assertEquals(50, Engine.getMoveAmount(50, 100));
-        assertEquals(10, Engine.getMoveAmount(10, 100));
-        assertEquals(1, Engine.getMoveAmount(1, 100));
+        assertEquals(100, WaveRotationService.getMoveAmount(100, 100));
+        assertEquals(50, WaveRotationService.getMoveAmount(50, 100));
+        assertEquals(10, WaveRotationService.getMoveAmount(10, 100));
+        assertEquals(1, WaveRotationService.getMoveAmount(1, 100));
 
-        assertEquals(-100, Engine.getMoveAmount(-100, 100));
-        assertEquals(-50, Engine.getMoveAmount(-50, 100));
-        assertEquals(-10, Engine.getMoveAmount(-10, 100));
-        assertEquals(-1, Engine.getMoveAmount(-1, 100));
+        assertEquals(-100, WaveRotationService.getMoveAmount(-100, 100));
+        assertEquals(-50, WaveRotationService.getMoveAmount(-50, 100));
+        assertEquals(-10, WaveRotationService.getMoveAmount(-10, 100));
+        assertEquals(-1, WaveRotationService.getMoveAmount(-1, 100));
 
-        assertEquals(50, Engine.getMoveAmount(100, 50));
-        assertEquals(25, Engine.getMoveAmount(50, 50));
-        assertEquals(5, Engine.getMoveAmount(10, 50));
-        assertEquals(1, Engine.getMoveAmount(1, 50));
+        assertEquals(50, WaveRotationService.getMoveAmount(100, 50));
+        assertEquals(25, WaveRotationService.getMoveAmount(50, 50));
+        assertEquals(5, WaveRotationService.getMoveAmount(10, 50));
+        assertEquals(1, WaveRotationService.getMoveAmount(1, 50));
 
-        assertEquals(-50, Engine.getMoveAmount(-100, 50));
-        assertEquals(-25, Engine.getMoveAmount(-50, 50));
-        assertEquals(-5, Engine.getMoveAmount(-10, 50));
-        assertEquals(-1, Engine.getMoveAmount(-1, 50));
+        assertEquals(-50, WaveRotationService.getMoveAmount(-100, 50));
+        assertEquals(-25, WaveRotationService.getMoveAmount(-50, 50));
+        assertEquals(-5, WaveRotationService.getMoveAmount(-10, 50));
+        assertEquals(-1, WaveRotationService.getMoveAmount(-1, 50));
     }
 }

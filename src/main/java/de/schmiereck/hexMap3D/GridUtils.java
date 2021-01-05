@@ -183,20 +183,20 @@ public class GridUtils {
     public static final Cell.Dir[][] xRotArr = new Cell.Dir[3][4];
     static {
         // Left
-        xRotArr[0][0] = RE_P;
-        xRotArr[0][1] = DB_P;
-        xRotArr[0][2] = LB_N;
-        xRotArr[0][3] = LG_P;
+        xRotArr[0][0] = LB_P;
+        xRotArr[0][1] = LG_N;
+        xRotArr[0][2] = RE_N;
+        xRotArr[0][3] = DB_N;
         // Middle
         xRotArr[1][0] = OR_P;
         xRotArr[1][1] = GR_P;
         xRotArr[1][2] = OR_N;
         xRotArr[1][3] = GR_N;
         // Right
-        xRotArr[2][0] = LB_P;
-        xRotArr[2][1] = LG_N;
-        xRotArr[2][2] = RE_N;
-        xRotArr[2][3] = DB_N;
+        xRotArr[2][0] = RE_P;
+        xRotArr[2][1] = DB_P;
+        xRotArr[2][2] = LB_N;
+        xRotArr[2][3] = LG_P;
     }
 
     /**
@@ -205,20 +205,20 @@ public class GridUtils {
     public static final Cell.Dir[][] yRotArr = new Cell.Dir[3][4];
     static {
         // Left
-        yRotArr[0][0] = OR_P;
-        yRotArr[0][1] = LG_P;
-        yRotArr[0][2] = GR_N;
-        yRotArr[0][3] = DB_N;
+        yRotArr[0][0] = GR_P;
+        yRotArr[0][1] = DB_P;
+        yRotArr[0][2] = OR_N;
+        yRotArr[0][3] = LG_N;
         // Middle
         yRotArr[1][0] = LB_P;
         yRotArr[1][1] = RE_P;
         yRotArr[1][2] = LB_N;
         yRotArr[1][3] = RE_N;
         // Right
-        yRotArr[2][0] = GR_P;
-        yRotArr[2][1] = DB_P;
-        yRotArr[2][2] = OR_N;
-        yRotArr[2][3] = LG_N;
+        yRotArr[2][0] = OR_P;
+        yRotArr[2][1] = LG_P;
+        yRotArr[2][2] = GR_N;
+        yRotArr[2][3] = DB_N;
     }
 
     /**
@@ -227,20 +227,20 @@ public class GridUtils {
     public static final Cell.Dir[][] zRotArr = new Cell.Dir[3][4];
     static {
         // Left
-        zRotArr[0][0] = OR_P;
-        zRotArr[0][1] = RE_P;
-        zRotArr[0][2] = GR_P;
-        zRotArr[0][3] = LB_P;
+        zRotArr[0][0] = RE_P;
+        zRotArr[0][1] = GR_P;
+        zRotArr[0][2] = LB_P;
+        zRotArr[0][3] = OR_P;
         // Middle
         zRotArr[1][0] = LG_P;
         zRotArr[1][1] = DB_P;
         zRotArr[1][2] = LG_N;
         zRotArr[1][3] = DB_N;
         // Right
-        zRotArr[2][0] = GR_N;
-        zRotArr[2][1] = LB_N;
-        zRotArr[2][2] = OR_N;
-        zRotArr[2][3] = RE_N;
+        zRotArr[2][0] = LB_N;
+        zRotArr[2][1] = OR_N;
+        zRotArr[2][2] = RE_N;
+        zRotArr[2][3] = GR_N;
     }
 
     public static int calcXDirOffset(final int xPos, final int yPos, final int zPos, final Cell.Dir calcDir) {
