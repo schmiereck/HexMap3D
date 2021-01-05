@@ -10,8 +10,8 @@ import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 
 public class WaveRotationService {
 
-    // Rotation X, Y, Z:
-    final static int[][] r =
+    // Rotation-Matrix X, Y, Z:
+    public static final int[][] rotationMatrixXYZ =
             {
               // X   Y   Z
               {  1,  0,  0 },
@@ -27,6 +27,7 @@ public class WaveRotationService {
               {  0,  0, -1 },
               {  1,  0, -1 },
             };
+
     protected static Wave createMoveRotatedWave(final Wave sourceWave,
                                                 final int xRotPercent,
                                                 final int yRotPercent,
@@ -38,7 +39,7 @@ public class WaveRotationService {
         // If a rotation plane contains only one node create a new node in the given direction.
         // If the cross node is empty create a new cross node in the given direction.
 
-        newWave = sourceWave.createWave();
+        newWave = WaveService.createWave(sourceWave);
 
         if (xRotPercent != 0) {
             for (int axisPos = 0; axisPos < GridUtils.xRotArr.length; axisPos++) {

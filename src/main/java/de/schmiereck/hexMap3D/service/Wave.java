@@ -28,13 +28,7 @@ public class Wave {
         return this.event;
     }
 
-    public Wave createWave() {
-         final Wave wave = new Wave(this.event, nextDirCalcPos(), this.moveCalcDirArr);
-        this.event.addWave(wave);
-        return wave;
-    }
-
-    private int nextDirCalcPos() {
+    public int nextDirCalcPos() {
         return MapMathUtils.wrap(this.dirCalcPos + 1, this.moveCalcDirArr.length);
     }
 

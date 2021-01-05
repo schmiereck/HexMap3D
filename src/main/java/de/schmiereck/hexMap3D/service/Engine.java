@@ -63,7 +63,7 @@ public class Engine {
                 if ((sourceEvent.getEventType() == 1) && checkSourceWaveHasOutput(sourceWave, oppositeCalcDir)) {
                     final WaveMoveCalcDir actualWaveMoveCalcDir = sourceWave.getActualWaveMoveCalcDir();
                     actualWaveMoveCalcDir.setDirCalcPropSum(actualWaveMoveCalcDir.getDirCalcPropSum() - DIR_CALC_MAX_PROP);
-                    final Wave newTargetWave = sourceWave.createWave();
+                    final Wave newTargetWave = WaveService.createWave(sourceWave);
                     if (this.calcOnlyActualWaveMove == true) {
                         newTargetWave.calcActualWaveMoveCalcDir();
                     }
