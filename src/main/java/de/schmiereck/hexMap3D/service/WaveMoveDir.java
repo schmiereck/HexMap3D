@@ -4,6 +4,7 @@ import de.schmiereck.hexMap3D.MapMathUtils;
 
 import java.util.stream.IntStream;
 
+import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 import static de.schmiereck.hexMap3D.service.Engine.DIR_CALC_MAX_PROP;
 
 /**
@@ -29,10 +30,6 @@ public class WaveMoveDir {
             this.moveCalcDirArr[pos] = new WaveMoveCalcDir(moveCalcDirArr[pos]);
             this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcPropSum() + this.moveCalcDirArr[pos].getDirCalcProp());
         });
-    }
-
-    public int nextDirCalcPos() {
-        return MapMathUtils.wrap(this.dirCalcPos + 1, this.moveCalcDirArr.length);
     }
 
     public void setDir(final Cell.Dir dir, final int dirCalcProp) {
@@ -63,6 +60,10 @@ public class WaveMoveDir {
         }
     }
 
+    public int nextDirCalcPos() {
+        return wrap(this.dirCalcPos + 1, this.moveCalcDirArr.length);
+    }
+
     public Cell.Dir getActualMoveDir() {
         return Cell.Dir.values()[this.dirCalcPos];
     }
@@ -70,5 +71,22 @@ public class WaveMoveDir {
     public void calcActualDirMoved() {
         final WaveMoveCalcDir actualWaveMoveCalcDir = this.getActualWaveMoveCalcDir();
         actualWaveMoveCalcDir.setDirCalcPropSum(actualWaveMoveCalcDir.getDirCalcPropSum() - DIR_CALC_MAX_PROP);
+    }
+
+    public void adjustDirCalcPropSum() {
+        int propPos = 0;
+        for (int pos = 0; pos < this.moveCalcDirArr.length; pos++) {
+            final int dirPos = wrap(this.dirCalcPos + pos, this.moveCalcDirArr.length);
+            final int prop = moveCalcDirArr[dirPos].getDirCalcProp();
+            if (prop > 0) {
+                final int propSum = DIR_CALC_MAX_PROP - prop * propPos + prop;
+                if (propSum >= 0) {
+                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(propSum);
+                } else {
+                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(0);
+                }
+                propPos++;
+            }
+        }
     }
 }

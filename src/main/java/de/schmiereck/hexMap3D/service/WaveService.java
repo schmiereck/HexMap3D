@@ -18,26 +18,8 @@ public class WaveService {
     }
 
     public static void adjustDirCalcPropSum(final Wave wave) {
-        final WaveMoveCalcDir[] moveCalcDirArr = wave.getMoveCalcDirArr();
+        final WaveMoveDir waveMoveDir = wave.getWaveMoveDir();
 
-        int maxPropPos = 0;
-        int maxPropSum = 0;
-        int maxProp = 0;
-
-        for (int pos = 0; pos < moveCalcDirArr.length; pos++) {
-            final int propSum = moveCalcDirArr[pos].getDirCalcPropSum();
-            final int prop = moveCalcDirArr[pos].getDirCalcProp();
-            if (propSum > maxPropSum) {
-                maxPropSum = propSum;
-            }
-            if (prop > maxProp) {
-                maxPropPos = pos;
-                maxProp = prop;
-            }
-        }
-
-        if (maxPropSum < Engine.DIR_CALC_MAX_PROP) {
-            moveCalcDirArr[maxPropPos].setDirCalcPropSum(Engine.DIR_CALC_MAX_PROP);
-        }
+        waveMoveDir.adjustDirCalcPropSum();
     }
 }
