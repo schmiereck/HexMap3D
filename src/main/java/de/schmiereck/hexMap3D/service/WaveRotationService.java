@@ -59,6 +59,9 @@ public class WaveRotationService {
                 calcRotationOnAxis(zRotPercent, newWave, rotArr);
             }
         }
+
+        WaveService.adjustDirCalcPropSum(newWave);
+
         return newWave;
     }
 

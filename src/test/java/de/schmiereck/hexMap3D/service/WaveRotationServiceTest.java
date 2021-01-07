@@ -19,7 +19,7 @@ class WaveRotationServiceTest {
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         moveCalcDirArr[Cell.Dir.OR_P.dir()] = new WaveMoveCalcDir(100, 100);
-        final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
+        final Wave sourceWave = WaveService.createWave(particleEvent, moveCalcDirArr);
         final int xRotPercent = 10;
         final int yRotPercent = 0;
         final int zRotPercent = 0;
@@ -45,7 +45,7 @@ class WaveRotationServiceTest {
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         moveCalcDirArr[Cell.Dir.OR_P.dir()] = new WaveMoveCalcDir(100, 100);
-        final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
+        final Wave sourceWave = WaveService.createWave(particleEvent, moveCalcDirArr);
         final int xRotPercent = -10;
         final int yRotPercent = 0;
         final int zRotPercent = 0;
@@ -71,7 +71,7 @@ class WaveRotationServiceTest {
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         moveCalcDirArr[Cell.Dir.GR_P.dir()] = new WaveMoveCalcDir(100, 100);
-        final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
+        final Wave sourceWave = WaveService.createWave(particleEvent, moveCalcDirArr);
         final int xRotPercent = 10;
         final int yRotPercent = 0;
         final int zRotPercent = 0;
@@ -97,7 +97,7 @@ class WaveRotationServiceTest {
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         moveCalcDirArr[Cell.Dir.OR_P.dir()] = new WaveMoveCalcDir(100, 100);
-        final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
+        final Wave sourceWave = WaveService.createWave(particleEvent, moveCalcDirArr);
         final int xRotPercent = 0;
         final int yRotPercent = 10;
         final int zRotPercent = 0;
@@ -123,7 +123,7 @@ class WaveRotationServiceTest {
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         moveCalcDirArr[Cell.Dir.OR_N.dir()] = new WaveMoveCalcDir(100, 100);
-        final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
+        final Wave sourceWave = WaveService.createWave(particleEvent, moveCalcDirArr);
         final int xRotPercent = 0;
         final int yRotPercent = 10;
         final int zRotPercent = 0;
@@ -149,7 +149,7 @@ class WaveRotationServiceTest {
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         moveCalcDirArr[Cell.Dir.GR_P.dir()] = new WaveMoveCalcDir(100, 100);
-        final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
+        final Wave sourceWave = WaveService.createWave(particleEvent, moveCalcDirArr);
         final int xRotPercent = 20;
         final int yRotPercent = 10;
         final int zRotPercent = 0;
@@ -175,7 +175,7 @@ class WaveRotationServiceTest {
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         moveCalcDirArr[Cell.Dir.OR_P.dir()] = new WaveMoveCalcDir(100, 100);
-        final Wave sourceWave = particleEvent.createWave(0, moveCalcDirArr);
+        final Wave sourceWave = WaveService.createWave(particleEvent, moveCalcDirArr);
         final int xRotPercent = 0;
         final int yRotPercent = 0;
         final int zRotPercent = 10;

@@ -2,15 +2,9 @@ package de.schmiereck.hexMap3D.service;
 
 import de.schmiereck.hexMap3D.GridUtils;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import static de.schmiereck.hexMap3D.GridUtils.calcXDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcYDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
-import static de.schmiereck.hexMap3D.MapLogicUtils.*;
-import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
-import static de.schmiereck.hexMap3D.MapMathUtils.wrapInclusive;
 
 public class Engine {
     public static final int DIR_CALC_MAX_PROP = 100;
@@ -59,15 +53,28 @@ public class Engine {
                 //.filter(sourceWave -> checkSourceWaveHasOutput(sourceWave, oppositeCalcDir))
                 .forEach((sourceWave) -> {
                 final Event sourceEvent = sourceWave.getEvent();
-                // Source-Cell-Wave is a Particle?
-                if ((sourceEvent.getEventType() == 1) && checkSourceWaveHasOutput(sourceWave, oppositeCalcDir)) {
-                    final WaveMoveCalcDir actualWaveMoveCalcDir = sourceWave.getActualWaveMoveCalcDir();
-                    actualWaveMoveCalcDir.setDirCalcPropSum(actualWaveMoveCalcDir.getDirCalcPropSum() - DIR_CALC_MAX_PROP);
-                    final Wave newTargetWave = WaveService.createWave(sourceWave);
-                    if (this.calcOnlyActualWaveMove == true) {
-                        newTargetWave.calcActualWaveMoveCalcDir();
+                    final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
+                    // Source-Cell-Wave is a Particle and is moving in this direction?
+                    if ((sourceEvent.getEventType() == 1) && checkSourceWaveHasOutput(waveMoveDir, oppositeCalcDir)) {
+                    waveMoveDir.calcActualDirMoved();
+                    {
+                        final Wave newTargetWave = WaveService.createWave(sourceWave);
+                        if (this.calcOnlyActualWaveMove == true) {
+                            newTargetWave.calcActualWaveMoveCalcDir();
+                        }
+                        targetCell.addWave(newTargetWave);
                     }
-                    targetCell.addWave(newTargetWave);
+                    {
+                        final int[] r = WaveRotationService.rotationMatrixXYZ[sourceWave.getPropCalcPos()];
+                        final int xRotPercent = r[0] * 50;
+                        final int yRotPercent = r[1] * 50;
+                        final int zRotPercent = r[2] * 50;
+                        final Wave newTargetWave = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                        if (this.calcOnlyActualWaveMove == true) {
+                            newTargetWave.calcActualWaveMoveCalcDir();
+                        }
+                        targetCell.addWave(newTargetWave);
+                    }
                  }
             });
         }
@@ -77,10 +84,10 @@ public class Engine {
         return cell.getWaveListStream().anyMatch(wave -> wave.getEvent().getEventType() == 0);
     }
 
-    private boolean checkSourceWaveHasOutput(final Wave sourceWave, final Cell.Dir calcDir) {
+    private boolean checkSourceWaveHasOutput(final WaveMoveDir waveMoveDir, final Cell.Dir calcDir) {
         final boolean ret;
-        final WaveMoveCalcDir sourceWaveActualWaveMoveCalcDir = sourceWave.getActualWaveMoveCalcDir();
-        if (calcDir == sourceWave.getActualDirCalcPos()) {
+        final WaveMoveCalcDir sourceWaveActualWaveMoveCalcDir = waveMoveDir.getActualWaveMoveCalcDir();
+        if (calcDir == waveMoveDir.getActualMoveDir()) {
             if (this.calcOnlyActualWaveMove) {
                 ret = (sourceWaveActualWaveMoveCalcDir.getDirCalcPropSum() >= DIR_CALC_MAX_PROP);
             } else {

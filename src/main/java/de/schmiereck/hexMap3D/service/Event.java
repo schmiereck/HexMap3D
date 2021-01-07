@@ -13,12 +13,6 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public Wave createWave(final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr) {
-        final Wave wave = new Wave(this, dirCalcPos, moveCalcDirArr);
-        this.addWave(wave);
-        return wave;
-    }
-
     public void addWave(final Wave wave) {
         this.waveList.add(wave);
     }

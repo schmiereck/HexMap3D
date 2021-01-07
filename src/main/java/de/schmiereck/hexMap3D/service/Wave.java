@@ -1,23 +1,21 @@
 package de.schmiereck.hexMap3D.service;
 
-import java.util.stream.IntStream;
-
 import de.schmiereck.hexMap3D.MapMathUtils;
 
 public class Wave {
     private final Event event;
     private Cell cell;
     //private Cell.Dir dir = null;
-    private int dirCalcPos;
-    private WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
+    private WaveMoveDir waveMoveDir;
+    /**
+     * Pos in {@link WaveRotationService#rotationMatrixXYZ}.
+     */
+    private int propCalcPos;
 
-    public Wave(final Event event, final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr) {
+    public Wave(final Event event, final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr, final int propCalcPos) {
         this.event = event;
-        this.dirCalcPos = dirCalcPos;
-        IntStream.range(0, moveCalcDirArr.length).forEach(pos -> {
-            this.moveCalcDirArr[pos] = new WaveMoveCalcDir(moveCalcDirArr[pos]);
-            this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcPropSum() + this.moveCalcDirArr[pos].getDirCalcProp());
-        });
+        this.waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
+        this.propCalcPos = propCalcPos;
     }
 
     public void setCell(final Cell cell) {
@@ -29,34 +27,42 @@ public class Wave {
     }
 
     public int nextDirCalcPos() {
-        return MapMathUtils.wrap(this.dirCalcPos + 1, this.moveCalcDirArr.length);
+        return this.waveMoveDir.nextDirCalcPos();
+    }
+
+    public int nextPropCalcPos() {
+        return MapMathUtils.wrap(this.propCalcPos + 1, WaveRotationService.rotationMatrixXYZ.length);
     }
 
     public void setDir(final Cell.Dir dir, final int dirCalcProp) {
-        //this.moveCalcDirArr[dirNo].setDir(dir);
-        this.moveCalcDirArr[dir.dir()].setDirCalcProp(dirCalcProp);
+        this.waveMoveDir.setDir(dir, dirCalcProp);
     }
 
     public WaveMoveCalcDir[] getMoveCalcDirArr() {
-        return this.moveCalcDirArr;
+        return this.waveMoveDir.getMoveCalcDirArr();
     }
 
     public WaveMoveCalcDir getMoveCalcDir(final Cell.Dir dir) {
-        return this.moveCalcDirArr[dir.dir()];
+        return this.waveMoveDir.getMoveCalcDir(dir);
     }
 
     public WaveMoveCalcDir getActualWaveMoveCalcDir() {
-        return this.moveCalcDirArr[this.dirCalcPos];
+        return this.waveMoveDir.getActualWaveMoveCalcDir();
     }
 
     public void calcActualWaveMoveCalcDir() {
-        while ((this.moveCalcDirArr[this.dirCalcPos] == null) ||
-               (this.moveCalcDirArr[this.dirCalcPos].getDirCalcPropSum() < Engine.DIR_CALC_MAX_PROP)) {
-            this.dirCalcPos = nextDirCalcPos();
-        }
+        this.waveMoveDir.calcActualWaveMoveCalcDir();
     }
 
     public Cell.Dir getActualDirCalcPos() {
-        return Cell.Dir.values()[this.dirCalcPos];
+        return this.waveMoveDir.getActualMoveDir();
+    }
+
+    public int getPropCalcPos() {
+        return this.propCalcPos;
+    }
+
+    public WaveMoveDir getWaveMoveDir() {
+        return this.waveMoveDir;
     }
 }

@@ -1,12 +1,7 @@
 package de.schmiereck.hexMap3D;
 
-import de.schmiereck.hexMap3D.service.Cell;
-import de.schmiereck.hexMap3D.service.Engine;
-import de.schmiereck.hexMap3D.service.Universe;
-import de.schmiereck.hexMap3D.service.WaveMoveCalcDir;
+import de.schmiereck.hexMap3D.service.*;
 import de.schmiereck.hexMap3D.view.GridViewApplication;
-import de.schmiereck.hexMap3D.service.Event;
-import de.schmiereck.hexMap3D.service.Wave;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -35,7 +30,7 @@ public class Main {
             moveCalcDirArr[Cell.Dir.OR_P.dir()] = new WaveMoveCalcDir(75, 100);
             moveCalcDirArr[Cell.Dir.LG_N.dir()] = new WaveMoveCalcDir(25, 0);
             moveCalcDirArr[Cell.Dir.DB_P.dir()] = new WaveMoveCalcDir(0, 0);
-            final Wave wave = particleEvent.createWave(0, moveCalcDirArr);
+            final Wave wave = WaveService.createWave(particleEvent, moveCalcDirArr);
             wave.calcActualWaveMoveCalcDir();
 
             universe.addEvent(8, 8, 8, particleEvent);
