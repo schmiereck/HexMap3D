@@ -66,9 +66,9 @@ public class Engine {
                     }
                     {
                         final int[] r = WaveRotationService.rotationMatrixXYZ[sourceWave.getPropCalcPos()];
-                        final int xRotPercent = r[0] * 10;
-                        final int yRotPercent = r[1] * 10;
-                        final int zRotPercent = r[2] * 10;
+                        final int xRotPercent = r[0] * 1;
+                        final int yRotPercent = r[1] * 1;
+                        final int zRotPercent = r[2] * 1;
                         final Wave newTargetWave = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
                         if (this.calcOnlyActualWaveMove == true) {
                             newTargetWave.calcActualWaveMoveCalcDir();

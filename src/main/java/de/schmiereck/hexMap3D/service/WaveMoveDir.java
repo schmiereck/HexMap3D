@@ -74,16 +74,16 @@ public class WaveMoveDir {
     }
 
     public void adjustDirCalcPropSum() {
-        int propPos = 0;
+        int propPos = -1;
         for (int pos = 0; pos < this.moveCalcDirArr.length; pos++) {
             final int dirPos = wrap(this.dirCalcPos + pos, this.moveCalcDirArr.length);
             final int prop = moveCalcDirArr[dirPos].getDirCalcProp();
             if (prop > 0) {
-                final int propSum = DIR_CALC_MAX_PROP - prop * propPos + prop;
-                if (propSum >= 0) {
-                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(propSum);
+                final int propSum = DIR_CALC_MAX_PROP - (propPos * prop);
+                if (propSum > prop) {
+                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(propSum + prop);
                 } else {
-                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(0);
+                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(prop);
                 }
                 propPos++;
             }
