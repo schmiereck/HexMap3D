@@ -8,6 +8,7 @@ import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
 
 public class Engine {
     public static final int DIR_CALC_MAX_PROP = 100;
+    private static final int ROT_PERCENT = 10;
 
     private final Universe universe;
     private long runNr = 0;
@@ -66,9 +67,9 @@ public class Engine {
                     }
                     {
                         final int[] r = WaveRotationService.rotationMatrixXYZ[sourceWave.getPropCalcPos()];
-                        final int xRotPercent = r[0] * 1;
-                        final int yRotPercent = r[1] * 1;
-                        final int zRotPercent = r[2] * 1;
+                        final int xRotPercent = r[0] * ROT_PERCENT;
+                        final int yRotPercent = r[1] * ROT_PERCENT;
+                        final int zRotPercent = r[2] * ROT_PERCENT;
                         final Wave newTargetWave = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
                         if (this.calcOnlyActualWaveMove == true) {
                             newTargetWave.calcActualWaveMoveCalcDir();
@@ -89,7 +90,7 @@ public class Engine {
         final WaveMoveCalcDir sourceWaveActualWaveMoveCalcDir = waveMoveDir.getActualWaveMoveCalcDir();
         if (calcDir == waveMoveDir.getActualMoveDir()) {
             if (this.calcOnlyActualWaveMove) {
-                ret = (sourceWaveActualWaveMoveCalcDir.getDirCalcPropSum() >= DIR_CALC_MAX_PROP);
+                ret = (sourceWaveActualWaveMoveCalcDir.getDirCalcPropSum() >= waveMoveDir.getMaxProp());
             } else {
                 ret = true;
             }

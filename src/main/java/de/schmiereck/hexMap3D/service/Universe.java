@@ -89,7 +89,7 @@ public class Universe {
             if (this.showActualWaveMoveCalcDir) {
                 cell.getWaveListStream().forEach(wave -> {
                     final WaveMoveCalcDir waveMoveCalcDir = wave.getActualWaveMoveCalcDir();
-                    outputs[wave.getActualDirCalcPos().dir()] = waveMoveCalcDir.getDirCalcPropSum();
+                    outputs[wave.getActualDirCalcPos().dir()] += waveMoveCalcDir.getDirCalcPropSum();
                 });
             } else {
 //                cell.getWaveListStream().forEach(wave -> {
@@ -99,7 +99,8 @@ public class Universe {
 //                });
                 cell.getWaveListStream().forEach(wave -> {
                     Arrays.stream(Cell.Dir.values()).forEach(dir -> {
-                        outputs[dir.dir()] = wave.getMoveCalcDirArr()[dir.dir()].getDirCalcPropSum();
+                        final WaveMoveCalcDir waveMoveCalcDir = wave.getMoveCalcDirArr()[dir.dir()];
+                        outputs[dir.dir()] += waveMoveCalcDir.getDirCalcPropSum();
                     });
                 });
             }

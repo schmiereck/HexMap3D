@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WaveRotationServiceTest {
 
     @org.junit.jupiter.api.Test
-    void createMoveRotatedWaveFirstMiddlePositive() {
+    void createMoveRotatedWaveMiddle0Positive() {
         // Arrange
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
@@ -32,6 +32,32 @@ class WaveRotationServiceTest {
         final int expectedProps[][] = {
                 {     0,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
                 { 90,   10,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    0,    0 }  //  Right:      RE_P    DB_P    LB_N    LG_P
+        };
+        assertWaveProps(newWave, expectedProps);
+    }
+
+    @org.junit.jupiter.api.Test
+    void createMoveRotatedWaveMiddle0Positive2() {
+        // Arrange
+        final Engine engine = null;
+        final Event particleEvent = new Event(engine, 1);
+        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
+        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
+        moveCalcDirArr[Cell.Dir.OR_P.dir()] = new WaveMoveCalcDir(100, 100);
+        final Wave sourceWave = WaveService.createWave(particleEvent, moveCalcDirArr);
+        final int xRotPercent = 1;
+        final int yRotPercent = 0;
+        final int zRotPercent = 0;
+
+        // Act
+        final Wave newWave =
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+
+        // Assert
+        final int expectedProps[][] = {
+                {     0,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_N
+                { 99,    1,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
                 {     0,    0,    0,    0 }  //  Right:      RE_P    DB_P    LB_N    LG_P
         };
         assertWaveProps(newWave, expectedProps);
