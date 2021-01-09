@@ -58,14 +58,15 @@ public class WaveMoveDir {
     }
 
     public void calcActualWaveMoveCalcDir() {
-        final int startDirCalcPos = this.dirCalcPos;
+        int startDirCalcCount = 0;
         do {
             this.dirCalcPos = nextDirCalcPos();
             final WaveMoveCalcDir waveMoveCalcDir = this.moveCalcDirArr[this.dirCalcPos];
             waveMoveCalcDir.addDirCalcPropSum(waveMoveCalcDir.getDirCalcProp());
-            if (this.dirCalcPos == startDirCalcPos) {
+            if (startDirCalcCount >= this.moveCalcDirArr.length) {
                 throw new RuntimeException("Do not found next dirCalcPos: " + Arrays.toString(this.moveCalcDirArr));
             }
+            startDirCalcCount++;
         } while (this.moveCalcDirArr[this.dirCalcPos].getDirCalcPropSum() < this.maxProp);
     }
 
@@ -87,6 +88,9 @@ public class WaveMoveDir {
         for (int pos = 0; pos < this.moveCalcDirArr.length; pos++) {
             if (this.moveCalcDirArr[pos].getDirCalcProp() > maxProp) {
                 this.maxProp = this.moveCalcDirArr[pos].getDirCalcProp();
+            }
+            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
+                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
             }
         }
         /*

@@ -150,6 +150,18 @@ public class WaveMoveDirTest {
         Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
         //Caused by: java.lang.RuntimeException: Do not found next dirCalcPos:
         // [{prop:0, sum:0},
+        // {prop:27, sum:34},
+        // {prop:40, sum:40},
+        // {prop:0, sum:0}, {prop:0, sum:0},
+        // {prop:5, sum:10},
+        // {prop:10, sum:20},
+        // {prop:0, sum:0}, {prop:0, sum:0},
+        // {prop:16, sum:32},
+        // {prop:0, sum:0},
+        // {prop:2, sum:4}]
+
+        //Caused by: java.lang.RuntimeException: Do not found next dirCalcPos:
+        // [{prop:0, sum:0},
         // {prop:26, sum:33},
         // {prop:48, sum:48},
         // {prop:0, sum:0}, {prop:0, sum:0},
