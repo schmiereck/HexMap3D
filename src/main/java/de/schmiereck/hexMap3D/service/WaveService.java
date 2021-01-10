@@ -16,10 +16,4 @@ public class WaveService {
         event.addWave(newWave);
         return newWave;
     }
-
-    public static void adjustDirCalcPropSum(final Wave wave) {
-        final WaveMoveDir waveMoveDir = wave.getWaveMoveDir();
-
-        waveMoveDir.adjustDirCalcPropSum();
-    }
 }

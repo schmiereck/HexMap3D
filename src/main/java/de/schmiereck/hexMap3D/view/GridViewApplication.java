@@ -175,6 +175,10 @@ public class GridViewApplication extends Application {
         this.universe.setShowGrid(showGrid);
     }
 
+    public void setShowActualWaveMoveCalcDir(final boolean showActualWaveMoveCalcDir) {
+        this.universe.setShowActualWaveMoveCalcDir(showActualWaveMoveCalcDir);
+    }
+
     public void calcReality() {
         this.universe.calcReality();
     }

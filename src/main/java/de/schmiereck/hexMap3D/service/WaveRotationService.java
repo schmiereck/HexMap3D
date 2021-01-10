@@ -61,7 +61,7 @@ public class WaveRotationService {
             }
         }
 
-        WaveService.adjustDirCalcPropSum(newWave);
+        newWaveMoveDir.adjustMaxProp();
 
         return newWave;
     }
@@ -110,6 +110,9 @@ public class WaveRotationService {
                 }
                 moveCalcDir.setDirCalcProp(newProp);
                 nextMoveCalcDir.addDirCalcProp(propDif);
+                if (newProp == 0) {
+                    moveCalcDir.setDirCalcPropSum(0);
+                }
                 return actMoveAmount.get() == 0;
             });
         }

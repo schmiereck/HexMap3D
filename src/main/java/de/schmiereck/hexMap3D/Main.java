@@ -32,7 +32,7 @@ public class Main {
             //moveCalcDirArr[Cell.Dir.LG_N.dir()].setDirCalcProp(25);
             //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(0);
             final Wave wave = WaveService.createWave(particleEvent, moveCalcDirArr);
-            wave.getWaveMoveDir().adjustDirCalcPropSum();
+            wave.getWaveMoveDir().adjustMaxProp();
             wave.calcActualWaveMoveCalcDir();
 
             universe.addEvent(8, 8, 8, particleEvent);

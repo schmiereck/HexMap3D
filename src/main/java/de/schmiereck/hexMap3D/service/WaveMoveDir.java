@@ -70,7 +70,7 @@ public class WaveMoveDir {
         actualWaveMoveCalcDir.setDirCalcPropSum(actualWaveMoveCalcDir.getDirCalcPropSum() - this.maxProp);
     }
 
-    public void adjustDirCalcPropSum() {
+    public void adjustMaxProp() {
         this.maxProp = 0;
         for (int pos = 0; pos < this.moveCalcDirArr.length; pos++) {
             if (this.moveCalcDirArr[pos].getDirCalcProp() > maxProp) {
@@ -79,9 +79,9 @@ public class WaveMoveDir {
 //            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
 //                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
 //            }
-            if (this.moveCalcDirArr[pos].getDirCalcProp() == 0) {
-                this.moveCalcDirArr[pos].setDirCalcPropSum(0);
-            }
+//            if (this.moveCalcDirArr[pos].getDirCalcProp() == 0) {
+//                this.moveCalcDirArr[pos].setDirCalcPropSum(0);
+//            }
         }
         /*
         int propPos = -1;
@@ -107,5 +107,9 @@ public class WaveMoveDir {
 
     public int getMaxProp() {
         return this.maxProp;
+    }
+
+    public void setMaxProp(final int maxProp) {
+        this.maxProp = maxProp;
     }
 }

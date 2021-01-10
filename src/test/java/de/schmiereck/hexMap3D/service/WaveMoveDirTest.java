@@ -3,7 +3,6 @@ package de.schmiereck.hexMap3D.service;
 import java.util.Arrays;
 
 import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
-import static de.schmiereck.hexMap3D.service.Engine.DIR_CALC_MAX_PROP;
 
 public class WaveMoveDirTest {
 
@@ -16,7 +15,7 @@ public class WaveMoveDirTest {
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveDir waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustDirCalcPropSum();
+        waveMoveDir.adjustMaxProp();
         waveMoveDir.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 100; c++) {
@@ -40,7 +39,7 @@ public class WaveMoveDirTest {
         moveCalcDirArr[DB_P.dir()].setDirCalcProp(30);
         int dirCalcPos = 0;
         WaveMoveDir waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustDirCalcPropSum();
+        waveMoveDir.adjustMaxProp();
         waveMoveDir.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 800; c++) {
@@ -61,7 +60,7 @@ public class WaveMoveDirTest {
         moveCalcDirArr[DB_P.dir()].setDirCalcProp(30);
         int dirCalcPos = 0;
         WaveMoveDir waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustDirCalcPropSum();
+        waveMoveDir.adjustMaxProp();
         waveMoveDir.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 800; c++) {
@@ -81,7 +80,7 @@ public class WaveMoveDirTest {
         moveCalcDirArr[LG_N.dir()].setDirCalcProp(13);
         int dirCalcPos = 0;
         WaveMoveDir waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustDirCalcPropSum();
+        waveMoveDir.adjustMaxProp();
         waveMoveDir.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 800; c++) {
@@ -108,7 +107,7 @@ public class WaveMoveDirTest {
         //int dirCalcPos = OR_N.dir(); // OR_N
         int dirCalcPos = OR_N.dir(); // OR_N
         WaveMoveDir waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustDirCalcPropSum();
+        waveMoveDir.adjustMaxProp();
         waveMoveDir.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 800; c++) {
@@ -129,7 +128,7 @@ public class WaveMoveDirTest {
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveDir waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustDirCalcPropSum();
+        waveMoveDir.adjustMaxProp();
         waveMoveDir.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 100; c++) {
@@ -177,7 +176,7 @@ public class WaveMoveDirTest {
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveDir waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustDirCalcPropSum();
+        waveMoveDir.adjustMaxProp();
         waveMoveDir.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 100; c++) {

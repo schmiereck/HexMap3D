@@ -32,6 +32,10 @@ public class Universe {
         forEachCell((final int xPos, final int yPos, final int zPos) -> this.realityCellGrid[zPos][yPos][xPos] = new RealityCell());
     }
 
+    public void setShowActualWaveMoveCalcDir(final boolean showActualWaveMoveCalcDir) {
+        this.showActualWaveMoveCalcDir = showActualWaveMoveCalcDir;
+    }
+
     @FunctionalInterface
     public interface EachCellCallback {
         void call(final int xPos, final int yPos, final int zPos);
