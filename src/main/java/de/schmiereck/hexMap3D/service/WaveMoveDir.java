@@ -8,19 +8,6 @@ import java.util.stream.IntStream;
 import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 import static de.schmiereck.hexMap3D.service.Engine.DIR_CALC_MAX_PROP;
 
-/**
- *  40  30  30
- * -----------
- * 100   0   0
- *  40  30  30
- *  80  60  60
- * 120  90  90
- *  20 120 120
- *  60  20 150
- * 100  50  50
- *
- *
- */
 public class WaveMoveDir {
     private int dirCalcPos;
     private int maxProp = 0;
@@ -30,9 +17,9 @@ public class WaveMoveDir {
         this.dirCalcPos = dirCalcPos;
         IntStream.range(0, moveCalcDirArr.length).forEach(pos -> {
             this.moveCalcDirArr[pos] = new WaveMoveCalcDir(moveCalcDirArr[pos]);
-            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
-                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
-            }
+//            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
+//                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
+//            }
             //this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcPropSum() + this.moveCalcDirArr[pos].getDirCalcProp());
             if (this.moveCalcDirArr[pos].getDirCalcProp() > maxProp) {
                 this.maxProp = this.moveCalcDirArr[pos].getDirCalcProp();
@@ -89,8 +76,11 @@ public class WaveMoveDir {
             if (this.moveCalcDirArr[pos].getDirCalcProp() > maxProp) {
                 this.maxProp = this.moveCalcDirArr[pos].getDirCalcProp();
             }
-            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
-                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
+//            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
+//                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
+//            }
+            if (this.moveCalcDirArr[pos].getDirCalcProp() == 0) {
+                this.moveCalcDirArr[pos].setDirCalcPropSum(0);
             }
         }
         /*
