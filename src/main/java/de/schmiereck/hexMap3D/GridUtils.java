@@ -55,12 +55,12 @@ public class GridUtils {
         a0ConArr[RE_N.dir()] = new OutputDir(RE_N, 0, -1, 0);
         // A -> B
         a0ConArr[LG_P.dir()] = new OutputDir(LG_P, 0, 1, 1);
-        a0ConArr[GR_P.dir()] = new OutputDir(GR_P, 0, 0, 1);
-        a0ConArr[LB_P.dir()] = new OutputDir(LB_P, -1, 0, 1);
+        a0ConArr[GR_N.dir()] = new OutputDir(GR_N, 0, 0, 1);
+        a0ConArr[LB_N.dir()] = new OutputDir(LB_N, -1, 0, 1);
         // A -> C
         a0ConArr[LG_N.dir()] = new OutputDir(LG_N, 0, 0, -1);
-        a0ConArr[LB_N.dir()] = new OutputDir(LB_N, 0, 1, -1);
-        a0ConArr[GR_N.dir()] = new OutputDir(GR_N, -1, 1, -1);
+        a0ConArr[LB_P.dir()] = new OutputDir(LB_P, 0, 1, -1);
+        a0ConArr[GR_P.dir()] = new OutputDir(GR_P, -1, 1, -1);
     }
 
     public static final OutputDir[] a1ConArr = new OutputDir[12];
@@ -74,12 +74,12 @@ public class GridUtils {
         a1ConArr[RE_N.dir()] = new OutputDir(RE_N, 1, -1, 0);
         // A -> B
         a1ConArr[LG_P.dir()] = new OutputDir(LG_P, 0, 1, 1);
-        a1ConArr[LB_P.dir()] = new OutputDir(LB_P, 0, 0, 1);
-        a1ConArr[GR_P.dir()] = new OutputDir(GR_P, 1, 0, 1);
+        a1ConArr[LB_N.dir()] = new OutputDir(LB_N, 0, 0, 1);
+        a1ConArr[GR_N.dir()] = new OutputDir(GR_N, 1, 0, 1);
         // A -> C
         a1ConArr[LG_N.dir()] = new OutputDir(LG_N, 0, 0, -1);
-        a1ConArr[GR_N.dir()] = new OutputDir(GR_N, 0, 1, -1);
-        a1ConArr[LB_N.dir()] = new OutputDir(LB_N, 1, 1, -1);
+        a1ConArr[GR_P.dir()] = new OutputDir(GR_P, 0, 1, -1);
+        a1ConArr[LB_P.dir()] = new OutputDir(LB_P, 1, 1, -1);
     }
 
     public static final OutputDir[] b0ConArr = new OutputDir[12];
@@ -93,11 +93,11 @@ public class GridUtils {
         b0ConArr[RE_N.dir()] = new OutputDir(RE_N, 1, -1, 0);
         // A -> B
         b0ConArr[LG_P.dir()] = new OutputDir(LG_P, 0, 1, 1);
-        b0ConArr[LB_P.dir()] = new OutputDir(LB_P, 0, 0, 1);
-        b0ConArr[GR_P.dir()] = new OutputDir(GR_P, 1, 0, 1);
+        b0ConArr[LB_N.dir()] = new OutputDir(LB_N, 0, 0, 1);
+        b0ConArr[GR_N.dir()] = new OutputDir(GR_N, 1, 0, 1);
         // A -> C
-        b0ConArr[GR_N.dir()] = new OutputDir(GR_N, 0, 0, -1);
-        b0ConArr[LB_N.dir()] = new OutputDir(LB_N, 1, 0, -1);
+        b0ConArr[GR_P.dir()] = new OutputDir(GR_P, 0, 0, -1);
+        b0ConArr[LB_P.dir()] = new OutputDir(LB_P, 1, 0, -1);
         b0ConArr[LG_N.dir()] = new OutputDir(LG_N, 0, -1, -1);
     }
 
@@ -112,12 +112,12 @@ public class GridUtils {
         b1ConArr[OR_N.dir()] = new OutputDir(OR_N, -1, -1, 0);
         // B -> C
         b1ConArr[LG_P.dir()] = new OutputDir(LG_P, 0, 1, 1);
-        b1ConArr[GR_P.dir()] = new OutputDir(GR_P, 0, 0, 1);
-        b1ConArr[LB_P.dir()] = new OutputDir(LB_P, -1, 0, 1);
+        b1ConArr[GR_N.dir()] = new OutputDir(GR_N, 0, 0, 1);
+        b1ConArr[LB_N.dir()] = new OutputDir(LB_N, -1, 0, 1);
         // B -> A
-        b1ConArr[LB_N.dir()] = new OutputDir(LB_N, 0, 0, -1);
+        b1ConArr[LB_P.dir()] = new OutputDir(LB_P, 0, 0, -1);
         b1ConArr[LG_N.dir()] = new OutputDir(LG_N, 0, -1, -1);
-        b1ConArr[GR_N.dir()] = new OutputDir(GR_N, -1, 0, -1);
+        b1ConArr[GR_P.dir()] = new OutputDir(GR_P, -1, 0, -1);
     }
 
     public static final OutputDir[] c0ConArr = new OutputDir[12];
@@ -131,11 +131,11 @@ public class GridUtils {
         c0ConArr[OR_N.dir()] = new OutputDir(OR_N, -1, -1, 0);
         // C -> A
         c0ConArr[LG_P.dir()] = new OutputDir(LG_P, 0, 0, 1);
-        c0ConArr[LB_P.dir()] = new OutputDir(LB_P, -1, -1, 1);
-        c0ConArr[GR_P.dir()] = new OutputDir(GR_P, 0, -1, 1);
+        c0ConArr[LB_N.dir()] = new OutputDir(LB_N, -1, -1, 1);
+        c0ConArr[GR_N.dir()] = new OutputDir(GR_N, 0, -1, 1);
         // C -> B
-        c0ConArr[LB_N.dir()] = new OutputDir(LB_N, 0, 0, -1);
-        c0ConArr[GR_N.dir()] = new OutputDir(GR_N, -1, 0, -1);
+        c0ConArr[LB_P.dir()] = new OutputDir(LB_P, 0, 0, -1);
+        c0ConArr[GR_P.dir()] = new OutputDir(GR_P, -1, 0, -1);
         c0ConArr[LG_N.dir()] = new OutputDir(LG_N, 0, -1, -1);
     }
 
@@ -150,11 +150,11 @@ public class GridUtils {
         c1ConArr[RE_N.dir()] = new OutputDir(RE_N, 1, -1, 0);
         // C -> A
         c1ConArr[LG_P.dir()] = new OutputDir(LG_P, 0, 0, 1);
-        c1ConArr[LB_P.dir()] = new OutputDir(LB_P, 0, -1, 1);
-        c1ConArr[GR_P.dir()] = new OutputDir(GR_P, 1, -1, 1);
+        c1ConArr[LB_N.dir()] = new OutputDir(LB_N, 0, -1, 1);
+        c1ConArr[GR_N.dir()] = new OutputDir(GR_N, 1, -1, 1);
         // C -> B
-        c1ConArr[GR_N.dir()] = new OutputDir(GR_N, 0, 0, -1);
-        c1ConArr[LB_N.dir()] = new OutputDir(LB_N, 1, 0, -1);
+        c1ConArr[GR_P.dir()] = new OutputDir(GR_P, 0, 0, -1);
+        c1ConArr[LB_P.dir()] = new OutputDir(LB_P, 1, 0, -1);
         c1ConArr[LG_N.dir()] = new OutputDir(LG_N, 0, -1, -1);
     }
 
@@ -178,7 +178,7 @@ public class GridUtils {
     }
 
     /**
-     * rotation X-Axis.
+     * Rotation X-Axis.
      */
     public static final Cell.Dir[][] xRotArr = new Cell.Dir[3][4];
     static {
@@ -186,7 +186,7 @@ public class GridUtils {
         xRotArr[0][0] = LB_P;
         xRotArr[0][1] = LG_N;
         xRotArr[0][2] = RE_N;
-        xRotArr[0][3] = DB_N;
+        xRotArr[0][3] = DB_P;
         // Middle
         xRotArr[1][0] = OR_P;
         xRotArr[1][1] = GR_P;
@@ -194,7 +194,7 @@ public class GridUtils {
         xRotArr[1][3] = GR_N;
         // Right
         xRotArr[2][0] = RE_P;
-        xRotArr[2][1] = DB_P;
+        xRotArr[2][1] = DB_N;
         xRotArr[2][2] = LB_N;
         xRotArr[2][3] = LG_P;
     }
@@ -206,7 +206,7 @@ public class GridUtils {
     static {
         // Left
         yRotArr[0][0] = GR_P;
-        yRotArr[0][1] = DB_P;
+        yRotArr[0][1] = DB_N;
         yRotArr[0][2] = OR_N;
         yRotArr[0][3] = LG_N;
         // Middle
@@ -218,7 +218,7 @@ public class GridUtils {
         yRotArr[2][0] = OR_P;
         yRotArr[2][1] = LG_P;
         yRotArr[2][2] = GR_N;
-        yRotArr[2][3] = DB_N;
+        yRotArr[2][3] = DB_P;
     }
 
     /**
@@ -233,9 +233,9 @@ public class GridUtils {
         zRotArr[0][3] = OR_P;
         // Middle
         zRotArr[1][0] = LG_P;
-        zRotArr[1][1] = DB_P;
+        zRotArr[1][1] = DB_N;
         zRotArr[1][2] = LG_N;
-        zRotArr[1][3] = DB_N;
+        zRotArr[1][3] = DB_P;
         // Right
         zRotArr[2][0] = LB_N;
         zRotArr[2][1] = OR_N;

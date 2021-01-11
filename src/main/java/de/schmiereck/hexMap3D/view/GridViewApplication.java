@@ -147,7 +147,12 @@ public class GridViewApplication extends Application {
         //cameraGroup.setTranslateZ(-900.0D);
         mouseLook.strafeRight(xSizeGrid / 2 * GridViewUtils.viewGridStepA);
         mouseLook.moveDown(ySizeGrid / 2 * GridViewUtils.viewGridStepH);
-        mouseLook.moveForward(900.0D);
+        if (mouseLook.getFlipYAxis()) {
+            mouseLook.moveForward(-1900.0D);
+            mouseLook.rotateX(180.0D);
+        } else {
+            mouseLook.moveForward(-945.0D);
+        }
 
         gridScene.setOnMousePressed((event) -> {
             event.setDragDetect(true);
@@ -175,8 +180,8 @@ public class GridViewApplication extends Application {
         this.universe.setShowGrid(showGrid);
     }
 
-    public void setShowActualWaveMoveCalcDir(final boolean showActualWaveMoveCalcDir) {
-        this.universe.setShowActualWaveMoveCalcDir(showActualWaveMoveCalcDir);
+    public void setShowActualWaveMoveCalcDir(final Universe.ShowWaveMoveCalc showWaveMoveCalc) {
+        this.universe.setShowWaveMoveCalc(showWaveMoveCalc);
     }
 
     public void calcReality() {

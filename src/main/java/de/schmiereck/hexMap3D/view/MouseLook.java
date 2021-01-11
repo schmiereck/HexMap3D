@@ -17,6 +17,8 @@ public class MouseLook {
     private final Group cameraGroup;
     private final Camera camera;
 
+    private boolean flipYAxis = true;
+
     public MouseLook(final Group cameraGroup, final Camera camera) {
         this.cameraGroup = cameraGroup;
         this.camera = camera;
@@ -24,11 +26,20 @@ public class MouseLook {
         // https://docs.oracle.com/javafx/8/3d_graphics/camera.htm
         // https://docs.oracle.com/javafx/8/3d_graphics/sampleapp.htm
         // https://stackoverflow.com/questions/24985582/coordinate-transformations-in-javafx
-        {
-            final Rotate rz = new Rotate();
-            rz.setAxis(Rotate.Z_AXIS);
-            rz.setAngle(180.0D);
-            this.cameraGroup.getTransforms().add(rz);
+
+        if (flipYAxis) {
+            {
+                final Rotate rz = new Rotate();
+                rz.setAxis(Rotate.Z_AXIS);
+                rz.setAngle(180.0D);
+                this.cameraGroup.getTransforms().add(rz);
+            }
+            //{
+            //    final Rotate ry = new Rotate();
+            //    ry.setAxis(Rotate.Y_AXIS);
+            //    ry.setAngle(180.0D);
+            //    this.cameraGroup.getTransforms().add(ry);
+            //}
         }
         this.cameraGroup.getTransforms().add(affine);
         this.cameraGroup.getTransforms().add(rotateAffineY);
@@ -84,21 +95,31 @@ public class MouseLook {
             rotateAffine.prepend(rotateX);
             rotateAffine.prepend(rotateY);
 */
-            final Point3D n2 = getN();
-            rotateAffineY.appendRotation(mouseDeltaX * (mouseSpeed * mouseModifier),
-                    0,//n2.getX(),
-                    0,//n2.getY(),
-                    0,//n2.getZ(),
-                    Rotate.Y_AXIS.getX(), Rotate.Y_AXIS.getY(), Rotate.Y_AXIS.getZ());
-            final Point3D n = getN();
-            //rotateAffine.appendRotation(mouseDeltaX * (mouseSpeed * mouseModifier), getN(), Rotate.Y_AXIS);
-            //rotateAffine.appendRotation(mouseDeltaY * (mouseSpeed * mouseModifier), getN(), Rotate.X_AXIS);
-            rotateAffineX.appendRotation(mouseDeltaY * (mouseSpeed * mouseModifier),
-                    0,//n.getX(),
-                    0,//n.getY(),
-                    0,//n.getZ(),
-                    Rotate.X_AXIS.getX(), Rotate.X_AXIS.getY(), Rotate.X_AXIS.getZ());
+            final double angleX = mouseDeltaX * (mouseSpeed * mouseModifier);
+            rotateX(angleX);
+            final double angleY = mouseDeltaY * (mouseSpeed * mouseModifier);
+            rotateY(angleY);
         }
+    }
+
+    public void rotateX(final double angle) {
+        //final Point3D n2 = getN();
+        rotateAffineY.appendRotation(angle,
+                0,//n2.getX(),
+                0,//n2.getY(),
+                0,//n2.getZ(),
+                Rotate.Y_AXIS.getX(), Rotate.Y_AXIS.getY(), Rotate.Y_AXIS.getZ());
+    }
+
+    public void rotateY(final double angle) {
+        //final Point3D n = getN();
+        //rotateAffine.appendRotation(mouseDeltaX * (mouseSpeed * mouseModifier), getN(), Rotate.Y_AXIS);
+        //rotateAffine.appendRotation(mouseDeltaY * (mouseSpeed * mouseModifier), getN(), Rotate.X_AXIS);
+        rotateAffineX.appendRotation(angle,
+                0,//n.getX(),
+                0,//n.getY(),
+                0,//n.getZ(),
+                Rotate.X_AXIS.getX(), Rotate.X_AXIS.getY(), Rotate.X_AXIS.getZ());
     }
 
     private void rotate2(final double xDiff, final double yDiff) {
@@ -117,7 +138,11 @@ public class MouseLook {
     }
 
     public void handleMouseScrolling(final ScrollEvent event) {
-        moveForward(event.getDeltaY() * -2.0D);
+        if (this.flipYAxis) {
+            moveForward(event.getDeltaY() * -2.0D);
+        } else {
+            moveForward(event.getDeltaY() * 2.0D);
+        }
     }
 
     // https://github.com/FXyz/FXyz/blob/58913cc1328ad95af40b2fbf39044c126c71584b/FXyz-Core/src/main/java/org/fxyz3d/scene/SimpleFPSCamera.java#L465
@@ -132,7 +157,11 @@ public class MouseLook {
         //affine.setTx(1.0D);
         affine.setTx(affine.getTx() + moveSpeed * n.getX());
         affine.setTy(affine.getTy() + moveSpeed * n.getY());
-        affine.setTz(affine.getTz() + moveSpeed * -n.getZ());
+        if (this.flipYAxis) {
+            affine.setTz(affine.getTz() + moveSpeed * -n.getZ());
+        } else {
+            affine.setTz(affine.getTz() + moveSpeed * n.getZ());
+        }
     }
 
     public void moveBack(final double moveSpeed) {
@@ -239,5 +268,9 @@ public class MouseLook {
         //return this.cameraGroup.getLocalToParentTransform();
         //return this.cameraGroup.getParent().getLocalToSceneTransform();
         //return this.camera.getLocalToParentTransform();
+    }
+
+    public boolean getFlipYAxis() {
+        return this.flipYAxis;
     }
 }

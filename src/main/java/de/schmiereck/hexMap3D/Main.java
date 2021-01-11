@@ -27,7 +27,16 @@ public class Main {
             final Event particleEvent = new Event(engine, 1);
             final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
             Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
+
             moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(100);
+
+            //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(100);
+            //moveCalcDirArr[Cell.Dir.LB_P.dir()].setDirCalcProp(100);
+            //moveCalcDirArr[Cell.Dir.GR_P.dir()].setDirCalcProp(100);
+            //moveCalcDirArr[Cell.Dir.RE_P.dir()].setDirCalcProp(100);
+            //moveCalcDirArr[Cell.Dir.LG_P.dir()].setDirCalcProp(100);
+            //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(100);
+
             //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(75);
             //moveCalcDirArr[Cell.Dir.LG_N.dir()].setDirCalcProp(25);
             //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(0);
@@ -35,7 +44,7 @@ public class Main {
             wave.getWaveMoveDir().adjustMaxProp();
             wave.calcActualWaveMoveCalcDir();
 
-            universe.addEvent(8, 8, 8, particleEvent);
+            universe.addEvent(2, 2, 8, particleEvent);
 
             // For Testing:
             // Add a sharp Barrier...

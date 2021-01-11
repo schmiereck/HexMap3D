@@ -2,6 +2,7 @@ package de.schmiereck.hexMap3D.view;
 
 import java.util.Objects;
 
+import de.schmiereck.hexMap3D.service.Universe;
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
@@ -34,13 +35,21 @@ public class GridViewController {
     public void showActualWaveMoveCalcDir(ActionEvent actionEvent) {
         if (Objects.nonNull(this.gridViewApplication)) {
             final RadioButton radioButton = (RadioButton)actionEvent.getSource();
-            final boolean show;
-            if ("".equals(radioButton.getId())) {
-                show = true;
+            final Universe.ShowWaveMoveCalc showWaveMoveCalc;
+            if ("showActualWaveMoveCalcDirSum".equals(radioButton.getId())) {
+                showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowActualWaveMoveCalcDirSum;
             } else {
-                show = false;
+                if ("showAllWaveMoveCalcDirSum".equals(radioButton.getId())) {
+                    showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirSum;
+                } else {
+                    if ("showAllWaveMoveCalcDirProp".equals(radioButton.getId())) {
+                        showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirProp;
+                    } else {
+                        throw new RuntimeException("Unexpected showWaveMoveCalc \"" + radioButton.getId() + "\".");
+                    }
+                }
             }
-            this.gridViewApplication.setShowActualWaveMoveCalcDir(show);
+            this.gridViewApplication.setShowActualWaveMoveCalcDir(showWaveMoveCalc);
             this.gridViewApplication.calcReality();
             this.gridViewApplication.updateReality();
         }

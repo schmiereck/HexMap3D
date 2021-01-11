@@ -40,27 +40,37 @@
           GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="3"
   />
   <RadioButton
-          fx:id="showAllWaveMoveCalcDir"
-          text="Show All Outputs"
+          fx:id="showAllWaveMoveCalcDirSum"
+          text="All Outputs"
           onAction="#showActualWaveMoveCalcDir"
           GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.columnSpan="2"
   >
     <toggleGroup>
-      <ToggleGroup fx:id="group"/>
+      <ToggleGroup fx:id="showWaveMoveCalc"/>
     </toggleGroup>
   </RadioButton>
   <RadioButton
-          fx:id="showActualWaveMoveCalcDir"
-          text="Show Next Output"
+          fx:id="showActualWaveMoveCalcDirSum"
+          text="Next Output"
           onAction="#showActualWaveMoveCalcDir"
           GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2"
   >
     <toggleGroup>
-      <fx:reference source="group"/>
+      <fx:reference source="showWaveMoveCalc"/>
+    </toggleGroup>
+  </RadioButton>
+  <RadioButton
+          fx:id="showAllWaveMoveCalcDirProp"
+          text="All Props."
+          onAction="#showActualWaveMoveCalcDir"
+          GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.columnSpan="2"
+  >
+    <toggleGroup>
+      <fx:reference source="showWaveMoveCalc"/>
     </toggleGroup>
   </RadioButton>
   <Label
           text="Statistic:"
-          GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="3"
+          GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="3"
   />
 </GridPane>
