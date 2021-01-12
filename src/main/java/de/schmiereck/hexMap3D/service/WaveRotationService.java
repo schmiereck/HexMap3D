@@ -39,34 +39,38 @@ public class WaveRotationService {
         // If a rotation plane contains only one node create a new node in the given direction.
         // If the cross node is empty create a new cross node in the given direction.
 
-        newWave = WaveService.createWave(sourceWave);
-        final WaveMoveDir newWaveMoveDir = newWave.getWaveMoveDir();
+        final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
+        //final WaveMoveDir newWaveMoveDir = newWave.getWaveMoveDir();
+        WaveMoveDir newWaveMoveDir = waveMoveDir;
 
         if (xRotPercent != 0) {
             for (int axisPos = 0; axisPos < GridUtils.xRotArr.length; axisPos++) {
                 final Cell.Dir[] rotArr = GridUtils.xRotArr[axisPos];
-                calcRotationOnAxis(xRotPercent, newWaveMoveDir, rotArr);
+                newWaveMoveDir = calcRotationOnAxis(xRotPercent, newWaveMoveDir, rotArr);
             }
         }
         if (yRotPercent != 0) {
             for (int axisPos = 0; axisPos < GridUtils.yRotArr.length; axisPos++) {
                 final Cell.Dir[] rotArr = GridUtils.yRotArr[axisPos];
-                calcRotationOnAxis(yRotPercent, newWaveMoveDir, rotArr);
+                newWaveMoveDir = calcRotationOnAxis(yRotPercent, newWaveMoveDir, rotArr);
             }
         }
         if (zRotPercent != 0) {
             for (int axisPos = 0; axisPos < GridUtils.zRotArr.length; axisPos++) {
                 final Cell.Dir[] rotArr = GridUtils.zRotArr[axisPos];
-                calcRotationOnAxis(zRotPercent, newWaveMoveDir, rotArr);
+                newWaveMoveDir = calcRotationOnAxis(zRotPercent, newWaveMoveDir, rotArr);
             }
         }
 
         newWaveMoveDir.adjustMaxProp();
 
+        newWave = WaveService.createWave(sourceWave.getEvent(), newWaveMoveDir, sourceWave.getPropCalcPos());
+
         return newWave;
     }
 
-    private static void calcRotationOnAxis(final int signedRotPercent, final WaveMoveDir waveMoveDir, final Cell.Dir[] rotArr) {
+    private static WaveMoveDir calcRotationOnAxis(final int signedRotPercent, final WaveMoveDir waveMoveDir, final Cell.Dir[] rotArr) {
+        final WaveMoveDir newWaveMoveDir;
         final int rotDir;
         final int rotStartPos;
         final int rotEndPos;
@@ -83,20 +87,21 @@ public class WaveRotationService {
             rotEndPos = 0;
         }
         final int propSum = calcPropSum(waveMoveDir, rotArr);
-        // Search last zero:
         if (propSum > 0) {
+            newWaveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir);
+            // Search last zero:
             final int notZeroPos =
                     calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
-                        final WaveMoveCalcDir moveCalcDir = waveMoveDir.getMoveCalcDir(rotArr[pos]);
-                        final WaveMoveCalcDir beforMoveCalcDir = waveMoveDir.getMoveCalcDir(rotArr[wrap(pos - rotDir, rotArr.length)]);
+                        final WaveMoveCalcDir moveCalcDir = newWaveMoveDir.getMoveCalcDir(rotArr[pos]);
+                        final WaveMoveCalcDir beforMoveCalcDir = newWaveMoveDir.getMoveCalcDir(rotArr[wrap(pos - rotDir, rotArr.length)]);
                         return ((moveCalcDir.getDirCalcProp() > 0) && (beforMoveCalcDir.getDirCalcProp() == 0));
                     });
             final int moveAmount = getMoveAmount(rotPercent, propSum);
             final AtomicInteger actMoveAmount = new AtomicInteger(moveAmount);
             // Move propability in given direction until "moveAmount" is zero.
             calcBreakLoopWrap2(notZeroPos, rotArr.length, rotDir, pos -> {
-                final WaveMoveCalcDir moveCalcDir = waveMoveDir.getMoveCalcDir(rotArr[pos]);
-                final WaveMoveCalcDir nextMoveCalcDir = waveMoveDir.getMoveCalcDir(rotArr[wrap(pos + rotDir, rotArr.length)]);
+                final WaveMoveCalcDir moveCalcDir = newWaveMoveDir.getMoveCalcDir(rotArr[pos]);
+                final WaveMoveCalcDir nextMoveCalcDir = newWaveMoveDir.getMoveCalcDir(rotArr[wrap(pos + rotDir, rotArr.length)]);
                 final int prop = moveCalcDir.getDirCalcProp();
                 final int newProp, propDif;
                 if (prop <= actMoveAmount.get()) {
@@ -115,7 +120,11 @@ public class WaveRotationService {
                 }
                 return actMoveAmount.get() == 0;
             });
+        } else {
+            // No outputs to rotate.
+            newWaveMoveDir = waveMoveDir;
         }
+        return newWaveMoveDir;
     }
 
     public static int getMoveAmount(int rotPercent, int propSum) {

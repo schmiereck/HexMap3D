@@ -12,9 +12,15 @@ public class Wave {
      */
     private int propCalcPos;
 
+    public Wave(final Event event, final WaveMoveDir waveMoveDir, final int propCalcPos) {
+        this.event = event;
+        this.waveMoveDir = waveMoveDir;
+        this.propCalcPos = propCalcPos;
+    }
+
     public Wave(final Event event, final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr, final int propCalcPos) {
         this.event = event;
-        this.waveMoveDir = new WaveMoveDir(dirCalcPos, moveCalcDirArr);
+        this.waveMoveDir = WaveMoveDirService.createWaveMoveDir(dirCalcPos, moveCalcDirArr);
         this.propCalcPos = propCalcPos;
     }
 

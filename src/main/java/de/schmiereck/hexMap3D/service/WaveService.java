@@ -4,6 +4,12 @@ import java.util.stream.IntStream;
 
 public class WaveService {
 
+    public static Wave createWave(final Event event, final WaveMoveDir waveMoveDir, final int propCalcPos) {
+        final Wave newWave = new Wave(event, waveMoveDir, propCalcPos);
+        event.addWave(newWave);
+        return newWave;
+    }
+
     public static Wave createWave(final Event event, final WaveMoveCalcDir[] moveCalcDirArr) {
         final Wave newWave = new Wave(event, 0, moveCalcDirArr, 0);
         event.addWave(newWave);

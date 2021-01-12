@@ -26,7 +26,7 @@ public class Main {
         {
             final Event particleEvent = new Event(engine, 1);
             final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-            Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
+            Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = WaveMoveCalcDirService.createWaveMoveCalcDir(0, 0));
             final int x, y, z;
 
             //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(50);

@@ -10,21 +10,13 @@ import static de.schmiereck.hexMap3D.service.Engine.DIR_CALC_MAX_PROP;
 
 public class WaveMoveDir {
     private int dirCalcPos;
+    private WaveMoveCalcDir[] moveCalcDirArr;
     private int maxProp = 0;
-    private WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
 
-    public WaveMoveDir(final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr) {
+    public WaveMoveDir(final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr, final int maxProp) {
         this.dirCalcPos = dirCalcPos;
-        IntStream.range(0, moveCalcDirArr.length).forEach(pos -> {
-            this.moveCalcDirArr[pos] = new WaveMoveCalcDir(moveCalcDirArr[pos]);
-//            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
-//                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
-//            }
-            //this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcPropSum() + this.moveCalcDirArr[pos].getDirCalcProp());
-            if (this.moveCalcDirArr[pos].getDirCalcProp() > maxProp) {
-                this.maxProp = this.moveCalcDirArr[pos].getDirCalcProp();
-            }
-        });
+        this.moveCalcDirArr = moveCalcDirArr;
+        this.maxProp = maxProp;
     }
 
     public void setDir(final Cell.Dir dir, final int dirCalcProp) {
