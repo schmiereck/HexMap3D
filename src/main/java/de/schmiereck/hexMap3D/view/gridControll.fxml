@@ -12,20 +12,27 @@
         alignment="center"
         hgap="5"
         vgap="5"
-        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0" minWidth="0"
+        maxHeight="-Infinity" maxWidth="-Infinity"
+        minHeight="0" minWidth="0"
 >
   <padding><Insets top="5" right="5" bottom="5" left="5"/></padding>
   <gridLinesVisible>true</gridLinesVisible>
+  <!--==================================================================================================================
+    Control:
+  -->
   <Button
           text="Start"
-          onAction="#handleSubmitButtonAction"
-          GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"
+          onAction="#handleRunStepAction"
+          GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3"
   />
   <Button
           text="Step +1"
-          onAction="#handleSubmitButtonAction"
-          GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2"
+          onAction="#handleRunStepAction"
+          GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"
   />
+  <!--==================================================================================================================
+    Grid:
+  -->
   <Label
           text="Grid:"
           GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="3"
@@ -35,6 +42,9 @@
           onAction="#handleShowGridAction"
           GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.columnSpan="2"
   />
+  <!--==================================================================================================================
+    Waves:
+  -->
   <Label
           text="Reality Waves:"
           GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="3"
@@ -42,7 +52,7 @@
   <RadioButton
           fx:id="showAllWaveMoveCalcDirSum"
           text="All Outputs"
-          onAction="#showActualWaveMoveCalcDir"
+          onAction="#handleShowActualWaveMoveCalcDirAction"
           GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.columnSpan="2"
   >
     <toggleGroup>
@@ -52,7 +62,7 @@
   <RadioButton
           fx:id="showActualWaveMoveCalcDirSum"
           text="Next Output"
-          onAction="#showActualWaveMoveCalcDir"
+          onAction="#handleShowActualWaveMoveCalcDirAction"
           GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2"
   >
     <toggleGroup>
@@ -62,15 +72,39 @@
   <RadioButton
           fx:id="showAllWaveMoveCalcDirProp"
           text="All Props."
-          onAction="#showActualWaveMoveCalcDir"
+          onAction="#handleShowActualWaveMoveCalcDirAction"
           GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.columnSpan="2"
   >
     <toggleGroup>
       <fx:reference source="showWaveMoveCalc"/>
     </toggleGroup>
   </RadioButton>
+  <!--==================================================================================================================
+    Statistic:
+  -->
   <Label
           text="Statistic:"
           GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="3"
   />
+  <Label
+          text="Run time:"
+          GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.columnSpan="1"
+  />
+  <Label
+          fx:id="statisticCalcRunTimeLabel"
+          text="0"
+          GridPane.columnIndex="2" GridPane.rowIndex="9" GridPane.columnSpan="1"
+  />
+  <Label
+          text="Waves:"
+          GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.columnSpan="1"
+  />
+  <Label
+          fx:id="statisticWavesCountLabel"
+          text="0"
+          GridPane.columnIndex="2" GridPane.rowIndex="10" GridPane.columnSpan="1"
+  />
+  <!--==================================================================================================================
+
+  -->
 </GridPane>

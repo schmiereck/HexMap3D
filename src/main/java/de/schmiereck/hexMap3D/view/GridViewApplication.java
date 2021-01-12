@@ -31,6 +31,7 @@ public class GridViewApplication extends Application {
     private int ySizeGrid;
     private int zSizeGrid;
     private GridViewNodeSpace nodeSpace;
+    private GridViewModel gridViewModel;
 
     @FunctionalInterface
     public interface RunStepCallback {
@@ -44,6 +45,7 @@ public class GridViewApplication extends Application {
         this.ySizeGrid = ySizeGrid;
         this.zSizeGrid = zSizeGrid;
         this.nodeSpace = new GridViewNodeSpace(universe, xSizeGrid, ySizeGrid, zSizeGrid);
+        this.gridViewModel = new GridViewModel();
     }
 
     @Override
@@ -61,10 +63,12 @@ public class GridViewApplication extends Application {
         //-----------------------------------------------------------------------------
         //final Parent sampleGui = FXMLLoader.load(getClass().getResource("gridControll.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gridControll.fxml"));
-        final Parent sampleGui = loader.load();
+        final Parent gridControllGui = loader.load();
         final GridViewController gridViewController = loader.<GridViewController>getController();
-        gridViewController.init(this.runStepCallback, this);
+        gridViewController.init(this.runStepCallback, this, this.gridViewModel);
         //rootGroup.getChildren().add(sampleGui);
+
+        this.gridViewModel.setStatisticWavesCount("---1");
 
         //-----------------------------------------------------------------------------
         GridViewUtils.generateViewGrid(this.nodeSpace, rootGroup, xSizeGrid, ySizeGrid, zSizeGrid);
@@ -117,8 +121,8 @@ public class GridViewApplication extends Application {
         gridScene.setCamera(camera);
 
         final double w2 = 120;
-        final double h2 = 200;
-        final SubScene guiScene = new SubScene(sampleGui, w2, h2);
+        final double h2 = 300;
+        final SubScene guiScene = new SubScene(gridControllGui, w2, h2);
 
         final double w3 = 10.0D;
         final HBox root = new HBox(w3);
@@ -190,5 +194,8 @@ public class GridViewApplication extends Application {
 
     public void updateReality() {
         this.nodeSpace.updateReality();
+
+        this.gridViewModel.setStatisticWavesCount(Integer.toString(this.universe.getStatisticWaveCount()));
+        this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", this.universe.getStatisticCalcRunTime() / 1000.0F));
     }
 }

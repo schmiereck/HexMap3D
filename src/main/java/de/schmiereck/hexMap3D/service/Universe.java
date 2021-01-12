@@ -12,6 +12,8 @@ public class Universe {
     private final Cell[][][] grid;
     private final RealityCell[][][] realityCellGrid;
     private int calcPos = 0;
+    private int statisticWaveCount = 0;
+    private long statisticCalcRunTime = 0;
 
     public enum ShowWaveMoveCalc {
         ShowActualWaveMoveCalcDirSum,
@@ -80,6 +82,7 @@ public class Universe {
     }
 
     public void calcReality() {
+        this.statisticWaveCount = 0;
         forEachCell((final int xPos, final int yPos, final int zPos) -> {
             final RealityCell realityCell = this.getRealityCell(xPos, yPos, zPos);
             final Cell cell = this.getCell(xPos, yPos, zPos);
@@ -96,6 +99,7 @@ public class Universe {
 
             final int[] outputs = realityCell.getOutputs();
             cell.getWaveListStream().forEach(wave -> {
+                this.statisticWaveCount++;
                 Arrays.stream(Cell.Dir.values()).forEach(dir -> {
                     outputs[dir.dir()] = 0;
                 });
@@ -161,5 +165,17 @@ public class Universe {
 
     public void setShowGrid(final boolean showGrid) {
         this.showGrid = showGrid;
+    }
+
+    public int getStatisticWaveCount() {
+        return this.statisticWaveCount;
+    }
+
+    public void setStatisticCalcRunTime(final long calcRunTime) {
+        this.statisticCalcRunTime = calcRunTime;
+    }
+
+    public long getStatisticCalcRunTime() {
+        return this.statisticCalcRunTime;
     }
 }

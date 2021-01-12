@@ -220,7 +220,7 @@ class WaveRotationServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-    void createMoveRotatedWaveMiddle0PositiveOneRound() {
+    void createMoveRotatedWave25PositiveOneRound() {
         // Arrange
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
@@ -239,6 +239,10 @@ class WaveRotationServiceTest {
         final Wave newWave2 = WaveRotationService.createMoveRotatedWave(newWave1, xRotPercent, yRotPercent, zRotPercent);
         final Wave newWave3 = WaveRotationService.createMoveRotatedWave(newWave2, xRotPercent, yRotPercent, zRotPercent);
         final Wave newWave4 = WaveRotationService.createMoveRotatedWave(newWave3, xRotPercent, yRotPercent, zRotPercent);
+        final Wave newWave5 = WaveRotationService.createMoveRotatedWave(newWave4, xRotPercent, yRotPercent, zRotPercent);
+        final Wave newWave6 = WaveRotationService.createMoveRotatedWave(newWave5, xRotPercent, yRotPercent, zRotPercent);
+        final Wave newWave7 = WaveRotationService.createMoveRotatedWave(newWave6, xRotPercent, yRotPercent, zRotPercent);
+        final Wave newWave8 = WaveRotationService.createMoveRotatedWave(newWave7, xRotPercent, yRotPercent, zRotPercent);
 
         // Assert
         final int expectedProps1[][] = {
@@ -265,6 +269,30 @@ class WaveRotationServiceTest {
                 {     0,    100,    0,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
         };
         assertWaveProps(newWave4, expectedProps4);
+        final int expectedProps5[][] = {
+                {     0,    75,    25,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                { 0,   75,    25,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    75,    25,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
+        };
+        assertWaveProps(newWave5, expectedProps5);
+        final int expectedProps6[][] = {
+                {     0,    50,    50,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                { 0,   50,    50,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    50,    50,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
+        };
+        assertWaveProps(newWave6, expectedProps6);
+        final int expectedProps7[][] = {
+                {     0,    25,    75,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                { 0,   25,    75,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    25,    75,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
+        };
+        assertWaveProps(newWave7, expectedProps7);
+        final int expectedProps8[][] = {
+                {     0,    0,    100,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                { 0,   0,    100,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    100,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
+        };
+        assertWaveProps(newWave8, expectedProps8);
     }
 
     private void assertWaveProps(Wave newWave, int[][] expectedProps) {

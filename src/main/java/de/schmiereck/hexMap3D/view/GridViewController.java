@@ -4,19 +4,34 @@ import java.util.Objects;
 
 import de.schmiereck.hexMap3D.service.Universe;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 
 public class GridViewController {
     private GridViewApplication gridViewApplication;
     private GridViewApplication.RunStepCallback runStepCallback;
+    private GridViewModel gridViewModel;
 
-    public void init(final GridViewApplication.RunStepCallback runStepCallback, final GridViewApplication gridViewApplication) {
+    @FXML
+    private Label statisticWavesCountLabel;
+
+    @FXML
+    private Label statisticCalcRunTimeLabel;
+
+    public void init(final GridViewApplication.RunStepCallback runStepCallback, final GridViewApplication gridViewApplication,
+                     final GridViewModel gridViewModel) {
         this.runStepCallback = runStepCallback;
         this.gridViewApplication = gridViewApplication;
+
+        this.gridViewModel = gridViewModel;
+
+        this.statisticWavesCountLabel.textProperty().bind(this.gridViewModel.statisticWavesCountProperty());
+        this.statisticCalcRunTimeLabel.textProperty().bind(this.gridViewModel.statisticCalcRunTimeProperty());
     }
 
-    public void handleSubmitButtonAction(final ActionEvent actionEvent) {
+    public void handleRunStepAction(final ActionEvent actionEvent) {
         if (Objects.nonNull(this.gridViewApplication)) {
             this.runStepCallback.run();
             this.gridViewApplication.updateReality();
@@ -32,7 +47,7 @@ public class GridViewController {
         }
     }
 
-    public void showActualWaveMoveCalcDir(ActionEvent actionEvent) {
+    public void handleShowActualWaveMoveCalcDirAction(final ActionEvent actionEvent) {
         if (Objects.nonNull(this.gridViewApplication)) {
             final RadioButton radioButton = (RadioButton)actionEvent.getSource();
             final Universe.ShowWaveMoveCalc showWaveMoveCalc;

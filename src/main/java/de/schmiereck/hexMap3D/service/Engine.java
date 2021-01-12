@@ -23,6 +23,8 @@ public class Engine {
     }
 
     public void run() {
+        final long startTime = System.currentTimeMillis();
+
         this.universe.clearReality();
 
         this.universe.forEachCell((final int xPos, final int yPos, final int zPos) -> {
@@ -42,6 +44,9 @@ public class Engine {
         this.universe.calcNext();
         this.universe.calcReality();
         this.runNr++;
+
+        final long endTime = System.currentTimeMillis();
+        this.universe.setStatisticCalcRunTime((endTime - startTime));
     }
 
     private boolean calcOnlyActualWaveMove = true;
