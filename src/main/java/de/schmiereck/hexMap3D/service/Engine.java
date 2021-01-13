@@ -46,7 +46,8 @@ public class Engine {
         this.runNr++;
 
         final long endTime = System.currentTimeMillis();
-        this.universe.setStatisticCalcRunTime((endTime - startTime));
+        this.universe.setStatisticCalcRunTime(endTime - startTime);
+        this.universe.setStatisticCalcStepCount(this.runNr);
     }
 
     private boolean calcOnlyActualWaveMove = true;

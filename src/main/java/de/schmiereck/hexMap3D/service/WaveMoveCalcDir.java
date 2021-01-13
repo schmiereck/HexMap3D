@@ -1,5 +1,7 @@
 package de.schmiereck.hexMap3D.service;
 
+import java.util.Arrays;
+
 public class WaveMoveCalcDir {
     /**
      * Probability of the wave going in this direction.
@@ -42,5 +44,15 @@ public class WaveMoveCalcDir {
     @Override
     public String toString() {
         return "{prop:" + this.dirCalcProp + ", sum:" + this.dirCalcPropSum + "}";
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        final WaveMoveCalcDir entry = (WaveMoveCalcDir) obj;
+        return this.dirCalcProp == entry.dirCalcProp &&
+                this.dirCalcPropSum == entry.dirCalcPropSum;
     }
 }

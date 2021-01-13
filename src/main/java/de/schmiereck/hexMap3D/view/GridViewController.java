@@ -20,6 +20,9 @@ public class GridViewController {
     @FXML
     private Label statisticCalcRunTimeLabel;
 
+    @FXML
+    private Label statisticCalcStepCountLabel;
+
     public void init(final GridViewApplication.RunStepCallback runStepCallback, final GridViewApplication gridViewApplication,
                      final GridViewModel gridViewModel) {
         this.runStepCallback = runStepCallback;
@@ -29,6 +32,7 @@ public class GridViewController {
 
         this.statisticWavesCountLabel.textProperty().bind(this.gridViewModel.statisticWavesCountProperty());
         this.statisticCalcRunTimeLabel.textProperty().bind(this.gridViewModel.statisticCalcRunTimeProperty());
+        this.statisticCalcStepCountLabel.textProperty().bind(this.gridViewModel.statisticCalcStepCountProperty());
     }
 
     public void handleRunStepAction(final ActionEvent actionEvent) {

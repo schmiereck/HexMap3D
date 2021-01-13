@@ -87,7 +87,7 @@
           GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="3"
   />
   <Label
-          text="Run time:"
+          text="Run time Step:"
           GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.columnSpan="1"
   />
   <Label
@@ -96,13 +96,22 @@
           GridPane.columnIndex="2" GridPane.rowIndex="9" GridPane.columnSpan="1"
   />
   <Label
-          text="Waves:"
+          text="Step count:"
           GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.columnSpan="1"
+  />
+  <Label
+          fx:id="statisticCalcStepCountLabel"
+          text="0"
+          GridPane.columnIndex="2" GridPane.rowIndex="10" GridPane.columnSpan="1"
+  />
+  <Label
+          text="Waves:"
+          GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.columnSpan="1"
   />
   <Label
           fx:id="statisticWavesCountLabel"
           text="0"
-          GridPane.columnIndex="2" GridPane.rowIndex="10" GridPane.columnSpan="1"
+          GridPane.columnIndex="2" GridPane.rowIndex="11" GridPane.columnSpan="1"
   />
   <!--==================================================================================================================
 

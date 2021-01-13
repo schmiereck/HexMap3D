@@ -197,5 +197,6 @@ public class GridViewApplication extends Application {
 
         this.gridViewModel.setStatisticWavesCount(Integer.toString(this.universe.getStatisticWaveCount()));
         this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", this.universe.getStatisticCalcRunTime() / 1000.0F));
+        this.gridViewModel.setStatisticCalcStepCount(Long.toString(this.universe.getStatisticCalcStepCount()));
     }
 }

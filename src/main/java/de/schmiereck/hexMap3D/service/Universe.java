@@ -13,6 +13,7 @@ public class Universe {
     private final RealityCell[][][] realityCellGrid;
     private int calcPos = 0;
     private int statisticWaveCount = 0;
+    private long statisticCalcStepCount = 0;
     private long statisticCalcRunTime = 0;
 
     public enum ShowWaveMoveCalc {
@@ -169,6 +170,14 @@ public class Universe {
 
     public int getStatisticWaveCount() {
         return this.statisticWaveCount;
+    }
+
+    public void setStatisticCalcStepCount(final long calcStepCount) {
+        this.statisticCalcStepCount = calcStepCount;
+    }
+
+    public long getStatisticCalcStepCount() {
+        return this.statisticCalcStepCount;
     }
 
     public void setStatisticCalcRunTime(final long calcRunTime) {

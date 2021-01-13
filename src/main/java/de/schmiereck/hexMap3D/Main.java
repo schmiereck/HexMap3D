@@ -11,11 +11,12 @@ import static java.lang.String.format;
 
 public class Main {
 
+    public static final int xSizeGrid = 24;//16;
+    public static final int ySizeGrid = 24;//16;
+    public static final int zSizeGrid = 24;//16;
+
     public static void main(String[] args) {
         //-----------------------------------------------------------------------------
-        final int xSizeGrid = 16;
-        final int ySizeGrid = 16;
-        final int zSizeGrid = 16;
 
         //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);

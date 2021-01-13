@@ -2,6 +2,7 @@ package de.schmiereck.hexMap3D.service;
 
 import de.schmiereck.hexMap3D.GridUtils;
 
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static de.schmiereck.hexMap3D.MapLogicUtils.calcBreakLoopWrap;
@@ -28,49 +29,103 @@ public class WaveRotationService {
               {  1,  0, -1 },
             };
 
+    public static boolean useRotateMoveDirCache = true;
+
+    private static class RotateMoveDirCacheEntry {
+        final WaveMoveDir inWaveMoveDir;
+        WaveMoveDir outWaveMoveDir;
+        final int xRotPercent;
+        final int yRotPercent;
+        final int zRotPercent;
+
+        private RotateMoveDirCacheEntry(final WaveMoveDir inWaveMoveDir, final int xRotPercent, final int yRotPercent, final int zRotPercent) {
+            this.inWaveMoveDir = inWaveMoveDir;
+            this.xRotPercent = xRotPercent;
+            this.yRotPercent = yRotPercent;
+            this.zRotPercent = zRotPercent;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.inWaveMoveDir, this.xRotPercent, this.yRotPercent, this.zRotPercent);
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (this.getClass() != obj.getClass()) return false;
+            final RotateMoveDirCacheEntry entry = (RotateMoveDirCacheEntry) obj;
+            return this.xRotPercent == entry.xRotPercent &&
+                    this.yRotPercent == entry.yRotPercent &&
+                    this.zRotPercent == entry.zRotPercent &&
+                    (this.inWaveMoveDir.equals(entry.inWaveMoveDir));
+        }
+    }
+
+    private static final Map<RotateMoveDirCacheEntry, RotateMoveDirCacheEntry> rotateMoveDirCacheSet = new HashMap<>();
+
     protected static Wave createMoveRotatedWave(final Wave sourceWave,
                                                 final int xRotPercent,
                                                 final int yRotPercent,
                                                 final int zRotPercent) {
         final Wave newWave;
 
-        // Rotate all move outputs in their rotation planes in the given direction.
-        // Move the output from cross node or to cross node.
-        // If a rotation plane contains only one node create a new node in the given direction.
-        // If the cross node is empty create a new cross node in the given direction.
-
         final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
-        //final WaveMoveDir newWaveMoveDir = newWave.getWaveMoveDir();
-        WaveMoveDir newWaveMoveDir = waveMoveDir;
+        final WaveMoveDir newWaveMoveDir;
 
-        if (xRotPercent != 0) {
-            for (int axisPos = 0; axisPos < GridUtils.xRotArr.length; axisPos++) {
-                final Cell.Dir[] rotArr = GridUtils.xRotArr[axisPos];
-                newWaveMoveDir = calcRotationOnAxis(xRotPercent, newWaveMoveDir, rotArr);
+        if (useRotateMoveDirCache) {
+            final RotateMoveDirCacheEntry newRotateMoveDirCacheEntry = new RotateMoveDirCacheEntry(waveMoveDir, xRotPercent, yRotPercent, zRotPercent);
+            final RotateMoveDirCacheEntry rotateMoveDirCacheEntry = rotateMoveDirCacheSet.get(newRotateMoveDirCacheEntry);
+            if (rotateMoveDirCacheEntry != null) {
+                newWaveMoveDir = rotateMoveDirCacheEntry.outWaveMoveDir;
+            } else {
+                newWaveMoveDir = createMoveRotatedWaveMoveDir(waveMoveDir, xRotPercent, yRotPercent, zRotPercent);
+                newRotateMoveDirCacheEntry.outWaveMoveDir = newWaveMoveDir;
+                rotateMoveDirCacheSet.put(newRotateMoveDirCacheEntry, newRotateMoveDirCacheEntry);
             }
+        } else {
+            newWaveMoveDir = createMoveRotatedWaveMoveDir(waveMoveDir, xRotPercent, yRotPercent, zRotPercent);
         }
-        if (yRotPercent != 0) {
-            for (int axisPos = 0; axisPos < GridUtils.yRotArr.length; axisPos++) {
-                final Cell.Dir[] rotArr = GridUtils.yRotArr[axisPos];
-                newWaveMoveDir = calcRotationOnAxis(yRotPercent, newWaveMoveDir, rotArr);
-            }
-        }
-        if (zRotPercent != 0) {
-            for (int axisPos = 0; axisPos < GridUtils.zRotArr.length; axisPos++) {
-                final Cell.Dir[] rotArr = GridUtils.zRotArr[axisPos];
-                newWaveMoveDir = calcRotationOnAxis(zRotPercent, newWaveMoveDir, rotArr);
-            }
-        }
-
-        newWaveMoveDir.adjustMaxProp();
 
         newWave = WaveService.createWave(sourceWave.getEvent(), newWaveMoveDir, sourceWave.getPropCalcPos());
 
         return newWave;
     }
 
-    private static WaveMoveDir calcRotationOnAxis(final int signedRotPercent, final WaveMoveDir waveMoveDir, final Cell.Dir[] rotArr) {
-        final WaveMoveDir newWaveMoveDir;
+    private static WaveMoveDir createMoveRotatedWaveMoveDir(final WaveMoveDir waveMoveDir, final int xRotPercent, final int yRotPercent, final int zRotPercent) {
+        // Rotate all move outputs in their rotation planes in the given direction.
+        // Move the output from cross node or to cross node.
+        // If a rotation plane contains only one node create a new node in the given direction.
+        // If the cross node is empty create a new cross node in the given direction.
+
+        final WaveMoveDir newWaveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir);
+
+        if (xRotPercent != 0) {
+            for (int axisPos = 0; axisPos < GridUtils.xRotArr.length; axisPos++) {
+                final Cell.Dir[] rotArr = GridUtils.xRotArr[axisPos];
+                calcRotationOnAxis(xRotPercent, newWaveMoveDir, rotArr);
+            }
+        }
+        if (yRotPercent != 0) {
+            for (int axisPos = 0; axisPos < GridUtils.yRotArr.length; axisPos++) {
+                final Cell.Dir[] rotArr = GridUtils.yRotArr[axisPos];
+                calcRotationOnAxis(yRotPercent, newWaveMoveDir, rotArr);
+            }
+        }
+        if (zRotPercent != 0) {
+            for (int axisPos = 0; axisPos < GridUtils.zRotArr.length; axisPos++) {
+                final Cell.Dir[] rotArr = GridUtils.zRotArr[axisPos];
+                calcRotationOnAxis(zRotPercent, newWaveMoveDir, rotArr);
+            }
+        }
+
+        newWaveMoveDir.adjustMaxProp();
+
+        return newWaveMoveDir;
+    }
+
+    private static void calcRotationOnAxis(final int signedRotPercent, final WaveMoveDir newWaveMoveDir, final Cell.Dir[] rotArr) {
         final int rotDir;
         final int rotStartPos;
         final int rotEndPos;
@@ -86,9 +141,8 @@ public class WaveRotationService {
             rotStartPos = rotArr.length - 1;
             rotEndPos = 0;
         }
-        final int propSum = calcPropSum(waveMoveDir, rotArr);
+        final int propSum = calcPropSum(newWaveMoveDir, rotArr);
         if (propSum > 0) {
-            newWaveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir);
             // Search last zero:
             final int notZeroPos =
                     calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
@@ -122,9 +176,7 @@ public class WaveRotationService {
             });
         } else {
             // No outputs to rotate.
-            newWaveMoveDir = waveMoveDir;
         }
-        return newWaveMoveDir;
     }
 
     public static int getMoveAmount(int rotPercent, int propSum) {

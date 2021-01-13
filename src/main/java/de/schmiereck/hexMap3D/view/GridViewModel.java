@@ -6,6 +6,7 @@ import javafx.beans.property.StringProperty;
 public class GridViewModel {
     private final StringProperty statisticWavesCount = new SimpleStringProperty("None");
     private final StringProperty statisticCalcRunTime = new SimpleStringProperty("None");
+    private final StringProperty statisticCalcStepCount = new SimpleStringProperty("None");
 
     public StringProperty statisticWavesCountProperty() {
         return this.statisticWavesCount;
@@ -29,5 +30,17 @@ public class GridViewModel {
 
     public final void setStatisticCalcRunTime(final String statisticCalcRunTime) {
         statisticCalcRunTimeProperty().set(statisticCalcRunTime);
+    }
+
+    public StringProperty statisticCalcStepCountProperty() {
+        return this.statisticCalcStepCount;
+    }
+
+    public final String getStatisticCalcStepCount() {
+        return statisticCalcStepCountProperty().get();
+    }
+
+    public final void setStatisticCalcStepCount(final String statisticCalcStepCount) {
+        statisticCalcStepCountProperty().set(statisticCalcStepCount);
     }
 }

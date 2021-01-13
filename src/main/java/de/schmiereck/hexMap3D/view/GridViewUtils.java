@@ -1,6 +1,7 @@
 package de.schmiereck.hexMap3D.view;
 
 import de.schmiereck.hexMap3D.GridUtils;
+import de.schmiereck.hexMap3D.Main;
 import de.schmiereck.hexMap3D.service.Cell;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point3D;
@@ -18,7 +19,7 @@ import static java.lang.String.format;
 
 public class GridViewUtils {
 
-    public final static double viewGridStepA = 16.0D * 4.0D;
+    public final static double viewGridStepA = (16.0D) * 4.0D * (16.0D / Main.xSizeGrid);
     public final static double viewGridStepA2 = viewGridStepA / 2.0D;
     public final static double viewGridStepA4 = viewGridStepA / 4.0D;
     public final static double viewGridStepH = viewGridStepA*Math.sqrt(3.0D)/2.0D;

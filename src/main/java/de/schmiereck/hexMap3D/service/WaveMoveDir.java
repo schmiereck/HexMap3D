@@ -104,4 +104,15 @@ public class WaveMoveDir {
     public void setMaxProp(final int maxProp) {
         this.maxProp = maxProp;
     }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        final WaveMoveDir entry = (WaveMoveDir) obj;
+        return this.dirCalcPos == entry.dirCalcPos &&
+                this.maxProp == entry.maxProp &&
+                (Arrays.equals(this.moveCalcDirArr, entry.moveCalcDirArr));
+    }
 }
