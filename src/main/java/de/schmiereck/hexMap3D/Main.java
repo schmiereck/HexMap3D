@@ -11,6 +11,8 @@ import static java.lang.String.format;
 
 public class Main {
 
+    public static final boolean useParallel = true;
+
     public static final int xSizeGrid = 24;//16;
     public static final int ySizeGrid = 24;//16;
     public static final int zSizeGrid = 24;//16;

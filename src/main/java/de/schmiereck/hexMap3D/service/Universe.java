@@ -1,5 +1,7 @@
 package de.schmiereck.hexMap3D.service;
 
+import de.schmiereck.hexMap3D.Main;
+
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -50,7 +52,8 @@ public class Universe {
     }
 
     public void forEachCell(final EachCellCallback eachCellCallback) {
-        IntStream.range(0, this.zUniverseSize).
+        final IntStream zRangeStream = IntStream.range(0, this.zUniverseSize);
+        (Main.useParallel ? zRangeStream.parallel() : zRangeStream).
             forEach((final int zPos) ->
                 IntStream.range(0, this.yUniverseSize).
                     forEach((final int yPos) ->

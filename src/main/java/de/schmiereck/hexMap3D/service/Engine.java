@@ -30,15 +30,15 @@ public class Engine {
         this.universe.forEachCell((final int xPos, final int yPos, final int zPos) -> {
             final Cell targetCell = this.universe.getCell(xPos, yPos, zPos);
             // Stay (Barrier):
-            {
-                targetCell.getWaveListStream().forEach((targetWave) -> {
-                    final Event targetEvent = targetWave.getEvent();
-                    // Target-Cell-Wave is a Barrier?
-                    if (targetEvent.getEventType() == 0) {
-                        targetCell.addWave(targetWave);
-                    }
-                });
-            }
+            //{
+            //    targetCell.getWaveListStream().forEach((targetWave) -> {
+            //        final Event targetEvent = targetWave.getEvent();
+            //        // Target-Cell-Wave is a Barrier?
+            //        if (targetEvent.getEventType() == 0) {
+            //            targetCell.addWave(targetWave);
+            //         }
+            //    });
+            //}
             calcNewStateForTargetCell(xPos, yPos, zPos, targetCell);
         });
         this.universe.calcNext();
