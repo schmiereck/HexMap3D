@@ -1,24 +1,23 @@
 package de.schmiereck.hexMap3D.service;
 
-import java.util.stream.IntStream;
-
 public class WaveService {
 
-    public static Wave createWave(final Event event, final WaveMoveDir waveMoveDir, final int propCalcPos) {
-        final Wave newWave = new Wave(event, waveMoveDir, propCalcPos);
+    public static Wave createNextMovedWave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos) {
+        final Wave newWave = new Wave(event, waveMoveCalc, rotationCalcPos);
         event.addWave(newWave);
         return newWave;
     }
 
-    public static Wave createWave(final Event event, final WaveMoveCalcDir[] moveCalcDirArr) {
+    public static Wave createNextMovedWave(final Event event, final WaveMoveCalcDir[] moveCalcDirArr) {
         final Wave newWave = new Wave(event, 0, moveCalcDirArr, 0);
         event.addWave(newWave);
         return newWave;
     }
 
-    public static Wave createWave(final Wave wave) {
+    public static Wave createNextMovedWave(final Wave wave) {
         final Event event = wave.getEvent();
-        final Wave newWave = new Wave(event, wave.nextDirCalcPos(), wave.getMoveCalcDirArr(), wave.nextPropCalcPos());
+        final WaveMoveCalc waveMoveCalc = wave.getWaveMoveCalc();
+        final Wave newWave = new Wave(event, waveMoveCalc.nextDirCalcPos(), waveMoveCalc.getMoveCalcDirArr(), wave.nextRotationCalcPos());
         event.addWave(newWave);
         return newWave;
     }

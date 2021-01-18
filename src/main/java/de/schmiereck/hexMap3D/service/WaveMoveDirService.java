@@ -4,8 +4,7 @@ import java.util.stream.IntStream;
 
 public class WaveMoveDirService {
 
-    public static WaveMoveDir createWaveMoveDir(final int givenDirCalcPos, final WaveMoveCalcDir[] givenMoveCalcDirArr) {
-        final int dirCalcPos = givenDirCalcPos;
+    public static WaveMoveDir createWaveMoveDir(final WaveMoveCalcDir[] givenMoveCalcDirArr) {
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         int maxProp = 0;
 
@@ -16,12 +15,11 @@ public class WaveMoveDirService {
                 maxProp = moveCalcDirArr[pos].getDirCalcProp();
             }
         }
-        return new WaveMoveDir(dirCalcPos, moveCalcDirArr, maxProp);
+        return new WaveMoveDir(moveCalcDirArr, maxProp);
     }
 
     public static WaveMoveDir createWaveMoveDir(final WaveMoveDir waveMoveDir) {
         final WaveMoveCalcDir[] givenMoveCalcDirArr = waveMoveDir.getMoveCalcDirArr();
-        final int dirCalcPos = waveMoveDir.getDirCalcPos();
         final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
         final int maxProp = waveMoveDir.getMaxProp();
 
@@ -29,6 +27,10 @@ public class WaveMoveDirService {
         for (int pos = 0; pos < moveCalcDirArr.length; pos++) {
             moveCalcDirArr[pos] = WaveMoveCalcDirService.createWaveMoveCalcDir(givenMoveCalcDirArr[pos]);
         }
-        return new WaveMoveDir(dirCalcPos, moveCalcDirArr, maxProp);
+        return new WaveMoveDir(moveCalcDirArr, maxProp);
+    }
+
+    public static WaveMoveCalc createWaveMoveCalc(final int dirCalcPos, final WaveMoveDir waveMoveDir) {
+        return new WaveMoveCalc(dirCalcPos, waveMoveDir);
     }
 }

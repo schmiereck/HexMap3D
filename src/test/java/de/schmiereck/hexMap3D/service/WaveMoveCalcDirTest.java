@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
 
-public class WaveMoveDirTest {
+public class WaveMoveCalcDirTest {
 
     @org.junit.jupiter.api.Test
     public void test1() {

@@ -7,14 +7,9 @@ public class WaveMoveCalcDir {
      * Probability of the wave going in this direction.
      */
     private int dirCalcProp;
-    /**
-     * Counter between 0 and {@link #dirCalcProp}.
-     */
-    private int dirCalcPropSum;
 
-    public WaveMoveCalcDir(final int dirCalcProp, final int dirCalcPropSum) {
+    public WaveMoveCalcDir(final int dirCalcProp) {
         this.dirCalcProp = dirCalcProp;
-        this.dirCalcPropSum = dirCalcPropSum;
     }
 
     public int getDirCalcProp() {
@@ -29,21 +24,9 @@ public class WaveMoveCalcDir {
         this.dirCalcProp += dirCalcProp;
     }
 
-    public int getDirCalcPropSum() {
-        return this.dirCalcPropSum;
-    }
-
-    public void setDirCalcPropSum(final int dirCalcPropSum) {
-        this.dirCalcPropSum = dirCalcPropSum;
-    }
-
-    public void addDirCalcPropSum(final int dirCalcPropSum) {
-        this.dirCalcPropSum += dirCalcPropSum;
-    }
-
     @Override
     public String toString() {
-        return "{prop:" + this.dirCalcProp + ", sum:" + this.dirCalcPropSum + "}";
+        return "{prop:" + this.dirCalcProp + "";
     }
 
     @Override
@@ -52,7 +35,6 @@ public class WaveMoveCalcDir {
         if (obj == null) return false;
         if (this.getClass() != obj.getClass()) return false;
         final WaveMoveCalcDir entry = (WaveMoveCalcDir) obj;
-        return this.dirCalcProp == entry.dirCalcProp &&
-                this.dirCalcPropSum == entry.dirCalcPropSum;
+        return this.dirCalcProp == entry.dirCalcProp;
     }
 }

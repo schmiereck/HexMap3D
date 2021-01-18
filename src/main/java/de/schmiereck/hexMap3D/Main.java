@@ -52,7 +52,7 @@ public class Main {
             moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(100);
             x=0; y=8; z=8;
 
-            final Wave wave = WaveService.createWave(particleEvent, moveCalcDirArr);
+            final Wave wave = WaveService.createNextMovedWave(particleEvent, moveCalcDirArr);
             wave.getWaveMoveDir().adjustMaxProp();
             wave.calcActualWaveMoveCalcDir();
             universe.addEvent(x, y, z, particleEvent);
