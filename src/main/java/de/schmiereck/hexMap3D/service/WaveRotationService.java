@@ -29,7 +29,7 @@ public class WaveRotationService {
               {  1,  0, -1 },
             };
 
-    public static boolean useRotateMoveDirCache = true;
+    public static boolean useRotateMoveDirCache = false;
 
     private static class RotateMoveDirCacheEntry {
         final WaveMoveDir inWaveMoveDir;
@@ -71,27 +71,34 @@ public class WaveRotationService {
                                                 final int zRotPercent) {
         final Wave newWave;
 
-        final WaveMoveCalc waveMoveCalc = sourceWave.getWaveMoveCalc();
-        final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
+        final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
+        final WaveMoveDir sourceWaveMoveDir = sourceWaveMoveCalc.getWaveMoveDir();
         final WaveMoveDir newWaveMoveDir;
 
         if (useRotateMoveDirCache) {
-            final RotateMoveDirCacheEntry newRotateMoveDirCacheEntry = new RotateMoveDirCacheEntry(waveMoveDir, xRotPercent, yRotPercent, zRotPercent);
+            final RotateMoveDirCacheEntry newRotateMoveDirCacheEntry = new RotateMoveDirCacheEntry(sourceWaveMoveDir, xRotPercent, yRotPercent, zRotPercent);
             final RotateMoveDirCacheEntry rotateMoveDirCacheEntry = rotateMoveDirCacheSet.get(newRotateMoveDirCacheEntry);
             if (rotateMoveDirCacheEntry != null) {
                 newWaveMoveDir = rotateMoveDirCacheEntry.outWaveMoveDir;
             } else {
-                newWaveMoveDir = createMoveRotatedWaveMoveDir(waveMoveDir, xRotPercent, yRotPercent, zRotPercent);
+                newWaveMoveDir = createMoveRotatedWaveMoveDir(sourceWaveMoveDir, xRotPercent, yRotPercent, zRotPercent);
                 newRotateMoveDirCacheEntry.outWaveMoveDir = newWaveMoveDir;
                 rotateMoveDirCacheSet.put(newRotateMoveDirCacheEntry, newRotateMoveDirCacheEntry);
             }
         } else {
-            newWaveMoveDir = createMoveRotatedWaveMoveDir(waveMoveDir, xRotPercent, yRotPercent, zRotPercent);
+            newWaveMoveDir = createMoveRotatedWaveMoveDir(sourceWaveMoveDir, xRotPercent, yRotPercent, zRotPercent);
         }
 
-        newWave = WaveService.createNextMovedWave(sourceWave.getEvent(),
-                                                  WaveMoveDirService.createWaveMoveCalc(waveMoveCalc.getDirCalcPos(), newWaveMoveDir),
-                                                  sourceWave.getRotationCalcPos());
+        final WaveMoveCalc newWaveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(sourceWaveMoveCalc.nextDirCalcPos(), newWaveMoveDir, sourceWaveMoveCalc.getDirCalcPropSumArr());
+        //final WaveMoveCalc newWaveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(sourceWaveMoveCalc);
+
+        // Copy DirCalcPropSums ?
+        // and
+        // if (newProp == 0) {
+        //     moveCalcDir.setDirCalcPropSum(0);
+        // } ?
+
+        newWave = WaveService.createNextMovedWave(sourceWave.getEvent(), newWaveMoveCalc, sourceWave.getRotationCalcPos());
 
         return newWave;
     }
@@ -172,9 +179,6 @@ public class WaveRotationService {
                 }
                 moveCalcDir.setDirCalcProp(newProp);
                 nextMoveCalcDir.addDirCalcProp(propDif);
-                if (newProp == 0) {
-                    moveCalcDir.setDirCalcPropSum(0);
-                }
                 return actMoveAmount.get() == 0;
             });
         } else {

@@ -8,23 +8,22 @@ public class WaveMoveCalcDirTest {
 
     @org.junit.jupiter.api.Test
     public void test1() {
-        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
-        moveCalcDirArr[OR_P.dir()].setDirCalcProp(75);
-        moveCalcDirArr[LG_N.dir()].setDirCalcProp(25);
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
+        waveMoveDir.setDirCalcProp(OR_P, 75);
+        waveMoveDir.setDirCalcProp(LG_N, 25);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
-        WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustMaxProp();
-        waveMoveDir.calcActualWaveMoveCalcDir();
+        WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
+        waveMoveCalc.adjustMaxProp();
+        waveMoveCalc.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 100; c++) {
-            printWaveMoveDir(c, waveMoveDir, 6);
+            printWaveMoveDir(c, waveMoveCalc, 6);
 
-            waveMoveDir.calcActualDirMoved();
-            waveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir.nextDirCalcPos(), waveMoveDir.getMoveCalcDirArr());
-            waveMoveDir.calcActualWaveMoveCalcDir();
-            stat[waveMoveDir.getDirCalcPos()]++;
+            waveMoveCalc.calcActualDirMoved();
+            waveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(waveMoveCalc);
+            waveMoveCalc.calcActualWaveMoveCalcDir();
+            stat[waveMoveCalc.getDirCalcPos()]++;
         }
 
         System.out.println("\nstat: " + Arrays.toString(stat));
@@ -32,112 +31,107 @@ public class WaveMoveCalcDirTest {
 
     @org.junit.jupiter.api.Test
     public void test2_1() {
-        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
-        moveCalcDirArr[OR_P.dir()].setDirCalcProp(40);
-        moveCalcDirArr[LG_N.dir()].setDirCalcProp(30);
-        moveCalcDirArr[DB_P.dir()].setDirCalcProp(30);
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
+        waveMoveDir.setDirCalcProp(OR_P, 40);
+        waveMoveDir.setDirCalcProp(LG_N, 30);
+        waveMoveDir.setDirCalcProp(DB_P, 30);
         int dirCalcPos = 0;
-        WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustMaxProp();
-        waveMoveDir.calcActualWaveMoveCalcDir();
+        WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
+        waveMoveCalc.adjustMaxProp();
+        waveMoveCalc.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 800; c++) {
-            printWaveMoveDir(c, waveMoveDir, 4);
+            printWaveMoveDir(c, waveMoveCalc, 4);
 
-            waveMoveDir.calcActualDirMoved();
-            waveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir.nextDirCalcPos(), waveMoveDir.getMoveCalcDirArr());
-            waveMoveDir.calcActualWaveMoveCalcDir();
+            waveMoveCalc.calcActualDirMoved();
+            waveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(waveMoveCalc);
+            waveMoveCalc.calcActualWaveMoveCalcDir();
         }
     }
 
     @org.junit.jupiter.api.Test
     public void test2_2() {
-        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
-        moveCalcDirArr[LG_N.dir()].setDirCalcProp(30);
-        moveCalcDirArr[OR_P.dir()].setDirCalcProp(40);
-        moveCalcDirArr[DB_P.dir()].setDirCalcProp(30);
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
+        waveMoveDir.setDirCalcProp(LG_N, 30);
+        waveMoveDir.setDirCalcProp(OR_P, 40);
+        waveMoveDir.setDirCalcProp(DB_P, 30);
         int dirCalcPos = 0;
-        WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustMaxProp();
-        waveMoveDir.calcActualWaveMoveCalcDir();
+        WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
+        waveMoveCalc.adjustMaxProp();
+        waveMoveCalc.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 800; c++) {
-            printWaveMoveDir(c, waveMoveDir, 4);
+            printWaveMoveDir(c, waveMoveCalc, 4);
 
-            waveMoveDir.calcActualDirMoved();
-            waveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir.nextDirCalcPos(), waveMoveDir.getMoveCalcDirArr());
-            waveMoveDir.calcActualWaveMoveCalcDir();
+            waveMoveCalc.calcActualDirMoved();
+            waveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(waveMoveCalc);
+            waveMoveCalc.calcActualWaveMoveCalcDir();
         }
     }
 
     @org.junit.jupiter.api.Test
     public void test3() {
-        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
-        moveCalcDirArr[OR_P.dir()].setDirCalcProp(87);
-        moveCalcDirArr[LG_N.dir()].setDirCalcProp(13);
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
+        waveMoveDir.setDirCalcProp(OR_P, 87);
+        waveMoveDir.setDirCalcProp(LG_N, 13);
         int dirCalcPos = 0;
-        WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustMaxProp();
-        waveMoveDir.calcActualWaveMoveCalcDir();
+        WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
+        waveMoveCalc.adjustMaxProp();
+        waveMoveCalc.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 800; c++) {
-            printWaveMoveDir(c, waveMoveDir, 7);
+            printWaveMoveDir(c, waveMoveCalc, 7);
 
-            waveMoveDir.calcActualDirMoved();
-            waveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir.nextDirCalcPos(), waveMoveDir.getMoveCalcDirArr());
-            waveMoveDir.calcActualWaveMoveCalcDir();
+            waveMoveCalc.calcActualDirMoved();
+            waveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(waveMoveCalc);
+            waveMoveCalc.calcActualWaveMoveCalcDir();
         }
     }
 
     @org.junit.jupiter.api.Test
     public void test4() {
-        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
-        //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(38);
-        //moveCalcDirArr[Cell.Dir.OR_N.dir()].setDirCalcProp(12);
-        //moveCalcDirArr[Cell.Dir.LG_P.dir()].setDirCalcProp(37);
-        //moveCalcDirArr[Cell.Dir.LG_N.dir()].setDirCalcProp(13);
-        moveCalcDirArr[OR_P.dir()].setDirCalcProp(40);
-        moveCalcDirArr[OR_N.dir()].setDirCalcProp(10);
-        moveCalcDirArr[LG_P.dir()].setDirCalcProp(29);//9 38 67 96
-        moveCalcDirArr[LG_N.dir()].setDirCalcProp(21);
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
+        //waveMoveDir.setDirCalcProp(Cell.Dir.OR_P, 38);
+        //waveMoveDir.setDirCalcProp(Cell.Dir.OR_N, 12);
+        //waveMoveDir.setDirCalcProp(Cell.Dir.LG_P, 37);
+        //waveMoveDir.setDirCalcProp(Cell.Dir.LG_N, 13);
+        waveMoveDir.setDirCalcProp(OR_P, 40);
+        waveMoveDir.setDirCalcProp(OR_N, 10);
+        waveMoveDir.setDirCalcProp(LG_P, 29);//9 38 67 96
+        waveMoveDir.setDirCalcProp(LG_N, 21);
         //int dirCalcPos = OR_N.dir(); // OR_N
         int dirCalcPos = OR_N.dir(); // OR_N
-        WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustMaxProp();
-        waveMoveDir.calcActualWaveMoveCalcDir();
+        WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
+        waveMoveCalc.adjustMaxProp();
+        waveMoveCalc.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 800; c++) {
-            printWaveMoveDir(c, waveMoveDir, 7);
+            printWaveMoveDir(c, waveMoveCalc, 7);
 
-            waveMoveDir.calcActualDirMoved();
-            waveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir.nextDirCalcPos(), waveMoveDir.getMoveCalcDirArr());
-            waveMoveDir.calcActualWaveMoveCalcDir();
+            waveMoveCalc.calcActualDirMoved();
+            waveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(waveMoveCalc);
+            waveMoveCalc.calcActualWaveMoveCalcDir();
         }
     }
 
     @org.junit.jupiter.api.Test
     public void test5() {
-        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
-        moveCalcDirArr[OR_P.dir()].setDirCalcProp(99);
-        moveCalcDirArr[LG_N.dir()].setDirCalcProp(1);
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
+        waveMoveDir.setDirCalcProp(OR_P, 99);
+        waveMoveDir.setDirCalcProp(LG_N, 1);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
-        WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustMaxProp();
-        waveMoveDir.calcActualWaveMoveCalcDir();
+        WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
+        waveMoveCalc.adjustMaxProp();
+        waveMoveCalc.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 100; c++) {
-            printWaveMoveDir(c, waveMoveDir, 10);
+            printWaveMoveDir(c, waveMoveCalc, 10);
 
-            waveMoveDir.calcActualDirMoved();
-            waveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir.nextDirCalcPos(), waveMoveDir.getMoveCalcDirArr());
-            waveMoveDir.calcActualWaveMoveCalcDir();
-            stat[waveMoveDir.getDirCalcPos()]++;
+            waveMoveCalc.calcActualDirMoved();
+            waveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(waveMoveCalc);
+            waveMoveCalc.calcActualWaveMoveCalcDir();
+            stat[waveMoveCalc.getDirCalcPos()]++;
         }
 
         System.out.println("\nstat: " + Arrays.toString(stat));
@@ -145,8 +139,7 @@ public class WaveMoveCalcDirTest {
 
     @org.junit.jupiter.api.Test
     public void test6() {
-        final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0, 0));
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
         //Caused by: java.lang.RuntimeException: Do not found next dirCalcPos:
         // [{prop:0, sum:0},
         // {prop:27, sum:34},
@@ -171,31 +164,31 @@ public class WaveMoveCalcDirTest {
         // {prop:0, sum:0},
         // {prop:2, sum:4}]
 
-        moveCalcDirArr[OR_P.dir()].setDirCalcProp(99);
-        moveCalcDirArr[LG_N.dir()].setDirCalcProp(1);
+        waveMoveDir.setDirCalcProp(OR_P, 99);
+        waveMoveDir.setDirCalcProp(LG_N, 1);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
-        WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(dirCalcPos, moveCalcDirArr);
-        waveMoveDir.adjustMaxProp();
-        waveMoveDir.calcActualWaveMoveCalcDir();
+        WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
+        waveMoveCalc.adjustMaxProp();
+        waveMoveCalc.calcActualWaveMoveCalcDir();
 
         for (int c = 0; c < 100; c++) {
-            printWaveMoveDir(c, waveMoveDir, 10);
+            printWaveMoveDir(c, waveMoveCalc, 10);
 
-            waveMoveDir.calcActualDirMoved();
-            waveMoveDir = WaveMoveDirService.createWaveMoveDir(waveMoveDir.nextDirCalcPos(), waveMoveDir.getMoveCalcDirArr());
-            waveMoveDir.calcActualWaveMoveCalcDir();
-            stat[waveMoveDir.getDirCalcPos()]++;
+            waveMoveCalc.calcActualDirMoved();
+            waveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(waveMoveCalc);
+            waveMoveCalc.calcActualWaveMoveCalcDir();
+            stat[waveMoveCalc.getDirCalcPos()]++;
         }
 
         System.out.println("\nstat: " + Arrays.toString(stat));
     }
 
-    private void printWaveMoveDir(int c, WaveMoveDir waveMoveDir, int i) {
-        final Cell.Dir actualMoveDir = waveMoveDir.getActualMoveDir();
-        final WaveMoveCalcDir actualWaveMoveCalcDir = waveMoveDir.getActualWaveMoveCalcDir();
+    private void printWaveMoveDir(int c, WaveMoveCalc waveMoveCalc, int i) {
+        final Cell.Dir actualMoveDir = waveMoveCalc.getActualMoveDir();
+        final WaveMoveCalcDir actualWaveMoveCalcDir = waveMoveCalc.getActualWaveMoveCalcDir();
         if (c % i == 0) System.out.println();
-        System.out.printf("%s(%d), ", actualMoveDir, actualWaveMoveCalcDir.getDirCalcPropSum());
+        System.out.printf("%s(%d), ", actualMoveDir, waveMoveCalc.getDirCalcPropSum(actualMoveDir));
     }
 
     @org.junit.jupiter.api.Test

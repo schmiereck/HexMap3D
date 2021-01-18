@@ -8,16 +8,28 @@ public class WaveService {
         return newWave;
     }
 
-    public static Wave createNextMovedWave(final Event event, final WaveMoveCalcDir[] moveCalcDirArr) {
-        final Wave newWave = new Wave(event, 0, moveCalcDirArr, 0);
+    public static Wave createNewWave(final Event event, final WaveMoveDir waveMoveDir) {
+        final WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(0, WaveMoveDirService.createWaveMoveDir(waveMoveDir.getMoveCalcDirArr()));
+        final Wave newWave = new Wave(event, waveMoveCalc, 0);
         event.addWave(newWave);
         return newWave;
     }
 
-    public static Wave createNextMovedWave(final Wave wave) {
-        final Event event = wave.getEvent();
-        final WaveMoveCalc waveMoveCalc = wave.getWaveMoveCalc();
-        final Wave newWave = new Wave(event, waveMoveCalc.nextDirCalcPos(), waveMoveCalc.getMoveCalcDirArr(), wave.nextRotationCalcPos());
+    public static Wave createNewWave(final Event event, final WaveMoveCalcDir[] moveCalcDirArr) {
+        final WaveMoveCalc waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(0, WaveMoveDirService.createWaveMoveDir(moveCalcDirArr));
+        final Wave newWave = new Wave(event, waveMoveCalc, 0);
+        event.addWave(newWave);
+        return newWave;
+    }
+
+    public static Wave createNextMovedWave(final Wave sourceWave) {
+        final Event event = sourceWave.getEvent();
+        final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
+        final WaveMoveCalc newWaveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(sourceWaveMoveCalc);
+        if (Engine.calcOnlyActualWaveMove == true) {
+            newWaveMoveCalc.calcActualWaveMoveCalcDir();
+        }
+        final Wave newWave = new Wave(event, newWaveMoveCalc, sourceWave.nextRotationCalcPos());
         event.addWave(newWave);
         return newWave;
     }

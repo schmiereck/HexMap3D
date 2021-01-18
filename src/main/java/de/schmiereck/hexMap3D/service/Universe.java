@@ -111,8 +111,8 @@ public class Universe {
             switch (this.showWaveMoveCalc) {
                 case ShowActualWaveMoveCalcDirSum -> {
                     cell.getWaveListStream().forEach(wave -> {
-                        final WaveMoveCalcDir waveMoveCalcDir = wave.getActualWaveMoveCalcDir();
-                        outputs[wave.getActualDirCalcPos().dir()] += waveMoveCalcDir.getDirCalcPropSum();
+                        final Cell.Dir dir = wave.getActualDirCalcPos();
+                        outputs[wave.getActualDirCalcPos().dir()] += wave.getDirCalcPropSum(dir);
                     });
                 }
                 case ShowAllWaveMoveCalcDirSum -> {
@@ -123,16 +123,14 @@ public class Universe {
 //                });
                     cell.getWaveListStream().forEach(wave -> {
                         Arrays.stream(Cell.Dir.values()).forEach(dir -> {
-                            final WaveMoveCalcDir waveMoveCalcDir = wave.getMoveCalcDirArr()[dir.dir()];
-                            outputs[dir.dir()] += waveMoveCalcDir.getDirCalcPropSum();
+                            outputs[dir.dir()] += wave.getDirCalcPropSum(dir);
                         });
                     });
                 }
                 case ShowAllWaveMoveCalcDirProp -> {
                     cell.getWaveListStream().forEach(wave -> {
                         Arrays.stream(Cell.Dir.values()).forEach(dir -> {
-                            final WaveMoveCalcDir waveMoveCalcDir = wave.getMoveCalcDirArr()[dir.dir()];
-                            outputs[dir.dir()] += waveMoveCalcDir.getDirCalcProp();
+                            outputs[dir.dir()] += wave.getDirCalcProp(dir);
                         });
                     });
                 }
@@ -160,7 +158,7 @@ public class Universe {
                 IntStream.rangeClosed(x1Pos, x2Pos).forEach(xPos -> {
                     final Cell cell = this.getCell(xPos, yPos, zPos);
                     final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[3];
-                    final Wave wave = WaveService.createNextMovedWave(event, moveCalcDirArr);
+                    final Wave wave = WaveService.createNewWave(event, moveCalcDirArr);
                     cell.addWave(wave);
                 });
             });

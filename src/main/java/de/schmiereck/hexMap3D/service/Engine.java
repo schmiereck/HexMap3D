@@ -50,7 +50,7 @@ public class Engine {
         this.universe.setStatisticCalcStepCount(this.runNr);
     }
 
-    private boolean calcOnlyActualWaveMove = true;
+    public static boolean calcOnlyActualWaveMove = true;
 
     private void calcNewStateForTargetCell(final int xPos, final int yPos, final int zPos, final Cell targetCell) {
         for (final Cell.Dir calcDir : Cell.Dir.values()) {
@@ -61,15 +61,12 @@ public class Engine {
                 forEach((sourceWave) -> {
                 final Event sourceEvent = sourceWave.getEvent();
                     final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
-                    final WaveMoveCalc waveMoveCalc = sourceWave.getWaveMoveCalc();
+                    final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
                     // Source-Cell-Wave is a Particle and is moving in this direction?
-                    if ((sourceEvent.getEventType() == 1) && checkSourceWaveHasOutput(waveMoveCalc, oppositeCalcDir)) {
-                        waveMoveCalc.calcActualDirMoved();
+                    if ((sourceEvent.getEventType() == 1) && checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir)) {
+                        sourceWaveMoveCalc.calcActualDirMoved();
                         {
                             final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave);
-                            if (this.calcOnlyActualWaveMove == true) {
-                                newTargetWave.calcActualWaveMoveCalcDir();
-                            }
                             targetCell.addWave(newTargetWave);
                         }
                         {
@@ -78,9 +75,6 @@ public class Engine {
                             final int yRotPercent = r[1] * ROT_PERCENT;
                             final int zRotPercent = r[2] * ROT_PERCENT;
                             final Wave newTargetWave = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
-                            if (this.calcOnlyActualWaveMove == true) {
-                                newTargetWave.calcActualWaveMoveCalcDir();
-                            }
                             targetCell.addWave(newTargetWave);
                         }
                     }

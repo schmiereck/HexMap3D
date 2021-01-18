@@ -57,13 +57,7 @@ public class Wave {
 
     public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos) {
         this.event = event;
-        this.waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(waveMoveCalc.getDirCalcPos(), waveMoveCalc.getWaveMoveDir());
-        this.rotationCalcPos = rotationCalcPos;
-    }
-
-    public Wave(final Event event, final int dirCalcPos, final WaveMoveCalcDir[] moveCalcDirArr, final int rotationCalcPos) {
-        this.event = event;
-        this.waveMoveCalc = WaveMoveDirService.createWaveMoveCalc(dirCalcPos, WaveMoveDirService.createWaveMoveDir(moveCalcDirArr));
+        this.waveMoveCalc = waveMoveCalc;
         this.rotationCalcPos = rotationCalcPos;
     }
 
@@ -117,5 +111,14 @@ public class Wave {
 
     public WaveMoveCalc getWaveMoveCalc() {
         return this.waveMoveCalc;
+    }
+
+    public int getDirCalcPropSum(final Cell.Dir dir) {
+        return this.waveMoveCalc.getDirCalcPropSum(dir);
+    }
+
+    public int getDirCalcProp(Cell.Dir dir) {
+        final WaveMoveCalcDir waveMoveCalcDir = this.getMoveCalcDirArr()[dir.dir()];
+        return waveMoveCalcDir.getDirCalcProp();
     }
 }

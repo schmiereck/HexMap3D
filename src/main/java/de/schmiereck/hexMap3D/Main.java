@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import java.util.Arrays;
 
+import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
 import static java.lang.String.format;
 
 public class Main {
@@ -28,8 +29,8 @@ public class Main {
         // Extend Test:
         {
             final Event particleEvent = new Event(engine, 1);
-            final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-            Arrays.stream(Cell.Dir.values()).forEach(dir -> moveCalcDirArr[dir.dir()] = WaveMoveCalcDirService.createWaveMoveCalcDir(0, 0));
+            final WaveMoveDir waveMoveDir = new WaveMoveDir();
+            int dirCalcPos = 0;
             final int x, y, z;
 
             //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(50);
@@ -49,10 +50,10 @@ public class Main {
             //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(0);
             //x=8; y=8; z=8;
 
-            moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(100);
+            waveMoveDir.setDirCalcProp(DB_P, 100);
             x=0; y=8; z=8;
 
-            final Wave wave = WaveService.createNextMovedWave(particleEvent, moveCalcDirArr);
+            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir.getMoveCalcDirArr());
             wave.getWaveMoveDir().adjustMaxProp();
             wave.calcActualWaveMoveCalcDir();
             universe.addEvent(x, y, z, particleEvent);
