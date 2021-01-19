@@ -49,16 +49,17 @@ public class Wave {
     private final Event event;
     private Cell cell;
     private WaveMoveCalc waveMoveCalc;
-
     /**
      * Pos in {@link WaveRotationService#rotationMatrixXYZ}.
      */
     private int rotationCalcPos;
+    private int waveProp;
 
-    public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos) {
+    public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos, final int waveProp) {
         this.event = event;
         this.waveMoveCalc = waveMoveCalc;
         this.rotationCalcPos = rotationCalcPos;
+        this.waveProp = waveProp;
     }
 
     public void setCell(final Cell cell) {
@@ -120,5 +121,9 @@ public class Wave {
     public int getDirCalcProp(Cell.Dir dir) {
         final WaveMoveDirProp waveMoveDirProp = this.getMoveCalcDirArr()[dir.dir()];
         return waveMoveDirProp.getDirMoveProp();
+    }
+
+    public int getWaveProp() {
+        return this.waveProp;
     }
 }

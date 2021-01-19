@@ -61,7 +61,10 @@ public class Engine {
                     final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
                     final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
                     // Source-Cell-Wave is a Particle and is moving in this direction?
-                    if ((sourceEvent.getEventType() == 1) && checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir)) {
+                    if ((sourceEvent.getEventType() == 1) &&
+                        (checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir) == true) &&
+                        (sourceWave.getWaveProp() < 4))
+                    {
                         sourceWaveMoveCalc.calcActualDirMoved();
                         {
                             final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave);

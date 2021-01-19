@@ -94,8 +94,8 @@ public class WaveRotationService {
 
         WaveMoveCalcService.adjustDirCalcPropSum(newWaveMoveCalc);
 
-        newWave = WaveService.createNextMovedWave(sourceWave.getEvent(), newWaveMoveCalc,
-                sourceWave.nextRotationCalcPos());
+        newWave = WaveService.createNextRotatedWave(sourceWave.getEvent(), newWaveMoveCalc,
+                sourceWave.nextRotationCalcPos(), sourceWave.getWaveProp() + 1);
                 //sourceWave.getRotationCalcPos());
 
         return newWave;
