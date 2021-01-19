@@ -50,8 +50,6 @@ public class Engine {
         this.universe.setStatisticCalcStepCount(this.runNr);
     }
 
-    public static boolean calcOnlyActualWaveMove = true;
-
     private void calcNewStateForTargetCell(final int xPos, final int yPos, final int zPos, final Cell targetCell) {
         for (final Cell.Dir calcDir : Cell.Dir.values()) {
             final Cell sourceCell = this.universe.getCell(calcXDirOffset(xPos, yPos, zPos, calcDir), calcYDirOffset(xPos, yPos, zPos, calcDir), calcZDirOffset(xPos, yPos, zPos, calcDir));
@@ -67,9 +65,7 @@ public class Engine {
                         sourceWaveMoveCalc.calcActualDirMoved();
                         {
                             final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave);
-                            if (Engine.calcOnlyActualWaveMove == true) {
-                                newTargetWave.calcActualWaveMoveCalcDir();
-                            }
+                            newTargetWave.calcActualWaveMoveCalcDir();
                             targetCell.addWave(newTargetWave);
                         }
                         {
@@ -78,9 +74,7 @@ public class Engine {
                             final int yRotPercent = r[1] * ROT_PERCENT;
                             final int zRotPercent = r[2] * ROT_PERCENT;
                             final Wave newTargetWave = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
-                            if (Engine.calcOnlyActualWaveMove == true) {
-                                newTargetWave.calcActualWaveMoveCalcDir();
-                            }
+                            newTargetWave.calcActualWaveMoveCalcDir();
                             targetCell.addWave(newTargetWave);
                         }
                     }
@@ -94,13 +88,8 @@ public class Engine {
 
     private boolean checkSourceWaveHasOutput(final WaveMoveCalc waveMoveCalc, final Cell.Dir calcDir) {
         final boolean ret;
-        final WaveMoveCalcDir sourceWaveActualWaveMoveCalcDir = waveMoveCalc.getActualWaveMoveCalcDir();
         if (calcDir == waveMoveCalc.getActualMoveDir()) {
-            if (this.calcOnlyActualWaveMove) {
-                ret = (waveMoveCalc.getDirCalcPropSum(calcDir) >= waveMoveCalc.getMaxProp());
-            } else {
-                ret = true;
-            }
+            ret = (waveMoveCalc.getDirCalcPropSum(calcDir) >= waveMoveCalc.getMaxProp());
         } else {
             ret = false;
         }
