@@ -26,9 +26,6 @@ public class WaveService {
         final Event event = sourceWave.getEvent();
         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
         final WaveMoveCalc newWaveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(sourceWaveMoveCalc);
-        if (Engine.calcOnlyActualWaveMove == true) {
-            newWaveMoveCalc.calcActualWaveMoveCalcDir();
-        }
         final Wave newWave = new Wave(event, newWaveMoveCalc, sourceWave.nextRotationCalcPos());
         event.addWave(newWave);
         return newWave;

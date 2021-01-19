@@ -67,6 +67,9 @@ public class Engine {
                         sourceWaveMoveCalc.calcActualDirMoved();
                         {
                             final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave);
+                            if (Engine.calcOnlyActualWaveMove == true) {
+                                newTargetWave.calcActualWaveMoveCalcDir();
+                            }
                             targetCell.addWave(newTargetWave);
                         }
                         {
@@ -75,6 +78,9 @@ public class Engine {
                             final int yRotPercent = r[1] * ROT_PERCENT;
                             final int zRotPercent = r[2] * ROT_PERCENT;
                             final Wave newTargetWave = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                            if (Engine.calcOnlyActualWaveMove == true) {
+                                newTargetWave.calcActualWaveMoveCalcDir();
+                            }
                             targetCell.addWave(newTargetWave);
                         }
                     }
