@@ -1,12 +1,6 @@
 package de.schmiereck.hexMap3D.service;
 
-import de.schmiereck.hexMap3D.MapMathUtils;
-
 import java.util.Arrays;
-import java.util.stream.IntStream;
-
-import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
-import static de.schmiereck.hexMap3D.service.Engine.DIR_CALC_MAX_PROP;
 
 /**
  * Direction of a move in a Kuboktaeder
@@ -17,16 +11,16 @@ public class WaveMoveDir {
      * Possible Directions.
      * The dir number of {@link Cell.Dir} is the index.
      */
-    private WaveMoveCalcDir[] moveCalcDirArr;
+    private WaveMoveDirProp[] moveCalcDirArr;
     private int maxProp = 0;
 
     public WaveMoveDir() {
-        this.moveCalcDirArr = new WaveMoveCalcDir[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> this.moveCalcDirArr[dir.dir()] = new WaveMoveCalcDir(0));
+        this.moveCalcDirArr = new WaveMoveDirProp[Cell.Dir.values().length];
+        Arrays.stream(Cell.Dir.values()).forEach(dir -> this.moveCalcDirArr[dir.dir()] = new WaveMoveDirProp(0));
         this.maxProp = 0;
     }
 
-    public WaveMoveDir(final WaveMoveCalcDir[] moveCalcDirArr, final int maxProp) {
+    public WaveMoveDir(final WaveMoveDirProp[] moveCalcDirArr, final int maxProp) {
         this.moveCalcDirArr = moveCalcDirArr;
         this.maxProp = maxProp;
     }
@@ -36,19 +30,19 @@ public class WaveMoveDir {
         this.moveCalcDirArr[dir.dir()].setDirCalcProp(dirCalcProp);
     }
 
-    public WaveMoveCalcDir[] getMoveCalcDirArr() {
+    public WaveMoveDirProp[] getMoveCalcDirArr() {
         return this.moveCalcDirArr;
     }
 
-    public WaveMoveCalcDir getMoveCalcDir(final Cell.Dir dir) {
+    public WaveMoveDirProp getMoveCalcDir(final Cell.Dir dir) {
         return this.moveCalcDirArr[dir.dir()];
     }
 
-    public WaveMoveCalcDir getMoveCalcDir(final int dirPos) {
+    public WaveMoveDirProp getMoveCalcDir(final int dirPos) {
         return this.moveCalcDirArr[dirPos];
     }
 
-    public WaveMoveCalcDir getWaveMoveCalcDir(final int dirCalcPos) {
+    public WaveMoveDirProp getWaveMoveCalcDir(final int dirCalcPos) {
         return this.moveCalcDirArr[dirCalcPos];
     }
 

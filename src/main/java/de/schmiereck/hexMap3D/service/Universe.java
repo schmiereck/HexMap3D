@@ -157,7 +157,7 @@ public class Universe {
             IntStream.rangeClosed(y1Pos, y2Pos).forEach(yPos -> {
                 IntStream.rangeClosed(x1Pos, x2Pos).forEach(xPos -> {
                     final Cell cell = this.getCell(xPos, yPos, zPos);
-                    final WaveMoveCalcDir[] moveCalcDirArr = new WaveMoveCalcDir[3];
+                    final WaveMoveDirProp[] moveCalcDirArr = new WaveMoveDirProp[3];
                     final Wave wave = WaveService.createNewWave(event, moveCalcDirArr);
                     cell.addWave(wave);
                 });
