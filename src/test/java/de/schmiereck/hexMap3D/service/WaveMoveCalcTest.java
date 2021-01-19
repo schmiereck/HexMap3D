@@ -9,8 +9,8 @@ public class WaveMoveCalcTest {
     @org.junit.jupiter.api.Test
     public void test1() {
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirCalcProp(OR_P, 75);
-        waveMoveDir.setDirCalcProp(LG_N, 25);
+        waveMoveDir.setDirMoveProp(OR_P, 75);
+        waveMoveDir.setDirMoveProp(LG_N, 25);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
@@ -32,9 +32,9 @@ public class WaveMoveCalcTest {
     @org.junit.jupiter.api.Test
     public void test2_1() {
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirCalcProp(OR_P, 40);
-        waveMoveDir.setDirCalcProp(LG_N, 30);
-        waveMoveDir.setDirCalcProp(DB_P, 30);
+        waveMoveDir.setDirMoveProp(OR_P, 40);
+        waveMoveDir.setDirMoveProp(LG_N, 30);
+        waveMoveDir.setDirMoveProp(DB_P, 30);
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
         waveMoveCalc.adjustMaxProp();
@@ -52,9 +52,9 @@ public class WaveMoveCalcTest {
     @org.junit.jupiter.api.Test
     public void test2_2() {
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirCalcProp(LG_N, 30);
-        waveMoveDir.setDirCalcProp(OR_P, 40);
-        waveMoveDir.setDirCalcProp(DB_P, 30);
+        waveMoveDir.setDirMoveProp(LG_N, 30);
+        waveMoveDir.setDirMoveProp(OR_P, 40);
+        waveMoveDir.setDirMoveProp(DB_P, 30);
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
         waveMoveCalc.adjustMaxProp();
@@ -72,8 +72,8 @@ public class WaveMoveCalcTest {
     @org.junit.jupiter.api.Test
     public void test3() {
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirCalcProp(OR_P, 87);
-        waveMoveDir.setDirCalcProp(LG_N, 13);
+        waveMoveDir.setDirMoveProp(OR_P, 87);
+        waveMoveDir.setDirMoveProp(LG_N, 13);
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
         waveMoveCalc.adjustMaxProp();
@@ -95,10 +95,10 @@ public class WaveMoveCalcTest {
         //waveMoveDir.setDirCalcProp(Cell.Dir.OR_N, 12);
         //waveMoveDir.setDirCalcProp(Cell.Dir.LG_P, 37);
         //waveMoveDir.setDirCalcProp(Cell.Dir.LG_N, 13);
-        waveMoveDir.setDirCalcProp(OR_P, 40);
-        waveMoveDir.setDirCalcProp(OR_N, 10);
-        waveMoveDir.setDirCalcProp(LG_P, 29);//9 38 67 96
-        waveMoveDir.setDirCalcProp(LG_N, 21);
+        waveMoveDir.setDirMoveProp(OR_P, 40);
+        waveMoveDir.setDirMoveProp(OR_N, 10);
+        waveMoveDir.setDirMoveProp(LG_P, 29);//9 38 67 96
+        waveMoveDir.setDirMoveProp(LG_N, 21);
         //int dirCalcPos = OR_N.dir(); // OR_N
         int dirCalcPos = OR_N.dir(); // OR_N
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
@@ -117,8 +117,8 @@ public class WaveMoveCalcTest {
     @org.junit.jupiter.api.Test
     public void test5() {
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirCalcProp(OR_P, 99);
-        waveMoveDir.setDirCalcProp(LG_N, 1);
+        waveMoveDir.setDirMoveProp(OR_P, 99);
+        waveMoveDir.setDirMoveProp(LG_N, 1);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(dirCalcPos, waveMoveDir);
@@ -164,8 +164,8 @@ public class WaveMoveCalcTest {
         // {prop:0, sum:0},
         // {prop:2, sum:4}]
 
-        waveMoveDir.setDirCalcProp(OR_P, 99);
-        waveMoveDir.setDirCalcProp(LG_N, 1);
+        waveMoveDir.setDirMoveProp(OR_P, 99);
+        waveMoveDir.setDirMoveProp(LG_N, 1);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(dirCalcPos, waveMoveDir);

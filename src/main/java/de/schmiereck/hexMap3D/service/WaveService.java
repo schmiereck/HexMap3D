@@ -9,7 +9,7 @@ public class WaveService {
     }
 
     public static Wave createNewWave(final Event event, final WaveMoveDir waveMoveDir) {
-        final WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(0, WaveMoveDirService.createWaveMoveDir(waveMoveDir.getMoveCalcDirArr()));
+        final WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(0, WaveMoveDirService.createWaveMoveDir(waveMoveDir.getMoveDirPropArr()));
         final Wave newWave = new Wave(event, waveMoveCalc, 0);
         event.addWave(newWave);
         return newWave;

@@ -9,15 +9,15 @@ public class WaveMoveDirService {
         //IntStream.range(0, moveCalcDirArr.length).forEach(pos -> {
         for (int pos = 0; pos < moveCalcDirArr.length; pos++) {
             moveCalcDirArr[pos] = WaveMoveDirPropService.createWaveMoveCalcDir(givenMoveCalcDirArr[pos]);
-            if (moveCalcDirArr[pos].getDirCalcProp() > maxProp) {
-                maxProp = moveCalcDirArr[pos].getDirCalcProp();
+            if (moveCalcDirArr[pos].getDirMoveProp() > maxProp) {
+                maxProp = moveCalcDirArr[pos].getDirMoveProp();
             }
         }
         return new WaveMoveDir(moveCalcDirArr, maxProp);
     }
 
     public static WaveMoveDir createWaveMoveDir(final WaveMoveDir waveMoveDir) {
-        final WaveMoveDirProp[] givenMoveCalcDirArr = waveMoveDir.getMoveCalcDirArr();
+        final WaveMoveDirProp[] givenMoveCalcDirArr = waveMoveDir.getMoveDirPropArr();
         final WaveMoveDirProp[] moveCalcDirArr = new WaveMoveDirProp[Cell.Dir.values().length];
         final int maxProp = waveMoveDir.getMaxProp();
 

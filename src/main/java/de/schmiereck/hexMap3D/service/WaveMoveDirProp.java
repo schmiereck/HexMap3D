@@ -4,27 +4,27 @@ public class WaveMoveDirProp {
     /**
      * Probability of the wave going in this direction.
      */
-    private int dirCalcProp;
+    private int dirMoveProp;
 
-    public WaveMoveDirProp(final int dirCalcProp) {
-        this.dirCalcProp = dirCalcProp;
+    public WaveMoveDirProp(final int dirMoveProp) {
+        this.dirMoveProp = dirMoveProp;
     }
 
-    public int getDirCalcProp() {
-        return this.dirCalcProp;
+    public int getDirMoveProp() {
+        return this.dirMoveProp;
     }
 
-    public void setDirCalcProp(final int dirCalcProp) {
-        this.dirCalcProp = dirCalcProp;
+    public void setDirMoveProp(final int dirMoveProp) {
+        this.dirMoveProp = dirMoveProp;
     }
 
-    public void addDirCalcProp(final int dirCalcProp) {
-        this.dirCalcProp += dirCalcProp;
+    public void addDirMoveProp(final int dirMoveProp) {
+        this.dirMoveProp += dirMoveProp;
     }
 
     @Override
     public String toString() {
-        return "{prop:" + this.dirCalcProp + "";
+        return "{prop:" + this.dirMoveProp + "";
     }
 
     @Override
@@ -33,6 +33,6 @@ public class WaveMoveDirProp {
         if (obj == null) return false;
         if (this.getClass() != obj.getClass()) return false;
         final WaveMoveDirProp entry = (WaveMoveDirProp) obj;
-        return this.dirCalcProp == entry.dirCalcProp;
+        return this.dirMoveProp == entry.dirMoveProp;
     }
 }

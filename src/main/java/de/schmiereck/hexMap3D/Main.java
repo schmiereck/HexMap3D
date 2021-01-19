@@ -5,8 +5,6 @@ import de.schmiereck.hexMap3D.view.GridViewApplication;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
-
 import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
 import static java.lang.String.format;
 
@@ -50,10 +48,10 @@ public class Main {
             //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(0);
             //x=8; y=8; z=8;
 
-            waveMoveDir.setDirCalcProp(DB_P, 100);
+            waveMoveDir.setDirMoveProp(DB_P, 100);
             x=0; y=8; z=8;
 
-            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir.getMoveCalcDirArr());
+            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir.getMoveDirPropArr());
             wave.getWaveMoveDir().adjustMaxProp();
             wave.calcActualWaveMoveCalcDir();
             universe.addEvent(x, y, z, particleEvent);

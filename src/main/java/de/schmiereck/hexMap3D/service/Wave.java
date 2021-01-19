@@ -82,11 +82,11 @@ public class Wave {
     //}
 
     public WaveMoveDirProp[] getMoveCalcDirArr() {
-        return this.waveMoveCalc.getWaveMoveDir().getMoveCalcDirArr();
+        return this.waveMoveCalc.getWaveMoveDir().getMoveDirPropArr();
     }
 
     public WaveMoveDirProp getMoveCalcDir(final Cell.Dir dir) {
-        return this.waveMoveCalc.getWaveMoveDir().getMoveCalcDir(dir);
+        return this.waveMoveCalc.getWaveMoveDir().getDirMoveProp(dir);
     }
 
     public WaveMoveDirProp getActualWaveMoveCalcDir() {
@@ -119,6 +119,6 @@ public class Wave {
 
     public int getDirCalcProp(Cell.Dir dir) {
         final WaveMoveDirProp waveMoveDirProp = this.getMoveCalcDirArr()[dir.dir()];
-        return waveMoveDirProp.getDirCalcProp();
+        return waveMoveDirProp.getDirMoveProp();
     }
 }

@@ -15,4 +15,16 @@ public class WaveMoveCalcService {
         final WaveMoveCalc newWaveMoveCalc = new WaveMoveCalc(sourceWaveMoveCalc.nextDirCalcPos(), newWaveMoveDir, sourceWaveMoveCalc.getDirCalcPropSumArr());
         return newWaveMoveCalc;
     }
+
+    public static void adjustDirCalcPropSum(WaveMoveCalc waveMoveCalc) {
+        final WaveMoveDir waveMoveDir = waveMoveCalc.getWaveMoveDir();
+        final int[] dirCalcPropSumArr = waveMoveCalc.getDirCalcPropSumArr();
+        for (int dirPos = 0; dirPos < dirCalcPropSumArr.length; dirPos++) {
+            final WaveMoveDirProp waveMoveDirProp = waveMoveDir.getWaveMoveDirProp(dirPos);
+            final int dirCalcPropSum = dirCalcPropSumArr[dirPos];
+            if ((waveMoveDirProp.getDirMoveProp() == 0) && (dirCalcPropSum > 0)) {
+                dirCalcPropSumArr[dirPos] = 0;
+            }
+        }
+     }
 }
