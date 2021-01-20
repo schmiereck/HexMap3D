@@ -1,6 +1,7 @@
 package de.schmiereck.hexMap3D.service;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Direction of a move in a Kuboktaeder
@@ -88,6 +89,11 @@ public class WaveMoveDir {
     @Override
     public String toString() {
         return super.toString() + "{" +  Arrays.toString(this.moveDirPropArr) + "}";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.maxProp, this.moveDirPropArr);
     }
 
     @Override

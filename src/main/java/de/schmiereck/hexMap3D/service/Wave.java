@@ -2,6 +2,8 @@ package de.schmiereck.hexMap3D.service;
 
 import de.schmiereck.hexMap3D.MapMathUtils;
 
+import java.util.Objects;
+
 /**
  * Solution 1:
  * -----------
@@ -47,23 +49,27 @@ import de.schmiereck.hexMap3D.MapMathUtils;
  */
 public class Wave {
     private final Event event;
-    private Cell cell;
     private WaveMoveCalc waveMoveCalc;
     /**
      * Pos in {@link WaveRotationService#rotationMatrixXYZ}.
      */
     private int rotationCalcPos;
+    /**
+     * Denominator of {@link #wavePropDenominator}/{@link #waveProp} representation of the probability.
+     */
+    private int wavePropDenominator;
+    /**
+     * Divisior of {@link #wavePropDenominator}/{@link #waveProp} representation of the probability.
+     */
     private int waveProp;
 
-    public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos, final int waveProp) {
+    public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
+                final int wavePropDenominator, final int waveProp) {
         this.event = event;
         this.waveMoveCalc = waveMoveCalc;
         this.rotationCalcPos = rotationCalcPos;
+        this.wavePropDenominator = wavePropDenominator;
         this.waveProp = waveProp;
-    }
-
-    public void setCell(final Cell cell) {
-        this.cell = cell;
     }
 
     public Event getEvent() {
@@ -123,7 +129,39 @@ public class Wave {
         return waveMoveDirProp.getDirMoveProp();
     }
 
+    public void setWavePropDenominator(final int wavePropDenominator) {
+        this.wavePropDenominator = wavePropDenominator;
+    }
+
+    public int getWavePropDenominator() {
+        return this.wavePropDenominator;
+    }
+
+    public void setWaveProp(final int waveProp) {
+        this.waveProp = waveProp;
+    }
+
     public int getWaveProp() {
         return this.waveProp;
+    }
+
+    public void setWaveProbFraction(final int wavePropDenominator, final int waveProp) {
+        this.wavePropDenominator = wavePropDenominator;
+        this.waveProp = waveProp;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.event, this.waveMoveCalc);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        final Wave entry = (Wave) obj;
+        return (this.event.equals(entry.event)) &&
+               (this.waveMoveCalc.equals(entry.waveMoveCalc));
     }
 }

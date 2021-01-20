@@ -63,22 +63,26 @@ public class Engine {
                     // Source-Cell-Wave is a Particle and is moving in this direction?
                     if ((sourceEvent.getEventType() == 1) &&
                         (checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir) == true) &&
-                        (sourceWave.getWaveProp() < 4))
+                        (((sourceWave.getWavePropDenominator() * 10000) / sourceWave.getWaveProp()) > 1))
                     {
                         sourceWaveMoveCalc.calcActualDirMoved();
+                        final int propDivider = 2;
                         {
-                            final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave);
+                            final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, propDivider);
                             newTargetWave.calcActualWaveMoveCalcDir();
-                            targetCell.addWave(newTargetWave);
-                        }
+                            CellService.addWave(targetCell, newTargetWave);
+                         }
                         {
                             final int[] r = WaveRotationService.rotationMatrixXYZ[sourceWave.getRotationCalcPos()];
                             final int xRotPercent = r[0] * ROT_PERCENT;
                             final int yRotPercent = r[1] * ROT_PERCENT;
                             final int zRotPercent = r[2] * ROT_PERCENT;
-                            final Wave newTargetWave = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                            final Wave newTargetWave =
+                                    WaveRotationService.createMoveRotatedWave(sourceWave,
+                                            xRotPercent, yRotPercent, zRotPercent,
+                                            propDivider);
                             newTargetWave.calcActualWaveMoveCalcDir();
-                            targetCell.addWave(newTargetWave);
+                            CellService.addWave(targetCell, newTargetWave);
                         }
                     }
                 });

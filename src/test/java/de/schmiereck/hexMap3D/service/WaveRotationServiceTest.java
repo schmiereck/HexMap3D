@@ -22,7 +22,7 @@ class WaveRotationServiceTest {
 
         // Act
         final Wave newWave =
-                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedProps[][] = {
@@ -47,7 +47,7 @@ class WaveRotationServiceTest {
 
         // Act
         final Wave newWave =
-                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedProps[][] = {
@@ -72,7 +72,7 @@ class WaveRotationServiceTest {
 
         // Act
         final Wave newWave =
-                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedProps[][] = {
@@ -97,7 +97,7 @@ class WaveRotationServiceTest {
 
         // Act
         final Wave newWave =
-                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedProps[][] = {
@@ -122,7 +122,7 @@ class WaveRotationServiceTest {
 
         // Act
         final Wave newWave =
-                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedProps[][] = {
@@ -147,7 +147,7 @@ class WaveRotationServiceTest {
 
         // Act
         final Wave newWave =
-                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedProps[][] = {
@@ -172,7 +172,7 @@ class WaveRotationServiceTest {
 
         // Act
         final Wave newWave =
-                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedXProps[][] = {
@@ -197,7 +197,7 @@ class WaveRotationServiceTest {
 
         // Act
         final Wave newWave =
-                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedProps[][] = {
@@ -223,14 +223,14 @@ class WaveRotationServiceTest {
         final int zRotPercent = 0;
 
         // Act
-        final Wave newWave1 = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent);
-        final Wave newWave2 = WaveRotationService.createMoveRotatedWave(newWave1, xRotPercent, yRotPercent, zRotPercent);
-        final Wave newWave3 = WaveRotationService.createMoveRotatedWave(newWave2, xRotPercent, yRotPercent, zRotPercent);
-        final Wave newWave4 = WaveRotationService.createMoveRotatedWave(newWave3, xRotPercent, yRotPercent, zRotPercent);
-        final Wave newWave5 = WaveRotationService.createMoveRotatedWave(newWave4, xRotPercent, yRotPercent, zRotPercent);
-        final Wave newWave6 = WaveRotationService.createMoveRotatedWave(newWave5, xRotPercent, yRotPercent, zRotPercent);
-        final Wave newWave7 = WaveRotationService.createMoveRotatedWave(newWave6, xRotPercent, yRotPercent, zRotPercent);
-        final Wave newWave8 = WaveRotationService.createMoveRotatedWave(newWave7, xRotPercent, yRotPercent, zRotPercent);
+        final Wave newWave1 = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
+        final Wave newWave2 = WaveRotationService.createMoveRotatedWave(newWave1, xRotPercent, yRotPercent, zRotPercent, 2);
+        final Wave newWave3 = WaveRotationService.createMoveRotatedWave(newWave2, xRotPercent, yRotPercent, zRotPercent, 2);
+        final Wave newWave4 = WaveRotationService.createMoveRotatedWave(newWave3, xRotPercent, yRotPercent, zRotPercent, 2);
+        final Wave newWave5 = WaveRotationService.createMoveRotatedWave(newWave4, xRotPercent, yRotPercent, zRotPercent, 2);
+        final Wave newWave6 = WaveRotationService.createMoveRotatedWave(newWave5, xRotPercent, yRotPercent, zRotPercent, 2);
+        final Wave newWave7 = WaveRotationService.createMoveRotatedWave(newWave6, xRotPercent, yRotPercent, zRotPercent, 2);
+        final Wave newWave8 = WaveRotationService.createMoveRotatedWave(newWave7, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
         final int expectedProps1[][] = {

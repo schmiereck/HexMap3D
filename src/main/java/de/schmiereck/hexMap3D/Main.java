@@ -51,10 +51,10 @@ public class Main {
             waveMoveDir.setDirMoveProp(DB_P, 100);
             x=0; y=8; z=8;
 
-            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir.getMoveDirPropArr());
+            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir);
             wave.getWaveMoveDir().adjustMaxProp();
             wave.calcActualWaveMoveCalcDir();
-            universe.addEvent(x, y, z, particleEvent);
+            universe.addWave(x, y, z, wave);
 
             // For Testing:
             // Add a sharp Barrier...

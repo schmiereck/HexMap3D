@@ -36,9 +36,6 @@ public class Universe {
         // Initialize grid with Cells.
         forEachCell((final int xPos, final int yPos, final int zPos) -> this.grid[zPos][yPos][xPos] = new Cell(this, xPos, yPos, zPos));
 
-        // Populate Cells with Neighbours
-        forEachCell((final int xPos, final int yPos, final int zPos) -> this.grid[zPos][yPos][xPos].populateNeigbours());
-
         forEachCell((final int xPos, final int yPos, final int zPos) -> this.realityCellGrid[zPos][yPos][xPos] = new RealityCell());
     }
 
@@ -146,10 +143,9 @@ public class Universe {
         this.calcPos++;
     }
 
-    public void addEvent(final int xPos, final int yPos, final int zPos, final Event event) {
+    public void addWave(final int xPos, final int yPos, final int zPos, final Wave wave) {
         final Cell cell = this.getCell(xPos, yPos, zPos);
-
-        event.getWaveList().forEach(wave -> cell.addWave(wave));
+        CellService.addWave(cell, wave);
     }
 
     public void addBariere(final Event event, final int x1Pos, final int y1Pos, final int z1Pos, final int x2Pos, final int y2Pos, final int z2Pos) {
@@ -157,9 +153,10 @@ public class Universe {
             IntStream.rangeClosed(y1Pos, y2Pos).forEach(yPos -> {
                 IntStream.rangeClosed(x1Pos, x2Pos).forEach(xPos -> {
                     final Cell cell = this.getCell(xPos, yPos, zPos);
-                    final WaveMoveDirProp[] moveCalcDirArr = new WaveMoveDirProp[3];
-                    final Wave wave = WaveService.createNewWave(event, moveCalcDirArr);
-                    cell.addWave(wave);
+                    final WaveMoveDirProp[] moveCalcDirArr = new WaveMoveDirProp[Cell.Dir.values().length];
+                    final WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(moveCalcDirArr);
+                    final Wave wave = WaveService.createNewWave(event, waveMoveDir);
+                    CellService.addWave(cell, wave);
                 });
             });
         });

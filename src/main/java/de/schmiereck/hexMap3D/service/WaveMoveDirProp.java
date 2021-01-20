@@ -1,5 +1,7 @@
 package de.schmiereck.hexMap3D.service;
 
+import java.util.Objects;
+
 public class WaveMoveDirProp {
     /**
      * Probability of the wave going in this direction.
@@ -25,6 +27,11 @@ public class WaveMoveDirProp {
     @Override
     public String toString() {
         return "{prop:" + this.dirMoveProp + "";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.dirMoveProp);
     }
 
     @Override

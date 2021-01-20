@@ -1,6 +1,7 @@
 package de.schmiereck.hexMap3D.service;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 
@@ -105,5 +106,19 @@ public class WaveMoveCalc {
 
     public int[] getDirCalcPropSumArr() {
         return this.dirCalcPropSumArr;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.waveMoveDir);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        final WaveMoveCalc entry = (WaveMoveCalc) obj;
+        return (this.waveMoveDir.equals(entry.waveMoveDir));
     }
 }

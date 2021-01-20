@@ -1,8 +1,6 @@
 package de.schmiereck.hexMap3D.service;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.stream.IntStream;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 public class Cell {
@@ -41,58 +39,30 @@ public class Cell {
         }
     };
 
-    private Cell[] nextCellArr;
-    private final Queue<Wave>[] waveList;
+    private final HashMap<Wave, Wave>[] waveHashArr = new HashMap[2];
     private final Universe universe;
 
     public Cell(final Universe universe, final int xPos, final int yPos, final int zPos) {
         this.universe = universe;
-        this.waveList = IntStream.rangeClosed(0, 1).mapToObj(pos -> new LinkedList<Wave>()).toArray(LinkedList[]::new);
-    }
-
-    public void populateNeigbours() {
-    }
-
-    public Cell(final Universe universe) {
-        this.universe = universe;
-        this.waveList = IntStream.rangeClosed(0, 1).mapToObj(pos -> new LinkedList<Wave>()).toArray(LinkedList[]::new);
-    }
-
-    public void init(final Cell[] nextCellArr) {
-        this.nextCellArr = nextCellArr;
+        this.waveHashArr[0] = new HashMap<>();
+        this.waveHashArr[1] = new HashMap<>();
     }
 
     public void addWave(final Wave wave) {
-        this.waveList[this.universe.getNextCalcPos()].add(wave);
-        wave.setCell(this);
-    }
-
-    public Cell getNextCell(final Dir dir) {
-        return this.nextCellArr[dir.ordinal()];
+        this.waveHashArr[this.universe.getNextCalcPos()].put(wave, wave);
     }
 
     public void clearWaveList() {
-        this.waveList[this.universe.getActCalcPos()].stream().forEach(wave -> wave.getEvent().removeWave(wave));
-        this.waveList[this.universe.getActCalcPos()].clear();
-    }
-
-    public int getWaveListSize() {
-        return this.waveList[this.universe.getActCalcPos()].size();
+        this.waveHashArr[this.universe.getActCalcPos()].values().stream().forEach(wave -> wave.getEvent().removeWave(wave));
+        this.waveHashArr[this.universe.getActCalcPos()].clear();
     }
 
     public Stream<Wave> getWaveListStream() {
-        return this.waveList[this.universe.getActCalcPos()].stream();
+        return this.waveHashArr[this.universe.getActCalcPos()].values().stream();
     }
 
-    public boolean haveFirstWave() {
-        return !this.waveList[this.universe.getActCalcPos()].isEmpty();
+    public Wave searchWave(final Wave wave) {
+        return this.waveHashArr[this.universe.getActCalcPos()].get(wave);
     }
 
-    public Wave removeFirstWave() {
-        return this.waveList[this.universe.getActCalcPos()].remove();
-    }
-
-    public Wave fetchFirstWave() {
-        return this.waveList[this.universe.getActCalcPos()].peek();
-    }
 }
