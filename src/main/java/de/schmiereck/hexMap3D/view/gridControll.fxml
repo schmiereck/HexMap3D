@@ -70,8 +70,8 @@
     </toggleGroup>
   </RadioButton>
   <RadioButton
-          fx:id="showAllWaveMoveCalcDirProp"
-          text="All Props."
+          fx:id="showAllWaveMoveCalcDirProb"
+          text="All Probs."
           onAction="#handleShowActualWaveMoveCalcDirAction"
           GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.columnSpan="2"
   >

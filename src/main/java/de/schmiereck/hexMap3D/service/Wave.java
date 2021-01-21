@@ -55,21 +55,37 @@ public class Wave {
      */
     private int rotationCalcPos;
     /**
-     * Denominator of {@link #wavePropDenominator}/{@link #waveProp} representation of the probability.
+     * Denominator of {@link #waveProbDenominator}/{@link #waveProbDivisior} representation of the probability.
      */
-    private int wavePropDenominator;
+    private int waveProbDenominator;
     /**
-     * Divisior of {@link #wavePropDenominator}/{@link #waveProp} representation of the probability.
+     * Divisior of {@link #waveProbDenominator}/{@link #waveProbDivisior} representation of the probability.
      */
-    private int waveProp;
+    private int waveProbDivisior;
+    /**
+     * If two waves combines, their probabilities are added.
+     */
+    private int waveProb;
 
     public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
-                final int wavePropDenominator, final int waveProp) {
+                final int waveProb) {
         this.event = event;
         this.waveMoveCalc = waveMoveCalc;
         this.rotationCalcPos = rotationCalcPos;
-        this.wavePropDenominator = wavePropDenominator;
-        this.waveProp = waveProp;
+        this.rotationCalcPos = 1;
+        this.waveProbDenominator = 1;
+        this.waveProb = waveProb;
+    }
+
+    public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
+                final int waveProbDenominator, final int waveProbDivisior) {
+        this.event = event;
+        this.waveMoveCalc = waveMoveCalc;
+        this.rotationCalcPos = rotationCalcPos;
+        this.waveProbDenominator = waveProbDenominator;
+        if ((waveProbDivisior <= 0)) throw new AssertionError("waveProbDivisior <= 0");
+        this.waveProbDivisior = waveProbDivisior;
+        this.waveProb = 1;
     }
 
     public Event getEvent() {
@@ -88,15 +104,15 @@ public class Wave {
     //    this.waveMoveDir.setDir(dir, dirCalcProp);
     //}
 
-    public WaveMoveDirProp[] getMoveCalcDirArr() {
-        return this.waveMoveCalc.getWaveMoveDir().getMoveDirPropArr();
+    public WaveMoveDirProb[] getMoveCalcDirArr() {
+        return this.waveMoveCalc.getWaveMoveDir().getMoveDirProbArr();
     }
 
-    public WaveMoveDirProp getMoveCalcDir(final Cell.Dir dir) {
-        return this.waveMoveCalc.getWaveMoveDir().getDirMoveProp(dir);
+    public WaveMoveDirProb getMoveCalcDir(final Cell.Dir dir) {
+        return this.waveMoveCalc.getWaveMoveDir().getDirMoveProb(dir);
     }
 
-    public WaveMoveDirProp getActualWaveMoveCalcDir() {
+    public WaveMoveDirProb getActualWaveMoveCalcDir() {
         return this.waveMoveCalc.getActualWaveMoveCalcDir();
     }
 
@@ -120,34 +136,43 @@ public class Wave {
         return this.waveMoveCalc;
     }
 
-    public int getDirCalcPropSum(final Cell.Dir dir) {
-        return this.waveMoveCalc.getDirCalcPropSum(dir);
+    public int getDirCalcProbSum(final Cell.Dir dir) {
+        return this.waveMoveCalc.getDirCalcProbSum(dir);
     }
 
-    public int getDirCalcProp(Cell.Dir dir) {
-        final WaveMoveDirProp waveMoveDirProp = this.getMoveCalcDirArr()[dir.dir()];
-        return waveMoveDirProp.getDirMoveProp();
+    public int getDirCalcProb(Cell.Dir dir) {
+        final WaveMoveDirProb waveMoveDirProb = this.getMoveCalcDirArr()[dir.dir()];
+        return waveMoveDirProb.getDirMoveProb();
     }
 
-    public void setWavePropDenominator(final int wavePropDenominator) {
-        this.wavePropDenominator = wavePropDenominator;
+    public void setWaveProbDenominator(final int waveProbDenominator) {
+        this.waveProbDenominator = waveProbDenominator;
     }
 
-    public int getWavePropDenominator() {
-        return this.wavePropDenominator;
+    public int getWaveProbDenominator() {
+        return this.waveProbDenominator;
     }
 
-    public void setWaveProp(final int waveProp) {
-        this.waveProp = waveProp;
+    public void setWaveProbDivisior(final int waveProbDivisior) {
+        this.waveProbDivisior = waveProbDivisior;
     }
 
-    public int getWaveProp() {
-        return this.waveProp;
+    public int getWaveProbDivisior() {
+        return this.waveProbDivisior;
     }
 
-    public void setWaveProbFraction(final int wavePropDenominator, final int waveProp) {
-        this.wavePropDenominator = wavePropDenominator;
-        this.waveProp = waveProp;
+    public void setWaveProb(final int waveProb) {
+        this.waveProb = waveProb;
+    }
+
+    public int getWaveProb() {
+        return this.waveProb;
+    }
+
+    public void setWaveProbFraction(final int wavePropDenominator, final int wavePropDivisior) {
+        this.waveProbDenominator = wavePropDenominator;
+        if ((wavePropDivisior <= 0)) throw new AssertionError("waveProbDivisior <= 0");
+        this.waveProbDivisior = wavePropDivisior;
     }
 
     @Override

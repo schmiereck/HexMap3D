@@ -2,6 +2,7 @@ package de.schmiereck.hexMap3D.service;
 
 import de.schmiereck.hexMap3D.Main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -17,11 +18,12 @@ public class Universe {
     private int statisticWaveCount = 0;
     private long statisticCalcStepCount = 0;
     private long statisticCalcRunTime = 0;
+    private ArrayList<Event> eventList = new ArrayList<>();
 
     public enum ShowWaveMoveCalc {
         ShowActualWaveMoveCalcDirSum,
         ShowAllWaveMoveCalcDirSum,
-        ShowAllWaveMoveCalcDirProp
+        ShowAllWaveMoveCalcDirProb
     }
     public ShowWaveMoveCalc showWaveMoveCalc = ShowWaveMoveCalc.ShowActualWaveMoveCalcDirSum;
     public boolean showGrid = false;
@@ -109,7 +111,7 @@ public class Universe {
                 case ShowActualWaveMoveCalcDirSum -> {
                     cell.getWaveListStream().forEach(wave -> {
                         final Cell.Dir dir = wave.getActualDirCalcPos();
-                        outputs[wave.getActualDirCalcPos().dir()] += wave.getDirCalcPropSum(dir);
+                        outputs[wave.getActualDirCalcPos().dir()] += wave.getDirCalcProbSum(dir);
                     });
                 }
                 case ShowAllWaveMoveCalcDirSum -> {
@@ -120,14 +122,14 @@ public class Universe {
 //                });
                     cell.getWaveListStream().forEach(wave -> {
                         Arrays.stream(Cell.Dir.values()).forEach(dir -> {
-                            outputs[dir.dir()] += wave.getDirCalcPropSum(dir);
+                            outputs[dir.dir()] += wave.getDirCalcProbSum(dir);
                         });
                     });
                 }
-                case ShowAllWaveMoveCalcDirProp -> {
+                case ShowAllWaveMoveCalcDirProb -> {
                     cell.getWaveListStream().forEach(wave -> {
                         Arrays.stream(Cell.Dir.values()).forEach(dir -> {
-                            outputs[dir.dir()] += wave.getDirCalcProp(dir);
+                            outputs[dir.dir()] += wave.getDirCalcProb(dir);
                         });
                     });
                 }
@@ -140,7 +142,14 @@ public class Universe {
             final Cell cell = this.getCell(xPos, yPos, zPos);
             cell.clearWaveList();
         });
+        for (final Event event : this.eventList) {
+            event.clearWaveList();
+        }
         this.calcPos++;
+    }
+
+    public void addEvent(final Event event) {
+        this.eventList.add(event);
     }
 
     public void addWave(final int xPos, final int yPos, final int zPos, final Wave wave) {
@@ -153,9 +162,9 @@ public class Universe {
             IntStream.rangeClosed(y1Pos, y2Pos).forEach(yPos -> {
                 IntStream.rangeClosed(x1Pos, x2Pos).forEach(xPos -> {
                     final Cell cell = this.getCell(xPos, yPos, zPos);
-                    final WaveMoveDirProp[] moveCalcDirArr = new WaveMoveDirProp[Cell.Dir.values().length];
+                    final WaveMoveDirProb[] moveCalcDirArr = new WaveMoveDirProb[Cell.Dir.values().length];
                     final WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(moveCalcDirArr);
-                    final Wave wave = WaveService.createNewWave(event, waveMoveDir);
+                    final Wave wave = WaveService.createNewWave(event, waveMoveDir, 1);
                     CellService.addWave(cell, wave);
                 });
             });

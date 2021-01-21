@@ -14,7 +14,7 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = 10;
         final int yRotPercent = 0;
@@ -39,7 +39,7 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = 1;
         final int yRotPercent = 0;
@@ -64,7 +64,7 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = -10;
         final int yRotPercent = 0;
@@ -89,7 +89,7 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(GR_P, 100);
+        waveMoveDir.setDirMoveProb(GR_P, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = 10;
         final int yRotPercent = 0;
@@ -114,7 +114,7 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 10;
@@ -139,7 +139,7 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(OR_N, 100);
+        waveMoveDir.setDirMoveProb(OR_N, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 10;
@@ -164,7 +164,7 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(GR_P, 100);
+        waveMoveDir.setDirMoveProb(GR_P, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = 20;
         final int yRotPercent = 10;
@@ -189,7 +189,7 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 0;
@@ -214,9 +214,9 @@ class WaveRotationServiceTest {
         final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProp(LB_P, 100);
-        waveMoveDir.setDirMoveProp(OR_P, 100);
-        waveMoveDir.setDirMoveProp(RE_P, 100);
+        waveMoveDir.setDirMoveProb(LB_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, 100);
+        waveMoveDir.setDirMoveProb(RE_P, 100);
         final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
         final int xRotPercent = 25;
         final int yRotPercent = 0;
@@ -287,7 +287,7 @@ class WaveRotationServiceTest {
         for (int axisPos = 0; axisPos < xRotArr.length; axisPos++) {
             final Cell.Dir[] rotArr = GridUtils.xRotArr[axisPos];
             for (int pos = 0; pos < rotArr.length; pos++) {
-                assertEquals(expectedProps[axisPos][pos], newWave.getMoveCalcDir(xRotArr[axisPos][pos]).getDirMoveProp(),
+                assertEquals(expectedProps[axisPos][pos], newWave.getMoveCalcDir(xRotArr[axisPos][pos]).getDirMoveProb(),
                         String.format("dir:\"%s\" - axisPos:\"%d\", pos:\"%d\"", xRotArr[axisPos][pos].toString(), axisPos, pos));
             }
         }

@@ -110,17 +110,17 @@ public class ProbabilityCalc {
         // 5: 480%=40%*12+0%	4=480%/100%	3=12/4	400%=4*100%	80%=480%-400%
 
         // xx%: 1200=100%*12
-        final int maxPropRange = this.probabilityBase * this.valueRange;
+        final int maxProbRange = this.probabilityBase * this.valueRange;
         // 30%: 360%=30%*12
         // 40%: 480%=40%*12
         // 50%: 600%=50%*12
         // 60%: 720%=60%*12
-        final int propRange = this.probability * this.valueRange + this.remainsProbRange;
+        final int probRange = this.probability * this.valueRange + this.remainsProbRange;
         // 30%: 3=360%/100%
         // 40%: 4=480%/100% 5=560%/100%
         // 50%: 6=600%/100%
         // 60%: 7=720%/100%
-        final int countPerRange = (propRange) / this.probabilityBase;
+        final int countPerRange = (probRange) / this.probabilityBase;
         // 30%: (4=12/3)
         // 40%: (3=12/4)    2=12/5
         // 50%: (2=12/6)
@@ -134,12 +134,12 @@ public class ProbabilityCalc {
         // 40%: 400=4*100   500=5*100
         // 50%: 600=6*100
         // 60%: 700=7*100
-        final int realPropRange = countPerRange * this.probabilityBase;
+        final int realProbRange = countPerRange * this.probabilityBase;
         // 30%: 60=360-300;
         // 40%: 80=480-400; -20=480-500
         // 50%: 0=600-600;
         // 60%: 20=720-700;
-        this.remainsProbRange = this.targetProbRange - realPropRange + this.remainsProbRange;
+        this.remainsProbRange = this.targetProbRange - realProbRange + this.remainsProbRange;
     }
 
     public boolean getExecute() {

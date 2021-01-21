@@ -7,8 +7,12 @@ import static de.schmiereck.hexMap3D.GridUtils.calcYDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
 
 public class Engine {
-    public static final int DIR_CALC_MAX_PROP = 100;
-    private static final int ROT_PERCENT = 10;
+    public static final int DIR_CALC_MAX_PROB = 100;
+    private static final int ROT_PERCENT = 5;
+    //private static final int MOVE_CALC_MIN_COUNT = (256 * 2 * 2 * 2 * 2 * 2 * 2 * 2);
+    //private static final int MOVE_CALC_MIN_COUNT = (256);
+    private static final int MOVE_CALC_MIN_COUNT = (16 * 2 * 2);
+    private static final int MOVE_CALC_MIN_PROB = (2);
 
     private final Universe universe;
     private long runNr = 0;
@@ -62,31 +66,44 @@ public class Engine {
                     final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
                     // Source-Cell-Wave is a Particle and is moving in this direction?
                     if ((sourceEvent.getEventType() == 1) &&
-                        (checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir) == true) &&
-                        (((sourceWave.getWavePropDenominator() * 10000) / sourceWave.getWaveProp()) > 1))
+                        checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir) &&
+                        //(((sourceWave.getWaveProbDenominator() * 1000) / sourceWave.getWaveProbDivisior()) > 1))
+                        checkSourceWaveHasProb(sourceWave, sourceEvent))
                     {
                         sourceWaveMoveCalc.calcActualDirMoved();
-                        final int propDivider = 2;
+                        final int probDivider = 2;
                         {
-                            final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, propDivider);
+                            final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, probDivider);
                             newTargetWave.calcActualWaveMoveCalcDir();
                             CellService.addWave(targetCell, newTargetWave);
-                         }
+                        }
+                        for (int rotCalcPos = 0; rotCalcPos < WaveRotationService.rotationMatrixXYZ.length; rotCalcPos++)
                         {
-                            final int[] r = WaveRotationService.rotationMatrixXYZ[sourceWave.getRotationCalcPos()];
+                            //final int rotCalcPos = sourceWave.getRotationCalcPos();
+                            final int[] r = WaveRotationService.rotationMatrixXYZ[rotCalcPos];
                             final int xRotPercent = r[0] * ROT_PERCENT;
                             final int yRotPercent = r[1] * ROT_PERCENT;
                             final int zRotPercent = r[2] * ROT_PERCENT;
                             final Wave newTargetWave =
                                     WaveRotationService.createMoveRotatedWave(sourceWave,
                                             xRotPercent, yRotPercent, zRotPercent,
-                                            propDivider);
+                                            probDivider);
                             newTargetWave.calcActualWaveMoveCalcDir();
                             CellService.addWave(targetCell, newTargetWave);
                         }
                     }
                 });
         }
+    }
+
+    private boolean checkSourceWaveHasProb(Wave sourceWave, Event sourceEvent) {
+        final boolean hasProb;
+        if (sourceEvent.getWaveList().size() > MOVE_CALC_MIN_COUNT) {
+            hasProb = (sourceWave.getWaveProb() > MOVE_CALC_MIN_PROB);
+        } else {
+            hasProb = true;
+        }
+        return hasProb;
     }
 
     private boolean checkIsBarrier(final Cell cell) {
@@ -96,10 +113,14 @@ public class Engine {
     private boolean checkSourceWaveHasOutput(final WaveMoveCalc waveMoveCalc, final Cell.Dir calcDir) {
         final boolean ret;
         if (calcDir == waveMoveCalc.getActualMoveDir()) {
-            ret = (waveMoveCalc.getDirCalcPropSum(calcDir) >= waveMoveCalc.getMaxProp());
+            ret = (waveMoveCalc.getDirCalcProbSum(calcDir) >= waveMoveCalc.getMaxProb());
         } else {
             ret = false;
         }
         return ret;
+    }
+
+    public int getNextCalcPos() {
+        return this.universe.getNextCalcPos();
     }
 }

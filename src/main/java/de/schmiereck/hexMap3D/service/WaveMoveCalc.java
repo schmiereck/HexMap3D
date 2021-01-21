@@ -9,10 +9,10 @@ public class WaveMoveCalc {
     private int dirCalcPos;
     private WaveMoveDir waveMoveDir;
     /**
-     * Counter between 0 and {@link WaveMoveDirProp#getDirMoveProp()}.
+     * Counter between 0 and {@link WaveMoveDirProb#getDirMoveProb()}.
      * The dir number of {@link Cell.Dir} is the index.
      */
-    private int[] dirCalcPropSumArr = new int[Cell.Dir.values().length];
+    private int[] dirCalcProbSumArr = new int[Cell.Dir.values().length];
 
     public WaveMoveCalc() {
         this.dirCalcPos = 0;
@@ -24,14 +24,14 @@ public class WaveMoveCalc {
         this.waveMoveDir = waveMoveDir;
     }
 
-    public WaveMoveCalc(final int dirCalcPos, final WaveMoveDir waveMoveDir, final int[] dirCalcPropSumArr) {
+    public WaveMoveCalc(final int dirCalcPos, final WaveMoveDir waveMoveDir, final int[] dirCalcProbSumArr) {
         this.dirCalcPos = dirCalcPos;
         this.waveMoveDir = waveMoveDir;
-        this.dirCalcPropSumArr = Arrays.copyOf(dirCalcPropSumArr, dirCalcPropSumArr.length);
+        this.dirCalcProbSumArr = Arrays.copyOf(dirCalcProbSumArr, dirCalcProbSumArr.length);
     }
 
-    public WaveMoveDirProp getActualWaveMoveCalcDir() {
-        return this.waveMoveDir.getWaveMoveDirProp(this.dirCalcPos);
+    public WaveMoveDirProb getActualWaveMoveCalcDir() {
+        return this.waveMoveDir.getWaveMoveDirProb(this.dirCalcPos);
     }
 
     public WaveMoveDir getWaveMoveDir() {
@@ -42,28 +42,28 @@ public class WaveMoveCalc {
         return this.dirCalcPos;
     }
 
-    public void setDirCalcProp(final Cell.Dir dir, final int dirCalcProp) {
-        this.waveMoveDir.setDirMoveProp(dir, dirCalcProp);
+    public void setDirCalcProb(final Cell.Dir dir, final int dirCalcProb) {
+        this.waveMoveDir.setDirMoveProb(dir, dirCalcProb);
     }
 
-    public int getDirCalcPropSum(final Cell.Dir dir) {
-        return this.getDirCalcPropSum(dir.dir());
+    public int getDirCalcProbSum(final Cell.Dir dir) {
+        return this.getDirCalcProbSum(dir.dir());
     }
 
-    public int getDirCalcPropSum(final int dirPos) {
-        return this.dirCalcPropSumArr[dirPos];
+    public int getDirCalcProbSum(final int dirPos) {
+        return this.dirCalcProbSumArr[dirPos];
     }
 
     public void setDirCalcPropSum(final Cell.Dir dir, final int dirCalcPropSum) {
-        this.dirCalcPropSumArr[dir.dir()] = dirCalcPropSum;
+        this.dirCalcProbSumArr[dir.dir()] = dirCalcPropSum;
     }
 
-    public void addDirCalcPropSum(final Cell.Dir dir, final int dirCalcPropSum) {
-        this.addDirCalcPropSum(dir.dir(), dirCalcPropSum);
+    public void addDirCalcProbSum(final Cell.Dir dir, final int dirCalcPropSum) {
+        this.addDirCalcProbSum(dir.dir(), dirCalcPropSum);
     }
 
-    public void addDirCalcPropSum(final int dirPos, final int dirCalcPropSum) {
-        this.dirCalcPropSumArr[dirPos] += dirCalcPropSum;
+    public void addDirCalcProbSum(final int dirPos, final int dirCalcPropSum) {
+        this.dirCalcProbSumArr[dirPos] += dirCalcPropSum;
     }
 
     public int nextDirCalcPos() {
@@ -76,36 +76,36 @@ public class WaveMoveCalc {
 
     public void calcActualDirMoved() {
         final Cell.Dir actualMoveDir = this.getActualMoveDir();
-        this.setDirCalcPropSum(actualMoveDir, this.getDirCalcPropSum(actualMoveDir) - waveMoveDir.getMaxProp());
+        this.setDirCalcPropSum(actualMoveDir, this.getDirCalcProbSum(actualMoveDir) - waveMoveDir.getMaxProb());
     }
 
     public void calcActualWaveMoveCalcDir() {
         int startDirCalcCount = 0;
         do {
             this.dirCalcPos = nextDirCalcPos();
-            final WaveMoveDirProp waveMoveDirProp = this.waveMoveDir.getDirMoveProp(this.dirCalcPos);
-            this.addDirCalcPropSum(this.dirCalcPos, waveMoveDirProp.getDirMoveProp());
+            final WaveMoveDirProb waveMoveDirProb = this.waveMoveDir.getDirMoveProb(this.dirCalcPos);
+            this.addDirCalcProbSum(this.dirCalcPos, waveMoveDirProb.getDirMoveProb());
             if (startDirCalcCount >= Cell.Dir.values().length) {
                 throw new RuntimeException("Do not found next dirCalcPos: " + this.waveMoveDir.toString());
             }
             startDirCalcCount++;
-        } while (this.getDirCalcPropSum(this.dirCalcPos) < this.waveMoveDir.getMaxProp());
+        } while (this.getDirCalcProbSum(this.dirCalcPos) < this.waveMoveDir.getMaxProb());
     }
 
-    public int getMaxProp() {
-        return this.waveMoveDir.getMaxProp();
+    public int getMaxProb() {
+        return this.waveMoveDir.getMaxProb();
     }
 
-    public WaveMoveDirProp[] getMoveCalcDirArr() {
-        return this.waveMoveDir.getMoveDirPropArr();
+    public WaveMoveDirProb[] getMoveCalcDirArr() {
+        return this.waveMoveDir.getMoveDirProbArr();
     }
 
-    public void adjustMaxProp() {
-        this.waveMoveDir.adjustMaxProp();
+    public void adjustMaxProb() {
+        this.waveMoveDir.adjustMaxProb();
     }
 
-    public int[] getDirCalcPropSumArr() {
-        return this.dirCalcPropSumArr;
+    public int[] getDirCalcProbSumArr() {
+        return this.dirCalcProbSumArr;
     }
 
     @Override

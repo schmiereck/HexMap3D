@@ -52,17 +52,17 @@ public class Cell {
         this.waveHashArr[this.universe.getNextCalcPos()].put(wave, wave);
     }
 
+    public Wave searchWave(final Wave wave) {
+        return this.waveHashArr[this.universe.getNextCalcPos()].get(wave);
+    }
+
     public void clearWaveList() {
-        this.waveHashArr[this.universe.getActCalcPos()].values().stream().forEach(wave -> wave.getEvent().removeWave(wave));
+        //this.waveHashArr[this.universe.getActCalcPos()].values().stream().forEach(wave -> wave.getEvent().removeWave(wave));
         this.waveHashArr[this.universe.getActCalcPos()].clear();
     }
 
     public Stream<Wave> getWaveListStream() {
         return this.waveHashArr[this.universe.getActCalcPos()].values().stream();
-    }
-
-    public Wave searchWave(final Wave wave) {
-        return this.waveHashArr[this.universe.getActCalcPos()].get(wave);
     }
 
 }

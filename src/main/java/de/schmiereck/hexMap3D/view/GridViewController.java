@@ -61,8 +61,8 @@ public class GridViewController {
                 if ("showAllWaveMoveCalcDirSum".equals(radioButton.getId())) {
                     showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirSum;
                 } else {
-                    if ("showAllWaveMoveCalcDirProp".equals(radioButton.getId())) {
-                        showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirProp;
+                    if ("showAllWaveMoveCalcDirProb".equals(radioButton.getId())) {
+                        showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirProb;
                     } else {
                         throw new RuntimeException("Unexpected showWaveMoveCalc \"" + radioButton.getId() + "\".");
                     }

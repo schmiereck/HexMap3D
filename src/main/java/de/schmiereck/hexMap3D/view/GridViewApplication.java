@@ -120,7 +120,7 @@ public class GridViewApplication extends Application {
 
         gridScene.setCamera(camera);
 
-        final double w2 = 120;
+        final double w2 = 160;
         final double h2 = 300;
         final SubScene guiScene = new SubScene(gridControllGui, w2, h2);
 
@@ -195,7 +195,7 @@ public class GridViewApplication extends Application {
     public void updateReality() {
         this.nodeSpace.updateReality();
 
-        this.gridViewModel.setStatisticWavesCount(Integer.toString(this.universe.getStatisticWaveCount()));
+        this.gridViewModel.setStatisticWavesCount(String.format("%,d", this.universe.getStatisticWaveCount()));
         this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", this.universe.getStatisticCalcRunTime() / 1000.0F));
         this.gridViewModel.setStatisticCalcStepCount(Long.toString(this.universe.getStatisticCalcStepCount()));
     }

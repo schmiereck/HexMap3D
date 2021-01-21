@@ -20,13 +20,19 @@ public class WaveRotationService {
               {  0,  1,  0 },
               {  0,  1,  1 },
               {  0,  0,  1 },
-              { -1,  0,  1 },
+              {  1,  0,  1 },
+
               { -1,  0,  0 },
               { -1, -1,  0 },
               {  0, -1,  0 },
               {  0, -1, -1 },
               {  0,  0, -1 },
-              {  1,  0, -1 },
+              { -1,  0, -1 },
+
+              /*
+              { -1,  0,  1 },
+              {  1,  0, -1 }
+              */
             };
 
     public static boolean useRotateMoveDirCache = false;
@@ -90,13 +96,14 @@ public class WaveRotationService {
             newWaveMoveDir = createMoveRotatedWaveMoveDir(sourceWaveMoveDir, xRotPercent, yRotPercent, zRotPercent);
         }
 
-        final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createNextWaveMoveCalc(sourceWaveMoveCalc.nextDirCalcPos(), newWaveMoveDir, sourceWaveMoveCalc.getDirCalcPropSumArr());
+        final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createNextWaveMoveCalc(sourceWaveMoveCalc.nextDirCalcPos(), newWaveMoveDir, sourceWaveMoveCalc.getDirCalcProbSumArr());
         //final WaveMoveCalc newWaveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(sourceWaveMoveCalc);
 
         WaveMoveCalcService.adjustDirCalcPropSum(newWaveMoveCalc);
 
         newWave = WaveService.createNextRotatedWave(sourceWave.getEvent(), newWaveMoveCalc,
-                sourceWave.nextRotationCalcPos(), sourceWave.getWavePropDenominator(), sourceWave.getWaveProp() * propDivider);
+                sourceWave.nextRotationCalcPos(),
+                1);//sourceWave.getWaveProb());
                 //sourceWave.getRotationCalcPos());
 
         return newWave;
@@ -129,7 +136,7 @@ public class WaveRotationService {
             }
         }
 
-        newWaveMoveDir.adjustMaxProp();
+        newWaveMoveDir.adjustMaxProb();
 
         return newWaveMoveDir;
     }
@@ -150,34 +157,34 @@ public class WaveRotationService {
             rotStartPos = rotArr.length - 1;
             rotEndPos = 0;
         }
-        final int propSum = calcPropSum(newWaveMoveDir, rotArr);
-        if (propSum > 0) {
+        final int probSum = calcProbSum(newWaveMoveDir, rotArr);
+        if (probSum > 0) {
             // Search last zero:
             final int notZeroPos =
                     calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
-                        final WaveMoveDirProp moveCalcDir = newWaveMoveDir.getDirMoveProp(rotArr[pos]);
-                        final WaveMoveDirProp beforMoveCalcDir = newWaveMoveDir.getDirMoveProp(rotArr[wrap(pos - rotDir, rotArr.length)]);
-                        return ((moveCalcDir.getDirMoveProp() > 0) && (beforMoveCalcDir.getDirMoveProp() == 0));
+                        final WaveMoveDirProb moveCalcDir = newWaveMoveDir.getDirMoveProb(rotArr[pos]);
+                        final WaveMoveDirProb beforMoveCalcDir = newWaveMoveDir.getDirMoveProb(rotArr[wrap(pos - rotDir, rotArr.length)]);
+                        return ((moveCalcDir.getDirMoveProb() > 0) && (beforMoveCalcDir.getDirMoveProb() == 0));
                     });
-            final int moveAmount = getMoveAmount(rotPercent, propSum);
+            final int moveAmount = getMoveAmount(rotPercent, probSum);
             final AtomicInteger actMoveAmount = new AtomicInteger(moveAmount);
             // Move propability in given direction until "moveAmount" is zero.
             calcBreakLoopWrap2(notZeroPos, rotArr.length, rotDir, pos -> {
-                final WaveMoveDirProp moveCalcDir = newWaveMoveDir.getDirMoveProp(rotArr[pos]);
-                final WaveMoveDirProp nextMoveCalcDir = newWaveMoveDir.getDirMoveProp(rotArr[wrap(pos + rotDir, rotArr.length)]);
-                final int prop = moveCalcDir.getDirMoveProp();
-                final int newProp, propDif;
-                if (prop <= actMoveAmount.get()) {
-                    propDif = prop;
-                    newProp = 0;
-                    actMoveAmount.addAndGet(-prop);
+                final WaveMoveDirProb moveCalcDir = newWaveMoveDir.getDirMoveProb(rotArr[pos]);
+                final WaveMoveDirProb nextMoveCalcDir = newWaveMoveDir.getDirMoveProb(rotArr[wrap(pos + rotDir, rotArr.length)]);
+                final int prob = moveCalcDir.getDirMoveProb();
+                final int newProb, probDif;
+                if (prob <= actMoveAmount.get()) {
+                    probDif = prob;
+                    newProb = 0;
+                    actMoveAmount.addAndGet(-probDif);
                 } else {
-                    propDif = actMoveAmount.get();
-                    newProp = prop - propDif;
+                    probDif = actMoveAmount.get();
+                    newProb = prob - probDif;
                     actMoveAmount.set(0);
                 }
-                moveCalcDir.setDirMoveProp(newProp);
-                nextMoveCalcDir.addDirMoveProp(propDif);
+                moveCalcDir.setDirMoveProb(newProb);
+                nextMoveCalcDir.addDirMoveProb(probDif);
                 return actMoveAmount.get() == 0;
             });
         } else {
@@ -185,8 +192,8 @@ public class WaveRotationService {
         }
     }
 
-    public static int getMoveAmount(int rotPercent, int propSum) {
-        final int a = (propSum * rotPercent);
+    public static int getMoveAmount(int rotPercent, int probSum) {
+        final int a = (probSum * rotPercent);
         final int ret;
         if (a != 0) {
             final int b = (a / 100);
@@ -210,12 +217,12 @@ public class WaveRotationService {
         return ret;
     }
 
-    private static int calcPropSum(final WaveMoveDir waveMoveDir, final Cell.Dir[] rotArr) {
-        int propSum = 0;
+    private static int calcProbSum(final WaveMoveDir waveMoveDir, final Cell.Dir[] rotArr) {
+        int probSum = 0;
         for (int pos = 0; pos < rotArr.length; pos++) {
-            final WaveMoveDirProp moveCalcDir = waveMoveDir.getDirMoveProp(rotArr[pos]);
-            propSum += moveCalcDir.getDirMoveProp();
+            final WaveMoveDirProb moveCalcDir = waveMoveDir.getDirMoveProb(rotArr[pos]);
+            probSum += moveCalcDir.getDirMoveProb();
         }
-        return propSum;
+        return probSum;
     }
 }

@@ -27,6 +27,8 @@ public class Main {
         // Extend Test:
         {
             final Event particleEvent = new Event(engine, 1);
+            universe.addEvent(particleEvent);
+
             final WaveMoveDir waveMoveDir = new WaveMoveDir();
             int dirCalcPos = 0;
             final int x, y, z;
@@ -48,11 +50,11 @@ public class Main {
             //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(0);
             //x=8; y=8; z=8;
 
-            waveMoveDir.setDirMoveProp(DB_P, 100);
+            waveMoveDir.setDirMoveProb(DB_P, 100);
             x=0; y=8; z=8;
 
-            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir);
-            wave.getWaveMoveDir().adjustMaxProp();
+            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir, 1);
+            wave.getWaveMoveDir().adjustMaxProb();
             wave.calcActualWaveMoveCalcDir();
             universe.addWave(x, y, z, wave);
 
