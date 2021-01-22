@@ -53,7 +53,8 @@ public class Main {
             waveMoveDir.setDirMoveProb(DB_P, 100);
             x=0; y=8; z=8;
 
-            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir, 1);
+            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir,
+                    WaveRotationService.rotationMatrixXYZ.length * 1000);
             wave.getWaveMoveDir().adjustMaxProb();
             wave.calcActualWaveMoveCalcDir();
             universe.addWave(x, y, z, wave);

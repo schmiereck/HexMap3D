@@ -16,13 +16,11 @@ public class WaveService {
         return newWave;
     }
 
-    public static Wave createNextMovedWave(final Wave sourceWave, final int propDivider) {
+    public static Wave createNextMovedWave(final Wave sourceWave, final int waveProb) {
         final Event event = sourceWave.getEvent();
         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
         final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createNextWaveMoveCalc(sourceWaveMoveCalc);
-        final Wave newWave = new Wave(event, newWaveMoveCalc, sourceWave.nextRotationCalcPos(),
-                //sourceWave.getWaveProbDenominator(), sourceWave.getWaveProbDivisior() * propDivider);
-                sourceWave.getWaveProb() > 1 ? sourceWave.getWaveProb() - 1 : 1);
+        final Wave newWave = new Wave(event, newWaveMoveCalc, sourceWave.nextRotationCalcPos(), waveProb);
         event.addWave(newWave);
         return newWave;
     }

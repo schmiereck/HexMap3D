@@ -75,7 +75,7 @@ public class WaveRotationService {
                                                 final int xRotPercent,
                                                 final int yRotPercent,
                                                 final int zRotPercent,
-                                                final int propDivider) {
+                                                final int newWaveProb) {
         final Wave newWave;
 
         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
@@ -103,7 +103,7 @@ public class WaveRotationService {
 
         newWave = WaveService.createNextRotatedWave(sourceWave.getEvent(), newWaveMoveCalc,
                 sourceWave.nextRotationCalcPos(),
-                1);//sourceWave.getWaveProb());
+                newWaveProb);//sourceWave.getWaveProb());
                 //sourceWave.getRotationCalcPos());
 
         return newWave;

@@ -8,7 +8,7 @@ import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
 
 public class Engine {
     public static final int DIR_CALC_MAX_PROB = 100;
-    private static final int ROT_PERCENT = 5;
+    private static final int ROT_PERCENT = 1;
     //private static final int MOVE_CALC_MIN_COUNT = (256 * 2 * 2 * 2 * 2 * 2 * 2 * 2);
     //private static final int MOVE_CALC_MIN_COUNT = (256);
     private static final int MOVE_CALC_MIN_COUNT = (16 * 2 * 2);
@@ -71,14 +71,25 @@ public class Engine {
                         checkSourceWaveHasProb(sourceWave, sourceEvent))
                     {
                         sourceWaveMoveCalc.calcActualDirMoved();
-                        final int probDivider = 2;
+                        final int sourceWaveProb = sourceWave.getWaveProb();
+                        //final int probDivider = 1 + 1;
+                        final int probDivider = 1 + WaveRotationService.rotationMatrixXYZ.length;
+                        final int waveProbDivided1;
+                        final int waveProbDivided2;
+                        if (sourceWaveProb >= probDivider) {
+                            waveProbDivided2 = (sourceWaveProb) / (probDivider);
+                            waveProbDivided1 = (sourceWaveProb) - (waveProbDivided2 * (probDivider - 1));
+                        } else {
+                            waveProbDivided1 = sourceWaveProb;
+                            waveProbDivided2 = 0;
+                        }
                         {
-                            final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, probDivider);
+                            final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, waveProbDivided1);
                             newTargetWave.calcActualWaveMoveCalcDir();
                             CellService.addWave(targetCell, newTargetWave);
                         }
                         for (int rotCalcPos = 0; rotCalcPos < WaveRotationService.rotationMatrixXYZ.length; rotCalcPos++)
-                        {
+                        if (waveProbDivided2 > 0) {
                             //final int rotCalcPos = sourceWave.getRotationCalcPos();
                             final int[] r = WaveRotationService.rotationMatrixXYZ[rotCalcPos];
                             final int xRotPercent = r[0] * ROT_PERCENT;
@@ -87,7 +98,7 @@ public class Engine {
                             final Wave newTargetWave =
                                     WaveRotationService.createMoveRotatedWave(sourceWave,
                                             xRotPercent, yRotPercent, zRotPercent,
-                                            probDivider);
+                                            waveProbDivided2);
                             newTargetWave.calcActualWaveMoveCalcDir();
                             CellService.addWave(targetCell, newTargetWave);
                         }
@@ -103,7 +114,7 @@ public class Engine {
         } else {
             hasProb = true;
         }
-        return hasProb;
+        return true;//hasProb;
     }
 
     private boolean checkIsBarrier(final Cell cell) {
