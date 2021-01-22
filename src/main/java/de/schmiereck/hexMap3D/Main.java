@@ -12,9 +12,10 @@ public class Main {
 
     public static final boolean useParallel = true;
 
-    public static final int xSizeGrid = 24;//16;
-    public static final int ySizeGrid = 24;//16;
-    public static final int zSizeGrid = 24;//16;
+    public static final int xSizeGrid = 27;//16;
+    public static final int ySizeGrid = 27;//16;
+    public static final int zSizeGrid = 27;//16;
+    public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (32000);
 
     public static void main(String[] args) {
         //-----------------------------------------------------------------------------
@@ -53,8 +54,7 @@ public class Main {
             waveMoveDir.setDirMoveProb(DB_P, 100);
             x=0; y=8; z=8;
 
-            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir,
-                    WaveRotationService.rotationMatrixXYZ.length * 1000);
+            final Wave wave = WaveService.createNewWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
             wave.getWaveMoveDir().adjustMaxProb();
             wave.calcActualWaveMoveCalcDir();
             universe.addWave(x, y, z, wave);

@@ -98,6 +98,9 @@ public class Universe {
                 realityCell.setBarrier(true);
             }
 
+            final int waveProbSum = cell.getWaveListStream().mapToInt(wave -> wave.getWaveProb()).sum();
+            realityCell.setWaveProb(waveProbSum);
+
             realityCell.setShowGrid(this.showGrid);
 
             final int[] outputs = realityCell.getOutputs();

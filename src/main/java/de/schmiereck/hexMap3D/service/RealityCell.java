@@ -4,12 +4,14 @@ import java.util.Arrays;
 
 public class RealityCell {
     private int waveCount;
+    private int waveProb;
     private boolean barrier;
     private boolean showGrid;
     private final int[] outputs;
 
     RealityCell() {
         this.waveCount = 0;
+        this.waveProb = 0;
         this.barrier = false;
         this.outputs = new int[12];
     }
@@ -24,6 +26,14 @@ public class RealityCell {
 
     public int getWaveCount() {
         return this.waveCount;
+    }
+
+    public void setWaveProb(final int waveProb) {
+        this.waveProb = waveProb;
+    }
+
+    public int getWaveProb() {
+        return this.waveProb;
     }
 
     public void setBarrier(final boolean barrier) {

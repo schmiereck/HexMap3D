@@ -6,10 +6,12 @@ import java.util.stream.IntStream;
 import de.schmiereck.hexMap3D.service.Cell;
 import de.schmiereck.hexMap3D.service.RealityCell;
 import de.schmiereck.hexMap3D.service.Universe;
+import de.schmiereck.hexMap3D.service.WaveRotationService;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 
-import static de.schmiereck.hexMap3D.view.GridViewUtils.viewGridStepA2;
+import static de.schmiereck.hexMap3D.Main.INITIAL_WAVE_PROB;
+import static de.schmiereck.hexMap3D.view.GridViewUtils.*;
 import static java.util.Objects.nonNull;
 
 public class GridViewNodeSpace {
@@ -35,9 +37,17 @@ public class GridViewNodeSpace {
             final GridNode gridNode = getGridNode(xPos, yPos, zPos);
             final RealityCell realityCell = gridNode.getRealityCell();
             final boolean visible = realityCell.getWaveCount() > 0;
+            final int waveProb = realityCell.getWaveProb();
+            final double probScale = Math.max(0.2D, (waveProb / (double)INITIAL_WAVE_PROB));
+
             final Box gridBox = gridNode.getGridBox();
             if (nonNull(gridBox)) {
                 gridBox.setVisible(visible);
+                if (visible) {
+                    gridBox.setHeight(probScale * GRID_BOX_SIZE);
+                    gridBox.setWidth(probScale * GRID_BOX_SIZE);
+                    gridBox.setDepth(probScale * GRID_BOX_SIZE);
+                }
             }
             {
                 final int[] outputs = realityCell.getOutputs();
@@ -48,6 +58,8 @@ public class GridViewNodeSpace {
                     if (output > 0) {
                         outputBox.setVisible(true);
                         outputBox.setHeight(((output > 100 ? 100 : output) * viewGridStepA2) / 100.0D);
+                        outputBox.setWidth(probScale * OUTPUT_SIZE);
+                        outputBox.setDepth(probScale * OUTPUT_SIZE);
                     } else {
                         outputBox.setVisible(false);
                     }

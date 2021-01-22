@@ -7,12 +7,7 @@ import static de.schmiereck.hexMap3D.GridUtils.calcYDirOffset;
 import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
 
 public class Engine {
-    public static final int DIR_CALC_MAX_PROB = 100;
     private static final int ROT_PERCENT = 1;
-    //private static final int MOVE_CALC_MIN_COUNT = (256 * 2 * 2 * 2 * 2 * 2 * 2 * 2);
-    //private static final int MOVE_CALC_MIN_COUNT = (256);
-    private static final int MOVE_CALC_MIN_COUNT = (16 * 2 * 2);
-    private static final int MOVE_CALC_MIN_PROB = (2);
 
     private final Universe universe;
     private long runNr = 0;
@@ -66,9 +61,7 @@ public class Engine {
                     final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
                     // Source-Cell-Wave is a Particle and is moving in this direction?
                     if ((sourceEvent.getEventType() == 1) &&
-                        checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir) &&
-                        //(((sourceWave.getWaveProbDenominator() * 1000) / sourceWave.getWaveProbDivisior()) > 1))
-                        checkSourceWaveHasProb(sourceWave, sourceEvent))
+                        checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir))
                     {
                         sourceWaveMoveCalc.calcActualDirMoved();
                         final int sourceWaveProb = sourceWave.getWaveProb();
@@ -105,16 +98,6 @@ public class Engine {
                     }
                 });
         }
-    }
-
-    private boolean checkSourceWaveHasProb(Wave sourceWave, Event sourceEvent) {
-        final boolean hasProb;
-        if (sourceEvent.getWaveList().size() > MOVE_CALC_MIN_COUNT) {
-            hasProb = (sourceWave.getWaveProb() > MOVE_CALC_MIN_PROB);
-        } else {
-            hasProb = true;
-        }
-        return true;//hasProb;
     }
 
     private boolean checkIsBarrier(final Cell cell) {

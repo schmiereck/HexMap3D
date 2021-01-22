@@ -18,7 +18,8 @@ import javafx.scene.transform.Translate;
 import static java.lang.String.format;
 
 public class GridViewUtils {
-
+    public static boolean showABCLayerColors = false;
+    
     public final static double viewGridStepA = (16.0D) * 4.0D * (16.0D / Main.xSizeGrid);
     public final static double viewGridStepA2 = viewGridStepA / 2.0D;
     public final static double viewGridStepA4 = viewGridStepA / 4.0D;
@@ -26,6 +27,8 @@ public class GridViewUtils {
     public final static double viewGridStepMa = viewGridStepA/Math.sqrt(12.0D);
     public final static double viewGridStepMb = viewGridStepH-viewGridStepMa;
     public final static double viewGridStepZ = (viewGridStepA/3.0D)*Math.sqrt(6.0D);
+    public static final double GRID_BOX_SIZE = 16.0;
+    public static final double OUTPUT_SIZE = 6.0D;
 
     public static void generateViewGrid(final GridViewNodeSpace nodeSpace, final Group rootGroup,
             final int xSizeGrid, final int ySizeGrid, final int zSizeGrid) {
@@ -38,17 +41,21 @@ public class GridViewUtils {
 
                     //-----------------------------------------------------------------------------
                     final Color color;
-                    switch (zPos % 3) {
-                        case 0 -> { // A
-                            color = Color.DARKRED;
+                    if (showABCLayerColors) {
+                        switch (zPos % 3) {
+                            case 0 -> { // A
+                                color = Color.DARKRED;
+                            }
+                            case 1 -> { // B
+                                color = Color.DARKOLIVEGREEN;
+                            }
+                            case 2 -> { // C
+                                color = Color.DARKSLATEBLUE;
+                            }
+                            default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
                         }
-                        case 1 -> { // B
-                            color = Color.DARKOLIVEGREEN;
-                        }
-                        case 2 -> { // C
-                            color = Color.DARKSLATEBLUE;
-                        }
-                        default -> throw new RuntimeException(format("Unexpected zPos \"%d\".", zPos));
+                    } else {
+                        color = Color.DARKGRAY;
                     }
                     final Point3D point3D = createViewGridPoint3D(xPos, yPos, zPos);
                     final Box box = createGidBox(point3D, color);
@@ -170,9 +177,9 @@ public class GridViewUtils {
     private static Box createGidBox(final Point3D point3D, final Color color) {
         final Box box = new Box();
 
-        box.setWidth(16.0);
-        box.setHeight(16.0);
-        box.setDepth(16.0);
+        box.setWidth(GRID_BOX_SIZE);
+        box.setHeight(GRID_BOX_SIZE);
+        box.setDepth(GRID_BOX_SIZE);
 
         box.setTranslateX(point3D.getX());
         box.setTranslateY(point3D.getY());
@@ -243,7 +250,7 @@ public class GridViewUtils {
         final double angle = Math.acos(diff.normalize().dotProduct(yAxis));
         final Rotate rotateAroundCenter = new Rotate(-Math.toDegrees(angle), axisOfRotation);
 
-        final Box box = new Box(6.0D, height, 6.0D);
+        final Box box = new Box(OUTPUT_SIZE, height, OUTPUT_SIZE);
 
         if (color != null) {
             PhongMaterial material = new PhongMaterial();
