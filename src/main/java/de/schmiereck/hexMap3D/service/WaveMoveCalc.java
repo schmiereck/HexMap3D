@@ -55,7 +55,11 @@ public class WaveMoveCalc {
     }
 
     public void setDirCalcPropSum(final Cell.Dir dir, final int dirCalcPropSum) {
-        this.dirCalcProbSumArr[dir.dir()] = dirCalcPropSum;
+        this.setDirCalcPropSum(dir.dir(), dirCalcPropSum);
+    }
+
+    public void setDirCalcPropSum(final int dirPos, final int dirCalcPropSum) {
+        this.dirCalcProbSumArr[dirPos] = dirCalcPropSum;
     }
 
     public void addDirCalcProbSum(final Cell.Dir dir, final int dirCalcPropSum) {
@@ -70,13 +74,17 @@ public class WaveMoveCalc {
         return wrap(this.dirCalcPos + 1, Cell.Dir.values().length);
     }
 
+    public int getActualDirCalcPos() {
+        return this.dirCalcPos;
+    }
+
     public Cell.Dir getActualMoveDir() {
         return Cell.Dir.values()[this.dirCalcPos];
     }
 
-    public void calcActualDirMoved() {
-        final Cell.Dir actualMoveDir = this.getActualMoveDir();
-        this.setDirCalcPropSum(actualMoveDir, this.getDirCalcProbSum(actualMoveDir) - waveMoveDir.getMaxProb());
+    public void calcDirMoved(final int dirMovePos) {
+        //final Cell.Dir actualMoveDir = this.getActualMoveDir();
+        this.setDirCalcPropSum(dirMovePos, this.getDirCalcProbSum(dirMovePos) - waveMoveDir.getMaxProb());
     }
 
     public void calcActualWaveMoveCalcDir() {
@@ -120,7 +128,7 @@ public class WaveMoveCalc {
         if (this.getClass() != obj.getClass()) return false;
         final WaveMoveCalc entry = (WaveMoveCalc) obj;
         return (this.dirCalcPos == entry.dirCalcPos) &&
-                this.waveMoveDir.equals(entry.waveMoveDir) &&
-                Arrays.equals(this.dirCalcProbSumArr, entry.dirCalcProbSumArr);
+                Arrays.equals(this.dirCalcProbSumArr, entry.dirCalcProbSumArr) &&
+                this.waveMoveDir.equals(entry.waveMoveDir);
     }
 }

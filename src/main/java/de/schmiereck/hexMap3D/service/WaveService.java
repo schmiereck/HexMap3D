@@ -19,7 +19,7 @@ public class WaveService {
     }
 
     public static Wave createNewInitialWave(final Event event, final WaveMoveDir waveMoveDir, final int waveProb) {
-        final WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(0, WaveMoveDirService.createWaveMoveDir(waveMoveDir.getMoveDirProbArr()));
+        final WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(0, WaveMoveDirService.createWaveMoveDir(waveMoveDir.getMoveDirProbArr()));
         //final Wave newWave = new Wave(event, waveMoveCalc, 0, 1, 1);
         final Wave newWave = new Wave(event, waveMoveCalc, 0, waveProb);
         event.addWave(newWave);

@@ -76,6 +76,8 @@ public class CellStateService {
         return cellState;
     }
 
+    public static boolean useRotationDivider = false;
+
     public static CellState calcNewStateForTargetCell(final CellState[] inCellStateArr) {
         final CellState cellState = new CellState();
         for (final Cell.Dir calcDir : Cell.Dir.values()) {
@@ -91,15 +93,20 @@ public class CellStateService {
                         if ((sourceEvent.getEventType() == 1) &&
                                 checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir))
                         {
-                            sourceWaveMoveCalc.calcActualDirMoved();
+                            //!!!sourceWaveMoveCalc.calcActualDirMoved();
                             final int sourceWaveProb = sourceWave.getWaveProb();
                             //final int probDivider = 1 + 1;
-                            final int probDivider = 1 + WaveRotationService.rotationMatrixXYZ.length;
                             final int waveProbDivided1;
                             final int waveProbDivided2;
-                            if (sourceWaveProb >= probDivider) {
-                                waveProbDivided2 = (sourceWaveProb) / (probDivider);
-                                waveProbDivided1 = (sourceWaveProb) - (waveProbDivided2 * (probDivider - 1));
+                            if (useRotationDivider) {
+                                final int probDivider = 1 + WaveRotationService.rotationMatrixXYZ.length;
+                                if (sourceWaveProb >= probDivider) {
+                                    waveProbDivided2 = (sourceWaveProb) / (probDivider);
+                                    waveProbDivided1 = (sourceWaveProb) - (waveProbDivided2 * (probDivider - 1));
+                                } else {
+                                    waveProbDivided1 = sourceWaveProb;
+                                    waveProbDivided2 = 0;
+                                }
                             } else {
                                 waveProbDivided1 = sourceWaveProb;
                                 waveProbDivided2 = 0;
@@ -109,20 +116,22 @@ public class CellStateService {
                                 newTargetWave.calcActualWaveMoveCalcDir();
                                 CellService.addWave(cellState, newTargetWave);
                             }
-                            for (int rotCalcPos = 0; rotCalcPos < WaveRotationService.rotationMatrixXYZ.length; rotCalcPos++)
-                                if (waveProbDivided2 > 0) {
-                                    //final int rotCalcPos = sourceWave.getRotationCalcPos();
-                                    final int[] rotationXYZ = WaveRotationService.rotationMatrixXYZ[rotCalcPos];
-                                    final int xRotPercent = rotationXYZ[0] * ROT_PERCENT;
-                                    final int yRotPercent = rotationXYZ[1] * ROT_PERCENT;
-                                    final int zRotPercent = rotationXYZ[2] * ROT_PERCENT;
-                                    final Wave newTargetWave =
-                                            WaveRotationService.createMoveRotatedWave(sourceWave,
-                                                    xRotPercent, yRotPercent, zRotPercent,
-                                                    waveProbDivided2);
-                                    newTargetWave.calcActualWaveMoveCalcDir();
-                                    CellService.addWave(cellState, newTargetWave);
-                                }
+                            if (useRotationDivider) {
+                                for (int rotCalcPos = 0; rotCalcPos < WaveRotationService.rotationMatrixXYZ.length; rotCalcPos++)
+                                    if (waveProbDivided2 > 0) {
+                                        //final int rotCalcPos = sourceWave.getRotationCalcPos();
+                                        final int[] rotationXYZ = WaveRotationService.rotationMatrixXYZ[rotCalcPos];
+                                        final int xRotPercent = rotationXYZ[0] * ROT_PERCENT;
+                                        final int yRotPercent = rotationXYZ[1] * ROT_PERCENT;
+                                        final int zRotPercent = rotationXYZ[2] * ROT_PERCENT;
+                                        final Wave newTargetWave =
+                                                WaveRotationService.createMoveRotatedWave(sourceWave,
+                                                        xRotPercent, yRotPercent, zRotPercent,
+                                                        waveProbDivided2);
+                                        newTargetWave.calcActualWaveMoveCalcDir();
+                                        CellService.addWave(cellState, newTargetWave);
+                                    }
+                            }
                         }
                     });
         }

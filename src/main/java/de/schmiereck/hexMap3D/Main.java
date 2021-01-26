@@ -58,7 +58,7 @@ public class Main {
             wave.getWaveMoveDir().adjustMaxProb();
             wave.calcActualWaveMoveCalcDir();
             final Cell cell = universe.getCell(x, y, z);
-            cell.addWave(wave);
+            //cell.addWave(wave);
 
             // For Testing:
             // Add a sharp Barrier...

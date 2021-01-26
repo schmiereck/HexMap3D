@@ -96,9 +96,10 @@ public class WaveRotationService {
             newWaveMoveDir = createMoveRotatedWaveMoveDir(sourceWaveMoveDir, xRotPercent, yRotPercent, zRotPercent);
         }
 
-        //final int nextDirCalcPos = sourceWaveMoveCalc.nextDirCalcPos();
-        final int nextDirCalcPos = 0;
-        final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createNextWaveMoveCalc(nextDirCalcPos, newWaveMoveDir, sourceWaveMoveCalc.getDirCalcProbSumArr());
+        final int actualDirCalcPos = sourceWaveMoveCalc.getActualDirCalcPos();
+        //final int nextDirCalcPos = 0;
+        final int nextDirCalcPos = sourceWaveMoveCalc.nextDirCalcPos();
+        final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createNextWaveMoveCalc(actualDirCalcPos, nextDirCalcPos, newWaveMoveDir, sourceWaveMoveCalc.getDirCalcProbSumArr());
 
         WaveMoveCalcService.adjustDirCalcPropSum(newWaveMoveCalc);
 

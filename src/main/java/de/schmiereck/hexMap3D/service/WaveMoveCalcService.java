@@ -2,17 +2,21 @@ package de.schmiereck.hexMap3D.service;
 
 public class WaveMoveCalcService {
 
-    public static WaveMoveCalc createWaveMoveCalc(final int dirCalcPos, final WaveMoveDir waveMoveDir) {
+    public static WaveMoveCalc createNewInitalWaveMoveCalc(final int dirCalcPos, final WaveMoveDir waveMoveDir) {
         return new WaveMoveCalc(dirCalcPos, waveMoveDir);
     }
 
-    public static WaveMoveCalc createNextWaveMoveCalc(final int nextDirCalcPos, final WaveMoveDir newWaveMoveDir, final int[] dirCalcPropSumArr) {
-        return new WaveMoveCalc(nextDirCalcPos, newWaveMoveDir, dirCalcPropSumArr);
+    public static WaveMoveCalc createNextWaveMoveCalc(final int actualDirCalcPos, final int nextDirCalcPos, final WaveMoveDir newWaveMoveDir, final int[] dirCalcPropSumArr) {
+        final WaveMoveCalc newWaveMoveCalc = new WaveMoveCalc(nextDirCalcPos, newWaveMoveDir, dirCalcPropSumArr);
+        newWaveMoveCalc.calcDirMoved(actualDirCalcPos);
+        return newWaveMoveCalc;
     }
 
     public static WaveMoveCalc createNextWaveMoveCalc(final WaveMoveCalc sourceWaveMoveCalc) {
         final WaveMoveDir newWaveMoveDir = WaveMoveDirService.createWaveMoveDir(sourceWaveMoveCalc.getMoveCalcDirArr());
+        final int actualDirCalcPos = sourceWaveMoveCalc.getDirCalcPos();
         final WaveMoveCalc newWaveMoveCalc = new WaveMoveCalc(sourceWaveMoveCalc.nextDirCalcPos(), newWaveMoveDir, sourceWaveMoveCalc.getDirCalcProbSumArr());
+        newWaveMoveCalc.calcDirMoved(actualDirCalcPos);
         return newWaveMoveCalc;
     }
 
