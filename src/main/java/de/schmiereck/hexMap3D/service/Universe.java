@@ -84,6 +84,10 @@ public class Universe {
         return this.grid[wrap(zPos, this.zUniverseSize)][wrap(yPos, this.yUniverseSize)][wrap(xPos, this.xUniverseSize)];
     }
 
+    public CellState getCellState(final int xPos, final int yPos, final int zPos) {
+        return this.getCell(xPos, yPos, zPos).getCellState();
+    }
+
     public void calcReality() {
         this.statisticWaveCount = 0;
         forEachCell((final int xPos, final int yPos, final int zPos) -> {
@@ -155,11 +159,6 @@ public class Universe {
         this.eventList.add(event);
     }
 
-    public void addWave(final int xPos, final int yPos, final int zPos, final Wave wave) {
-        final Cell cell = this.getCell(xPos, yPos, zPos);
-        CellService.addWave(cell, wave);
-    }
-
     public void addBariere(final Event event, final int x1Pos, final int y1Pos, final int z1Pos, final int x2Pos, final int y2Pos, final int z2Pos) {
         IntStream.rangeClosed(z1Pos, z2Pos).forEach(zPos -> {
             IntStream.rangeClosed(y1Pos, y2Pos).forEach(yPos -> {
@@ -167,8 +166,8 @@ public class Universe {
                     final Cell cell = this.getCell(xPos, yPos, zPos);
                     final WaveMoveDirProb[] moveCalcDirArr = new WaveMoveDirProb[Cell.Dir.values().length];
                     final WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(moveCalcDirArr);
-                    final Wave wave = WaveService.createNewWave(event, waveMoveDir, 1);
-                    CellService.addWave(cell, wave);
+                    final Wave wave = WaveService.createNewInitialWave(event, waveMoveDir, 1);
+                    cell.addWave(wave);
                 });
             });
         });

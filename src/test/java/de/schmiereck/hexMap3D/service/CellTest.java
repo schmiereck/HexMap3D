@@ -9,15 +9,15 @@ public class CellTest {
 
     @org.junit.jupiter.api.Test
     public void test1() {
-        Universe universe = new Universe(1, 1, 1);
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         Cell cell = new Cell(universe, 0, 0, 0);
-        final Engine engine = null;
         final Event particleEvent = new Event(engine, 1);
         final Wave wave1;
         {
             final WaveMoveDir waveMoveDir = new WaveMoveDir();
             waveMoveDir.setDirMoveProb(LB_P, 100);
-            wave1 = WaveService.createNewWave(particleEvent, waveMoveDir);
+            wave1 = WaveService.createNewTestWave(particleEvent, waveMoveDir);
 
             //CellService.addWave(cell, wave1);
             cell.addWave(wave1);
@@ -26,7 +26,7 @@ public class CellTest {
         {
             final WaveMoveDir waveMoveDir = new WaveMoveDir();
             waveMoveDir.setDirMoveProb(LB_P, 100);
-            wave2 = WaveService.createNewWave(particleEvent, waveMoveDir);
+            wave2 = WaveService.createNewTestWave(particleEvent, waveMoveDir);
 
             //CellService.addWave(cell, wave2);
         }

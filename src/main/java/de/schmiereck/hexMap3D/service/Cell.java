@@ -39,30 +39,37 @@ public class Cell {
         }
     };
 
-    private final HashMap<Wave, Wave>[] waveHashArr = new HashMap[2];
+    private CellState[] cellState = new CellState[2];
     private final Universe universe;
 
     public Cell(final Universe universe, final int xPos, final int yPos, final int zPos) {
         this.universe = universe;
-        this.waveHashArr[0] = new HashMap<>();
-        this.waveHashArr[1] = new HashMap<>();
+        this.cellState[0] = CellStateService.createInitialCellState();
+        this.cellState[1] = CellStateService.createInitialCellState();
+    }
+
+    public void setCellState(final CellState cellState) {
+        this.cellState[this.universe.getNextCalcPos()] = cellState;
+    }
+
+    public CellState getCellState() {
+        return this.cellState[this.universe.getActCalcPos()];
     }
 
     public void addWave(final Wave wave) {
-        this.waveHashArr[this.universe.getNextCalcPos()].put(wave, wave);
+        this.cellState[this.universe.getNextCalcPos()].addWave(wave);
     }
 
     public Wave searchWave(final Wave wave) {
-        return this.waveHashArr[this.universe.getNextCalcPos()].get(wave);
+        return this.cellState[this.universe.getNextCalcPos()].searchWave(wave);
     }
 
     public void clearWaveList() {
-        //this.waveHashArr[this.universe.getActCalcPos()].values().stream().forEach(wave -> wave.getEvent().removeWave(wave));
-        this.waveHashArr[this.universe.getActCalcPos()].clear();
+        this.cellState[this.universe.getActCalcPos()].clearWaveList();
     }
 
     public Stream<Wave> getWaveListStream() {
-        return this.waveHashArr[this.universe.getActCalcPos()].values().stream();
+        return this.cellState[this.universe.getActCalcPos()].getWaveListStream();
     }
 
 }

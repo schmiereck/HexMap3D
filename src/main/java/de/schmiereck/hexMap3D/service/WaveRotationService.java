@@ -35,7 +35,7 @@ public class WaveRotationService {
               */
             };
 
-    public static boolean useRotateMoveDirCache = false;
+    public static boolean useRotateMoveDirCache = true;
 
     private static class RotateMoveDirCacheEntry {
         final WaveMoveDir inWaveMoveDir;
@@ -96,8 +96,9 @@ public class WaveRotationService {
             newWaveMoveDir = createMoveRotatedWaveMoveDir(sourceWaveMoveDir, xRotPercent, yRotPercent, zRotPercent);
         }
 
-        final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createNextWaveMoveCalc(sourceWaveMoveCalc.nextDirCalcPos(), newWaveMoveDir, sourceWaveMoveCalc.getDirCalcProbSumArr());
-        //final WaveMoveCalc newWaveMoveCalc = WaveMoveDirService.createNextWaveMoveCalc(sourceWaveMoveCalc);
+        //final int nextDirCalcPos = sourceWaveMoveCalc.nextDirCalcPos();
+        final int nextDirCalcPos = 0;
+        final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createNextWaveMoveCalc(nextDirCalcPos, newWaveMoveDir, sourceWaveMoveCalc.getDirCalcProbSumArr());
 
         WaveMoveCalcService.adjustDirCalcPropSum(newWaveMoveCalc);
 

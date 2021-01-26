@@ -11,11 +11,12 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveMiddle0Positive() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 10;
         final int yRotPercent = 0;
         final int zRotPercent = 0;
@@ -36,11 +37,12 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveMiddle0Positive2() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 1;
         final int yRotPercent = 0;
         final int zRotPercent = 0;
@@ -61,11 +63,12 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveFirstMiddleNegative() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = -10;
         final int yRotPercent = 0;
         final int zRotPercent = 0;
@@ -86,11 +89,12 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveSeccondMiddlePositive() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(GR_P, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 10;
         final int yRotPercent = 0;
         final int zRotPercent = 0;
@@ -111,11 +115,12 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveFirstMiddleYPositive() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 10;
         final int zRotPercent = 0;
@@ -136,11 +141,12 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveMiddle2YPositive() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_N, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 10;
         final int zRotPercent = 0;
@@ -161,11 +167,12 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveMiddle1XPositiveYPositive() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(GR_P, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 20;
         final int yRotPercent = 10;
         final int zRotPercent = 0;
@@ -186,11 +193,12 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWaveMiddle0ZPositive() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 0;
         final int zRotPercent = 10;
@@ -211,13 +219,14 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     void createMoveRotatedWave25PositiveOneRound() {
         // Arrange
-        final Engine engine = null;
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(LB_P, 100);
         waveMoveDir.setDirMoveProb(OR_P, 100);
         waveMoveDir.setDirMoveProb(RE_P, 100);
-        final Wave sourceWave = WaveService.createNewWave(particleEvent, waveMoveDir);
+        final Wave sourceWave = WaveService.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 25;
         final int yRotPercent = 0;
         final int zRotPercent = 0;

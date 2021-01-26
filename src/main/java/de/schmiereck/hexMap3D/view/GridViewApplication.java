@@ -1,5 +1,6 @@
 package de.schmiereck.hexMap3D.view;
 
+import de.schmiereck.hexMap3D.service.CellStateService;
 import de.schmiereck.hexMap3D.service.Universe;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -198,5 +199,7 @@ public class GridViewApplication extends Application {
         this.gridViewModel.setStatisticWavesCount(String.format("%,d", this.universe.getStatisticWaveCount()));
         this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", this.universe.getStatisticCalcRunTime() / 1000.0F));
         this.gridViewModel.setStatisticCalcStepCount(Long.toString(this.universe.getStatisticCalcStepCount()));
+
+        System.out.println("cellStateCache:" + CellStateService.getCellStateCacheSize());
     }
 }

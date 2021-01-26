@@ -55,14 +55,6 @@ public class Wave {
      */
     private int rotationCalcPos;
     /**
-     * Denominator of {@link #waveProbDenominator}/{@link #waveProbDivisior} representation of the probability.
-     */
-    private int waveProbDenominator;
-    /**
-     * Divisior of {@link #waveProbDenominator}/{@link #waveProbDivisior} representation of the probability.
-     */
-    private int waveProbDivisior;
-    /**
      * If two waves combines, their probabilities are added.
      */
     private int waveProb;
@@ -72,20 +64,7 @@ public class Wave {
         this.event = event;
         this.waveMoveCalc = waveMoveCalc;
         this.rotationCalcPos = rotationCalcPos;
-        this.rotationCalcPos = 1;
-        this.waveProbDenominator = 1;
         this.waveProb = waveProb;
-    }
-
-    public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
-                final int waveProbDenominator, final int waveProbDivisior) {
-        this.event = event;
-        this.waveMoveCalc = waveMoveCalc;
-        this.rotationCalcPos = rotationCalcPos;
-        this.waveProbDenominator = waveProbDenominator;
-        if ((waveProbDivisior <= 0)) throw new AssertionError("waveProbDivisior <= 0");
-        this.waveProbDivisior = waveProbDivisior;
-        this.waveProb = 1;
     }
 
     public Event getEvent() {
@@ -145,22 +124,6 @@ public class Wave {
         return waveMoveDirProb.getDirMoveProb();
     }
 
-    public void setWaveProbDenominator(final int waveProbDenominator) {
-        this.waveProbDenominator = waveProbDenominator;
-    }
-
-    public int getWaveProbDenominator() {
-        return this.waveProbDenominator;
-    }
-
-    public void setWaveProbDivisior(final int waveProbDivisior) {
-        this.waveProbDivisior = waveProbDivisior;
-    }
-
-    public int getWaveProbDivisior() {
-        return this.waveProbDivisior;
-    }
-
     public void setWaveProb(final int waveProb) {
         this.waveProb = waveProb;
     }
@@ -169,15 +132,9 @@ public class Wave {
         return this.waveProb;
     }
 
-    public void setWaveProbFraction(final int wavePropDenominator, final int wavePropDivisior) {
-        this.waveProbDenominator = wavePropDenominator;
-        if ((wavePropDivisior <= 0)) throw new AssertionError("waveProbDivisior <= 0");
-        this.waveProbDivisior = wavePropDivisior;
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(this.event, this.waveMoveCalc);
+        return Objects.hash(this.waveProb, this.event, this.waveMoveCalc);
     }
 
     @Override
@@ -186,7 +143,8 @@ public class Wave {
         if (obj == null) return false;
         if (this.getClass() != obj.getClass()) return false;
         final Wave entry = (Wave) obj;
-        return (this.event.equals(entry.event)) &&
+        return (this.waveProb == entry.waveProb) &&
+               (this.event.equals(entry.event)) &&
                (this.waveMoveCalc.equals(entry.waveMoveCalc));
     }
 }

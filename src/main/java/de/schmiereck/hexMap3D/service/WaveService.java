@@ -9,13 +9,6 @@ public class WaveService {
         return newWave;
     }
 
-    public static Wave createNextRotatedWave2(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
-                                             final int waveProbDenominator, final int wavePropDivisior) {
-        final Wave newWave = new Wave(event, waveMoveCalc, rotationCalcPos, waveProbDenominator, wavePropDivisior);
-        event.addWave(newWave);
-        return newWave;
-    }
-
     public static Wave createNextMovedWave(final Wave sourceWave, final int waveProb) {
         final Event event = sourceWave.getEvent();
         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
@@ -25,7 +18,7 @@ public class WaveService {
         return newWave;
     }
 
-    public static Wave createNewWave(final Event event, final WaveMoveDir waveMoveDir, final int waveProb) {
+    public static Wave createNewInitialWave(final Event event, final WaveMoveDir waveMoveDir, final int waveProb) {
         final WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createWaveMoveCalc(0, WaveMoveDirService.createWaveMoveDir(waveMoveDir.getMoveDirProbArr()));
         //final Wave newWave = new Wave(event, waveMoveCalc, 0, 1, 1);
         final Wave newWave = new Wave(event, waveMoveCalc, 0, waveProb);
@@ -33,7 +26,7 @@ public class WaveService {
         return newWave;
     }
 
-    public static Wave createNewWave(final Event event, final WaveMoveDir waveMoveDir) {
-        return createNewWave(event, waveMoveDir, 1);
+    public static Wave createNewTestWave(final Event event, final WaveMoveDir waveMoveDir) {
+        return createNewInitialWave(event, waveMoveDir, 1);
     }
 }
