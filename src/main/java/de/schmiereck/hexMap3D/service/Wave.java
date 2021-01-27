@@ -132,9 +132,13 @@ public class Wave {
         return this.waveProb;
     }
 
+    private int hashCode = 0;
     @Override
     public int hashCode() {
-        return Objects.hash(this.waveProb, this.event, this.waveMoveCalc);
+        if (hashCode == 0) {
+            hashCode = Objects.hash(this.waveProb, this.event, this.waveMoveCalc);
+        }
+        return hashCode;
     }
 
     @Override

@@ -29,9 +29,13 @@ public class WaveMoveDirProb {
         return "{prop:" + this.dirMoveProb + "";
     }
 
+    private int hashCode = 0;
     @Override
     public int hashCode() {
-        return Objects.hash(this.dirMoveProb);
+        if (hashCode == 0) {
+            hashCode = Objects.hash(this.dirMoveProb);
+        }
+        return hashCode;
     }
 
     @Override

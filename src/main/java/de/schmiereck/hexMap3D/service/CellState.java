@@ -1,36 +1,39 @@
 package de.schmiereck.hexMap3D.service;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 public class CellState {
-    private final HashMap<Wave, Wave> waveHashArr = new HashMap();
+    private final HashMap<Wave, Wave> waveHashMap = new HashMap();
 
     public CellState() {
     }
 
     public void addWave(final Wave wave) {
-        this.waveHashArr.put(wave, wave);
+        this.waveHashMap.put(wave, wave);
     }
 
     public Wave searchWave(final Wave wave) {
-        return this.waveHashArr.get(wave);
+        return this.waveHashMap.get(wave);
     }
 
     public void clearWaveList() {
-        //this.waveHashArr[this.universe.getActCalcPos()].values().stream().forEach(wave -> wave.getEvent().removeWave(wave));
-        this.waveHashArr.clear();
+        //this.waveHashMap[this.universe.getActCalcPos()].values().stream().forEach(wave -> wave.getEvent().removeWave(wave));
+        this.waveHashMap.clear();
     }
 
     public Stream<Wave> getWaveListStream() {
-        return this.waveHashArr.values().stream();
+        return this.waveHashMap.values().stream();
     }
 
+    private int hashCode = 0;
     @Override
     public int hashCode() {
-        return Objects.hashCode(this.waveHashArr.hashCode());
+        if (hashCode == 0) {
+            hashCode = Objects.hash(this.waveHashMap);
+        }
+        return hashCode;
     }
 
     @Override
@@ -39,6 +42,6 @@ public class CellState {
         if (obj == null) return false;
         if (this.getClass() != obj.getClass()) return false;
         final CellState entry = (CellState) obj;
-        return (this.waveHashArr.equals(entry.waveHashArr));
+        return (this.waveHashMap.equals(entry.waveHashMap));
     }
 }

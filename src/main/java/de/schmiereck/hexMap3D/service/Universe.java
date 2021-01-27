@@ -167,6 +167,7 @@ public class Universe {
                     final WaveMoveDirProb[] moveCalcDirArr = new WaveMoveDirProb[Cell.Dir.values().length];
                     final WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(moveCalcDirArr);
                     final Wave wave = WaveService.createNewInitialWave(event, waveMoveDir, 1);
+                    event.addWave(wave);
                     cell.addWave(wave);
                 });
             });

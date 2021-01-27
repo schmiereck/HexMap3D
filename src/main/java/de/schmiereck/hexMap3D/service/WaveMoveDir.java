@@ -91,9 +91,13 @@ public class WaveMoveDir {
         return super.toString() + "{" +  Arrays.toString(this.moveDirProbArr) + "}";
     }
 
+    private int hashCode = 0;
     @Override
     public int hashCode() {
-        return Objects.hash(this.maxProb, Arrays.hashCode(this.moveDirProbArr));
+        if (hashCode == 0) {
+            hashCode = Objects.hash(this.maxProb, Arrays.hashCode(this.moveDirProbArr));
+        }
+        return hashCode;
     }
 
     @Override

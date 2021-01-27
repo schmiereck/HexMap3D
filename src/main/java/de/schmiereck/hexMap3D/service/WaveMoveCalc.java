@@ -116,9 +116,14 @@ public class WaveMoveCalc {
         return this.dirCalcProbSumArr;
     }
 
+    private int hashCode = 0;
     @Override
     public int hashCode() {
-        return Objects.hash(this.dirCalcPos, this.waveMoveDir, Arrays.hashCode(this.dirCalcProbSumArr));
+        if (hashCode == 0) {
+            hashCode = Objects.hash(this.dirCalcPos, this.waveMoveDir, Arrays.hashCode(this.dirCalcProbSumArr));
+            //hashCode = Objects.hash(this.waveMoveDir);
+        }
+        return hashCode;
     }
 
     @Override

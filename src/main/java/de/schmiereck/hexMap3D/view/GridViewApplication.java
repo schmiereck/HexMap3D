@@ -200,6 +200,6 @@ public class GridViewApplication extends Application {
         this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", this.universe.getStatisticCalcRunTime() / 1000.0F));
         this.gridViewModel.setStatisticCalcStepCount(Long.toString(this.universe.getStatisticCalcStepCount()));
 
-        System.out.println("cellStateCache:" + CellStateService.getCellStateCacheSize());
+        System.out.println("CS-Cache:" + CellStateService.getCellStateCacheSize() + ", next:" + CellStateService.getNextCellStateCacheSize());
     }
 }

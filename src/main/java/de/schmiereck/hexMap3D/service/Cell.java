@@ -65,7 +65,7 @@ public class Cell {
     }
 
     public void clearWaveList() {
-        this.cellState[this.universe.getActCalcPos()].clearWaveList();
+        //this.cellState[this.universe.getActCalcPos()].clearWaveList();
     }
 
     public Stream<Wave> getWaveListStream() {

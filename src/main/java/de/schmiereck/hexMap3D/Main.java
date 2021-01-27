@@ -10,7 +10,7 @@ import static java.lang.String.format;
 
 public class Main {
 
-    public static final boolean useParallel = true;
+    public static final boolean useParallel = false;
 
     public static final int xSizeGrid = 27;//16;
     public static final int ySizeGrid = 27;//16;
@@ -57,6 +57,7 @@ public class Main {
             final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
             wave.getWaveMoveDir().adjustMaxProb();
             wave.calcActualWaveMoveCalcDir();
+            final CellState cellState = CellStateService.createCellStateWithNewWave(particleEvent, wave);
             final Cell cell = universe.getCell(x, y, z);
             //cell.addWave(wave);
 

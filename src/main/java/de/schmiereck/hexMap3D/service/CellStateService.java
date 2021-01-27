@@ -13,19 +13,23 @@ public class CellStateService {
 
     private static final int ROT_PERCENT = 1;
 
-    private static class CellStateCacheEntry {
+    private static class NextCellStateCacheEntry {
         final CellState inCellState;
         final CellState[] inCellStateArr;
         CellState outCellState;
 
-        public CellStateCacheEntry(CellState inCellState, CellState[] inCellStateArr) {
+        public NextCellStateCacheEntry(CellState inCellState, CellState[] inCellStateArr) {
             this.inCellState = inCellState;
             this.inCellStateArr = inCellStateArr;
         }
 
+        private int hashCode = 0;
         @Override
         public int hashCode() {
-            return Objects.hash(this.inCellState, Arrays.hashCode(this.inCellStateArr));
+            if (hashCode == 0) {
+                hashCode = Objects.hash(this.inCellState, Arrays.hashCode(this.inCellStateArr));
+            }
+            return hashCode;
         }
 
         @Override
@@ -33,18 +37,32 @@ public class CellStateService {
             if (this == obj) return true;
             if (obj == null) return false;
             if (this.getClass() != obj.getClass()) return false;
-            final CellStateCacheEntry entry = (CellStateCacheEntry) obj;
+            final NextCellStateCacheEntry entry = (NextCellStateCacheEntry) obj;
             return Arrays.equals(this.inCellStateArr, entry.inCellStateArr) &&
                     this.inCellState.equals(entry.inCellState);
         }
     }
 
-    private static final Map<CellStateCacheEntry, CellStateCacheEntry> cellStateCacheSet = new HashMap<>();
+    private static final Map<NextCellStateCacheEntry, NextCellStateCacheEntry> nextCellStateCacheSet = new HashMap<>();
+    private static final Map<CellState, CellState> cellStateCacheSet = new HashMap<>();
+    private static CellState initialCellStateCache;
 
     public static boolean useCellStateCache = true;
 
     public static CellState createInitialCellState() {
-        return new CellState();
+        final CellState cellState;
+        if (useCellStateCache) {
+            if (initialCellStateCache == null) {
+                initialCellStateCache = new CellState();
+                cellStateCacheSet.put(initialCellStateCache, initialCellStateCache);
+                cellState = initialCellStateCache;
+            } else {
+                cellState = initialCellStateCache;
+            }
+        } else {
+            cellState = new CellState();
+        }
+        return cellState;
     }
 
     public static CellState calcNewStateForTargetCell(final Universe universe, int xPos, int yPos, int zPos, final Cell targetCell) {
@@ -61,14 +79,21 @@ public class CellStateService {
         }
 
         if (useCellStateCache) {
-            final CellStateCacheEntry newCellStateCacheEntry = new CellStateCacheEntry(targetCell.getCellState(), inCellStateArr);
-            final CellStateCacheEntry cellStateCacheEntry = cellStateCacheSet.get(newCellStateCacheEntry);
-            if (cellStateCacheEntry != null) {
-                cellState = cellStateCacheEntry.outCellState;
+            final NextCellStateCacheEntry newNextCellStateCacheEntry = new NextCellStateCacheEntry(targetCell.getCellState(), inCellStateArr);
+            final NextCellStateCacheEntry nextCellStateCacheEntry = nextCellStateCacheSet.get(newNextCellStateCacheEntry);
+            if (nextCellStateCacheEntry != null) {
+                cellState = nextCellStateCacheEntry.outCellState;
             } else {
-                cellState = calcNewStateForTargetCell(inCellStateArr);
-                newCellStateCacheEntry.outCellState = cellState;
-                cellStateCacheSet.put(newCellStateCacheEntry, newCellStateCacheEntry);
+                final CellState newCellState = calcNewStateForTargetCell(inCellStateArr);
+                final CellState cachedCellState = cellStateCacheSet.get(newCellState);
+                if (cachedCellState != null) {
+                    cellState = cachedCellState;
+                } else {
+                    cellState = newCellState;
+                    cellStateCacheSet.put(cellState, cellState);
+                }
+                newNextCellStateCacheEntry.outCellState = cellState;
+                nextCellStateCacheSet.put(newNextCellStateCacheEntry, newNextCellStateCacheEntry);
             }
         } else {
             cellState = calcNewStateForTargetCell(inCellStateArr);
@@ -76,7 +101,7 @@ public class CellStateService {
         return cellState;
     }
 
-    public static boolean useRotationDivider = false;
+    public static boolean useRotationDivider = true;
 
     public static CellState calcNewStateForTargetCell(final CellState[] inCellStateArr) {
         final CellState cellState = new CellState();
@@ -112,9 +137,9 @@ public class CellStateService {
                                 waveProbDivided2 = 0;
                             }
                             {
-                                final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, waveProbDivided1);
+                                final Wave newTargetWave = WaveService.createNextRotatedWave(sourceWave, waveProbDivided1);
                                 newTargetWave.calcActualWaveMoveCalcDir();
-                                CellService.addWave(cellState, newTargetWave);
+                                addWave(sourceEvent, cellState, newTargetWave);
                             }
                             if (useRotationDivider) {
                                 for (int rotCalcPos = 0; rotCalcPos < WaveRotationService.rotationMatrixXYZ.length; rotCalcPos++)
@@ -129,7 +154,7 @@ public class CellStateService {
                                                         xRotPercent, yRotPercent, zRotPercent,
                                                         waveProbDivided2);
                                         newTargetWave.calcActualWaveMoveCalcDir();
-                                        CellService.addWave(cellState, newTargetWave);
+                                        addWave(sourceEvent, cellState, newTargetWave);
                                     }
                             }
                         }
@@ -150,5 +175,28 @@ public class CellStateService {
 
     public static int getCellStateCacheSize() {
         return cellStateCacheSet.size();
+    }
+
+    public static int getNextCellStateCacheSize() {
+        return nextCellStateCacheSet.size();
+    }
+
+    public static CellState createCellStateWithNewWave(final Event event, final Wave wave) {
+        final CellState cellState = new CellState();
+        addWave(event, cellState, wave);
+        if (useCellStateCache) {
+            cellStateCacheSet.put(cellState, cellState);
+        }
+        return cellState;
+    }
+
+    public static void addWave(final Event event, final CellState cellState, final Wave wave) {
+        final Wave cellWave = cellState.searchWave(wave);
+        if (cellWave != null) {
+            cellWave.setWaveProb(wave.getWaveProb() + cellWave.getWaveProb());
+        } else {
+            cellState.addWave(wave);
+            event.addWave(wave);
+        }
     }
 }

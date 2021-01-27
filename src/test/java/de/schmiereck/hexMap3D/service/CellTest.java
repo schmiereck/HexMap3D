@@ -17,7 +17,7 @@ public class CellTest {
         {
             final WaveMoveDir waveMoveDir = new WaveMoveDir();
             waveMoveDir.setDirMoveProb(LB_P, 100);
-            wave1 = WaveService.createNewTestWave(particleEvent, waveMoveDir);
+            wave1 = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
 
             //CellService.addWave(cell, wave1);
             cell.addWave(wave1);
@@ -26,7 +26,7 @@ public class CellTest {
         {
             final WaveMoveDir waveMoveDir = new WaveMoveDir();
             waveMoveDir.setDirMoveProb(LB_P, 100);
-            wave2 = WaveService.createNewTestWave(particleEvent, waveMoveDir);
+            wave2 = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
 
             //CellService.addWave(cell, wave2);
         }
