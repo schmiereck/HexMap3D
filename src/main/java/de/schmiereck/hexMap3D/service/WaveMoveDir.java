@@ -106,7 +106,7 @@ public class WaveMoveDir {
         if (obj == null) return false;
         if (this.getClass() != obj.getClass()) return false;
         final WaveMoveDir entry = (WaveMoveDir) obj;
-        return this.maxProb == entry.maxProb &&
-                (Arrays.equals(this.moveDirProbArr, entry.moveDirProbArr));
+        return (this.maxProb == entry.maxProb) &&
+                Arrays.equals(this.moveDirProbArr, entry.moveDirProbArr);
     }
 }

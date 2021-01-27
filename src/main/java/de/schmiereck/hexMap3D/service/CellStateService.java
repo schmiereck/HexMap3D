@@ -47,7 +47,7 @@ public class CellStateService {
     private static final Map<CellState, CellState> cellStateCacheSet = new HashMap<>();
     private static CellState initialCellStateCache;
 
-    public static boolean useCellStateCache = true;
+    public static boolean useCellStateCache = false;
 
     public static CellState createInitialCellState() {
         final CellState cellState;
@@ -138,7 +138,7 @@ public class CellStateService {
                             }
                             {
                                 final Wave newTargetWave = WaveService.createNextRotatedWave(sourceWave, waveProbDivided1);
-                                newTargetWave.calcActualWaveMoveCalcDir();
+                                //newTargetWave.calcActualWaveMoveCalcDir();
                                 addWave(sourceEvent, cellState, newTargetWave);
                             }
                             if (useRotationDivider) {
@@ -153,7 +153,7 @@ public class CellStateService {
                                                 WaveRotationService.createMoveRotatedWave(sourceWave,
                                                         xRotPercent, yRotPercent, zRotPercent,
                                                         waveProbDivided2);
-                                        newTargetWave.calcActualWaveMoveCalcDir();
+                                        //newTargetWave.calcActualWaveMoveCalcDir();
                                         addWave(sourceEvent, cellState, newTargetWave);
                                     }
                             }

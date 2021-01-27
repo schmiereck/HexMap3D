@@ -305,24 +305,24 @@ class WaveRotationServiceTest {
     @org.junit.jupiter.api.Test
     public void getMoveAmount() {
         // Assert
-        assertEquals(100, WaveRotationService.getMoveAmount(100, 100));
-        assertEquals(50, WaveRotationService.getMoveAmount(50, 100));
-        assertEquals(10, WaveRotationService.getMoveAmount(10, 100));
-        assertEquals(1, WaveRotationService.getMoveAmount(1, 100));
+        assertEquals(100, WaveMoveDirService.getMoveAmount(100, 100));
+        assertEquals(50, WaveMoveDirService.getMoveAmount(50, 100));
+        assertEquals(10, WaveMoveDirService.getMoveAmount(10, 100));
+        assertEquals(1, WaveMoveDirService.getMoveAmount(1, 100));
 
-        assertEquals(-100, WaveRotationService.getMoveAmount(-100, 100));
-        assertEquals(-50, WaveRotationService.getMoveAmount(-50, 100));
-        assertEquals(-10, WaveRotationService.getMoveAmount(-10, 100));
-        assertEquals(-1, WaveRotationService.getMoveAmount(-1, 100));
+        assertEquals(-100, WaveMoveDirService.getMoveAmount(-100, 100));
+        assertEquals(-50, WaveMoveDirService.getMoveAmount(-50, 100));
+        assertEquals(-10, WaveMoveDirService.getMoveAmount(-10, 100));
+        assertEquals(-1, WaveMoveDirService.getMoveAmount(-1, 100));
 
-        assertEquals(50, WaveRotationService.getMoveAmount(100, 50));
-        assertEquals(25, WaveRotationService.getMoveAmount(50, 50));
-        assertEquals(5, WaveRotationService.getMoveAmount(10, 50));
-        assertEquals(1, WaveRotationService.getMoveAmount(1, 50));
+        assertEquals(50, WaveMoveDirService.getMoveAmount(100, 50));
+        assertEquals(25, WaveMoveDirService.getMoveAmount(50, 50));
+        assertEquals(5, WaveMoveDirService.getMoveAmount(10, 50));
+        assertEquals(1, WaveMoveDirService.getMoveAmount(1, 50));
 
-        assertEquals(-50, WaveRotationService.getMoveAmount(-100, 50));
-        assertEquals(-25, WaveRotationService.getMoveAmount(-50, 50));
-        assertEquals(-5, WaveRotationService.getMoveAmount(-10, 50));
-        assertEquals(-1, WaveRotationService.getMoveAmount(-1, 50));
+        assertEquals(-50, WaveMoveDirService.getMoveAmount(-100, 50));
+        assertEquals(-25, WaveMoveDirService.getMoveAmount(-50, 50));
+        assertEquals(-5, WaveMoveDirService.getMoveAmount(-10, 50));
+        assertEquals(-1, WaveMoveDirService.getMoveAmount(-1, 50));
     }
 }

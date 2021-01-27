@@ -39,6 +39,7 @@ public class Engine {
             final CellState cellState = calcNewStateForTargetCell(xPos, yPos, zPos, targetCell);
             targetCell.setCellState(cellState);
         });
+        WaveMoveCalcService.calcAllDirMoved();
         this.universe.calcNext();
         this.universe.calcReality();
         this.runNr++;
