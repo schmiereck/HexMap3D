@@ -4,6 +4,9 @@ import de.schmiereck.hexMap3D.GridUtils;
 
 import static de.schmiereck.hexMap3D.GridUtils.xRotArr;
 import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
+import static de.schmiereck.hexMap3D.service.TestUtils.assertWaveProps;
+import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
+import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB1_2;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WaveRotationServiceTest {
@@ -15,7 +18,7 @@ class WaveRotationServiceTest {
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 10;
         final int yRotPercent = 0;
@@ -41,7 +44,7 @@ class WaveRotationServiceTest {
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 1;
         final int yRotPercent = 0;
@@ -67,7 +70,7 @@ class WaveRotationServiceTest {
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = -10;
         final int yRotPercent = 0;
@@ -93,7 +96,7 @@ class WaveRotationServiceTest {
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(GR_P, 100);
+        waveMoveDir.setDirMoveProb(GR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 10;
         final int yRotPercent = 0;
@@ -119,7 +122,7 @@ class WaveRotationServiceTest {
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 10;
@@ -145,7 +148,7 @@ class WaveRotationServiceTest {
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(OR_N, 100);
+        waveMoveDir.setDirMoveProb(OR_N, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 10;
@@ -171,7 +174,7 @@ class WaveRotationServiceTest {
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(GR_P, 100);
+        waveMoveDir.setDirMoveProb(GR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 20;
         final int yRotPercent = 10;
@@ -197,7 +200,7 @@ class WaveRotationServiceTest {
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(OR_P, 100);
+        waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 0;
         final int yRotPercent = 0;
@@ -217,19 +220,81 @@ class WaveRotationServiceTest {
     }
 
     @org.junit.jupiter.api.Test
+    void createMoveRotatedWaveDB_PyPositive() {
+        // Arrange
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
+        final Event particleEvent = new Event(engine, 1);
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
+        waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
+        final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
+        final int xRotPercent = 0;
+        final int yRotPercent = 1;
+        final int zRotPercent = 0;
+
+        // Act
+        final Wave newWave =
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
+
+        // Assert
+        final int expectedProps[][] = {
+                {     0,    0,    0,   99 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                {  1,    0,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    0,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
+        };
+        assertWaveProps(newWave, expectedProps);
+    }
+
+    @org.junit.jupiter.api.Test
+    void createMoveRotatedWaveDB_P_xNeg_zNeg() {
+        // Arrange
+        final Universe universe = new Universe(1, 1, 1);
+        final Engine engine = new Engine(universe);
+        final Event particleEvent = new Event(engine, 1);
+        final WaveMoveDir waveMoveDir = new WaveMoveDir();
+        waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
+        final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
+        final int xRotPercent = -1;
+        final int yRotPercent = 0;
+        final int zRotPercent = -1;
+
+        // Act
+        final Wave newWave0 =
+                WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
+        final Wave newWave1 =
+                WaveRotationService.createMoveRotatedWave(newWave0, xRotPercent, yRotPercent, zRotPercent, 2);
+
+        // Assert
+        final int expectedProps0[][] = {
+                {     0,    1,    0,   98 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                {  0,    0,    1,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     0,    0,    0,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
+        };
+        assertWaveProps(newWave0, expectedProps0, "expectedProps0 - ");
+        final int expectedProps1[][] = {
+                {     0,    2,    0,   96 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                {  0,    0,    1,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     1,    0,    0,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
+        };
+        assertWaveProps(newWave1, expectedProps1, "expectedProps1 - ");
+    }
+
+    @org.junit.jupiter.api.Test
     void createMoveRotatedWave25PositiveOneRound() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
         final Engine engine = new Engine(universe);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
-        waveMoveDir.setDirMoveProb(LB_P, 100);
-        waveMoveDir.setDirMoveProb(OR_P, 100);
-        waveMoveDir.setDirMoveProb(RE_P, 100);
+        waveMoveDir.setDirMoveProb(LB_P, MAX_DIR_PROB);
+        waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
+        waveMoveDir.setDirMoveProb(RE_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
         final int xRotPercent = 25;
         final int yRotPercent = 0;
         final int zRotPercent = 0;
+
+        WaveMoveCalcService.useWaveMoveCalcCache = true;
 
         // Act
         final Wave newWave1 = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);
@@ -242,9 +307,15 @@ class WaveRotationServiceTest {
         final Wave newWave8 = WaveRotationService.createMoveRotatedWave(newWave7, xRotPercent, yRotPercent, zRotPercent, 2);
 
         // Assert
+        final int expectedProps0[][] = {
+                {     100,    0,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                { 100,     0,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {     100,    0,    0,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
+        };
+        assertWaveProps(sourceWave, expectedProps0);
         final int expectedProps1[][] = {
-                {     75,    25,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_P
-                { 75,   25,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
+                {      75,   25,    0,    0 }, //   Left:      LB_P    LG_N    RE_N    DB_P
+                {  75,    25,    0,    0    }, // Middle: OR_P     GR_P    OR_N    GR_N
                 {     75,    25,    0,    0 }  //  Right:      RE_P    DB_N    LB_N    LG_P
         };
         assertWaveProps(newWave1, expectedProps1);
@@ -292,37 +363,29 @@ class WaveRotationServiceTest {
         assertWaveProps(newWave8, expectedProps8);
     }
 
-    private void assertWaveProps(Wave newWave, int[][] expectedProps) {
-        for (int axisPos = 0; axisPos < xRotArr.length; axisPos++) {
-            final Cell.Dir[] rotArr = GridUtils.xRotArr[axisPos];
-            for (int pos = 0; pos < rotArr.length; pos++) {
-                assertEquals(expectedProps[axisPos][pos], newWave.getMoveCalcDir(xRotArr[axisPos][pos]).getDirMoveProb(),
-                        String.format("dir:\"%s\" - axisPos:\"%d\", pos:\"%d\"", xRotArr[axisPos][pos].toString(), axisPos, pos));
-            }
-        }
-    }
-
     @org.junit.jupiter.api.Test
     public void getMoveAmount() {
         // Assert
-        assertEquals(100, WaveMoveDirService.getMoveAmount(100, 100));
-        assertEquals(50, WaveMoveDirService.getMoveAmount(50, 100));
-        assertEquals(10, WaveMoveDirService.getMoveAmount(10, 100));
-        assertEquals(1, WaveMoveDirService.getMoveAmount(1, 100));
+        assertEquals(100, WaveMoveDirService.getMoveAmount(100, MAX_DIR_PROB));
+        assertEquals(50, WaveMoveDirService.getMoveAmount(50, MAX_DIR_PROB));
+        assertEquals(10, WaveMoveDirService.getMoveAmount(10, MAX_DIR_PROB));
+        assertEquals(1, WaveMoveDirService.getMoveAmount(1, MAX_DIR_PROB));
+        assertEquals(0, WaveMoveDirService.getMoveAmount(0, MAX_DIR_PROB));
 
-        assertEquals(-100, WaveMoveDirService.getMoveAmount(-100, 100));
-        assertEquals(-50, WaveMoveDirService.getMoveAmount(-50, 100));
-        assertEquals(-10, WaveMoveDirService.getMoveAmount(-10, 100));
-        assertEquals(-1, WaveMoveDirService.getMoveAmount(-1, 100));
+        assertEquals(-100, WaveMoveDirService.getMoveAmount(-100, MAX_DIR_PROB));
+        assertEquals(-50, WaveMoveDirService.getMoveAmount(-50, MAX_DIR_PROB));
+        assertEquals(-10, WaveMoveDirService.getMoveAmount(-10, MAX_DIR_PROB));
+        assertEquals(-1, WaveMoveDirService.getMoveAmount(-1, MAX_DIR_PROB));
 
-        assertEquals(50, WaveMoveDirService.getMoveAmount(100, 50));
-        assertEquals(25, WaveMoveDirService.getMoveAmount(50, 50));
-        assertEquals(5, WaveMoveDirService.getMoveAmount(10, 50));
-        assertEquals(1, WaveMoveDirService.getMoveAmount(1, 50));
+        assertEquals(50, WaveMoveDirService.getMoveAmount(100, MAX_DIR_PROB1_2));
+        assertEquals(25, WaveMoveDirService.getMoveAmount(50, MAX_DIR_PROB1_2));
+        assertEquals(5, WaveMoveDirService.getMoveAmount(10, MAX_DIR_PROB1_2));
+        assertEquals(1, WaveMoveDirService.getMoveAmount(1, MAX_DIR_PROB1_2));
+        assertEquals(0, WaveMoveDirService.getMoveAmount(0, MAX_DIR_PROB1_2));
 
-        assertEquals(-50, WaveMoveDirService.getMoveAmount(-100, 50));
-        assertEquals(-25, WaveMoveDirService.getMoveAmount(-50, 50));
-        assertEquals(-5, WaveMoveDirService.getMoveAmount(-10, 50));
-        assertEquals(-1, WaveMoveDirService.getMoveAmount(-1, 50));
+        assertEquals(-50, WaveMoveDirService.getMoveAmount(-100, MAX_DIR_PROB1_2));
+        assertEquals(-25, WaveMoveDirService.getMoveAmount(-50, MAX_DIR_PROB1_2));
+        assertEquals(-5, WaveMoveDirService.getMoveAmount(-10, MAX_DIR_PROB1_2));
+        assertEquals(-1, WaveMoveDirService.getMoveAmount(-1, MAX_DIR_PROB1_2));
     }
 }

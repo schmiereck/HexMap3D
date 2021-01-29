@@ -14,11 +14,6 @@ public class WaveMoveCalc {
      */
     private int[] dirCalcProbSumArr = new int[Cell.Dir.values().length];
 
-    public WaveMoveCalc() {
-        this.dirCalcPos = 0;
-        this.waveMoveDir = new WaveMoveDir();
-    }
-
     public WaveMoveCalc(final int dirCalcPos, final WaveMoveDir waveMoveDir) {
         this.dirCalcPos = dirCalcPos;
         this.waveMoveDir = waveMoveDir;

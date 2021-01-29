@@ -6,15 +6,16 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
+import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
 import static java.lang.String.format;
 
 public class Main {
 
     public static final boolean useParallel = false;
 
-    public static final int xSizeGrid = 27;//16;
-    public static final int ySizeGrid = 27;//16;
-    public static final int zSizeGrid = 27;//16;
+    public static final int xSizeGrid = 3*2 * 4;//16;
+    public static final int ySizeGrid = 3*2 * 4;//16;
+    public static final int zSizeGrid = 3*2 * 4;//16;
     public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (32000);
 
     public static void main(String[] args) {
@@ -34,24 +35,24 @@ public class Main {
             int dirCalcPos = 0;
             final int x, y, z;
 
-            //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(50);
-            //moveCalcDirArr[Cell.Dir.GR_P.dir()].setDirCalcProp(50);
+            //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(MAX_DIR_PROB1_2);
+            //moveCalcDirArr[Cell.Dir.GR_P.dir()].setDirCalcProp(MAX_DIR_PROB1_2);
             //x=0; y=0; z=8;
 
-            //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(100);
-            //moveCalcDirArr[Cell.Dir.LB_P.dir()].setDirCalcProp(100);
-            //moveCalcDirArr[Cell.Dir.GR_P.dir()].setDirCalcProp(100);
-            //moveCalcDirArr[Cell.Dir.RE_P.dir()].setDirCalcProp(100);
-            //moveCalcDirArr[Cell.Dir.LG_P.dir()].setDirCalcProp(100);
-            //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(100);
+            //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(MAX_DIR_PROB);
+            //moveCalcDirArr[Cell.Dir.LB_P.dir()].setDirCalcProp(MAX_DIR_PROB);
+            //moveCalcDirArr[Cell.Dir.GR_P.dir()].setDirCalcProp(MAX_DIR_PROB);
+            //moveCalcDirArr[Cell.Dir.RE_P.dir()].setDirCalcProp(MAX_DIR_PROB);
+            //moveCalcDirArr[Cell.Dir.LG_P.dir()].setDirCalcProp(MAX_DIR_PROB);
+            //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(MAX_DIR_PROB);
             //x=8; y=8; z=8;
 
-            //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(75);
-            //moveCalcDirArr[Cell.Dir.LG_N.dir()].setDirCalcProp(25);
+            //moveCalcDirArr[Cell.Dir.OR_P.dir()].setDirCalcProp(MAX_DIR_PROB3_4);
+            //moveCalcDirArr[Cell.Dir.LG_N.dir()].setDirCalcProp(MAX_DIR_PROB1_4);
             //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(0);
             //x=8; y=8; z=8;
 
-            waveMoveDir.setDirMoveProb(DB_P, 100);
+            waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
             x=0; y=8; z=8;
 
             final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);

@@ -36,7 +36,7 @@ public class Engine {
             //         }
             //    });
             //}
-            final CellState cellState = calcNewStateForTargetCell(xPos, yPos, zPos, targetCell);
+            final CellState cellState = CellStateService.calcNewStateForTargetCell(this.universe, xPos, yPos, zPos, targetCell);
             targetCell.setCellState(cellState);
         });
         WaveMoveCalcService.calcAllDirMoved();
@@ -47,10 +47,6 @@ public class Engine {
         final long endTime = System.currentTimeMillis();
         this.universe.setStatisticCalcRunTime(endTime - startTime);
         this.universe.setStatisticCalcStepCount(this.runNr);
-    }
-
-    private CellState calcNewStateForTargetCell(final int xPos, final int yPos, final int zPos, final Cell targetCell) {
-        return CellStateService.calcNewStateForTargetCell(this.universe, xPos, yPos, zPos, targetCell);
     }
 
     private boolean checkIsBarrier(final Cell cell) {

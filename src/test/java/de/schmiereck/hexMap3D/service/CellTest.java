@@ -3,6 +3,7 @@ package de.schmiereck.hexMap3D.service;
 import java.util.HashMap;
 
 import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
+import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CellTest {
@@ -16,7 +17,7 @@ public class CellTest {
         final Wave wave1;
         {
             final WaveMoveDir waveMoveDir = new WaveMoveDir();
-            waveMoveDir.setDirMoveProb(LB_P, 100);
+            waveMoveDir.setDirMoveProb(LB_P, MAX_DIR_PROB);
             wave1 = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
 
             //CellService.addWave(cell, wave1);
@@ -25,7 +26,7 @@ public class CellTest {
         final Wave wave2;
         {
             final WaveMoveDir waveMoveDir = new WaveMoveDir();
-            waveMoveDir.setDirMoveProb(LB_P, 100);
+            waveMoveDir.setDirMoveProb(LB_P, MAX_DIR_PROB);
             wave2 = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
 
             //CellService.addWave(cell, wave2);

@@ -8,6 +8,11 @@ import java.util.Objects;
  * representet by the probability of movin from his middle in the directions to his edges.
  */
 public class WaveMoveDir {
+    public static final int MAX_DIR_PROB = 100;
+    public static final int MAX_DIR_PROB1_2 = MAX_DIR_PROB / 2;
+    public static final int MAX_DIR_PROB1_4 = MAX_DIR_PROB / 4;
+    public static final int MAX_DIR_PROB3_4 = MAX_DIR_PROB - MAX_DIR_PROB1_4;
+
     /**
      * Possible Directions.
      * The dir number of {@link Cell.Dir} is the index.

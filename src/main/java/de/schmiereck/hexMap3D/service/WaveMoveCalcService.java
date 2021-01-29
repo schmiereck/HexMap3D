@@ -11,7 +11,7 @@ public class WaveMoveCalcService {
 
     private static final Map<WaveMoveDir, WaveMoveCalc> waveMoveCalcCacheMap = new HashMap<>();
 
-    public static boolean useWaveMoveCalcCache = true;
+    public static boolean useWaveMoveCalcCache = false;
 
     @FunctionalInterface
     private interface CreateWaveMoveCalcInterface {
