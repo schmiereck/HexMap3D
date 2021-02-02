@@ -50,33 +50,39 @@
           GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="3"
   />
   <RadioButton
-          fx:id="showAllWaveMoveCalcDirSum"
-          text="All Outputs"
-          onAction="#handleShowActualWaveMoveCalcDirAction"
+          fx:id="showNoWaveMoveDir"
+          text="No Probs."
           GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.columnSpan="2"
   >
     <toggleGroup>
-      <ToggleGroup fx:id="showWaveMoveCalc"/>
+      <ToggleGroup fx:id="showWaveMoveCalcGroup"/>
+    </toggleGroup>
+  </RadioButton>
+  <RadioButton
+          fx:id="showAllWaveMoveCalcDirSum"
+          text="All Outputs"
+          GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2"
+  >
+    <toggleGroup>
+      <fx:reference source="showWaveMoveCalcGroup"/>
     </toggleGroup>
   </RadioButton>
   <RadioButton
           fx:id="showActualWaveMoveCalcDirSum"
           text="Next Output"
-          onAction="#handleShowActualWaveMoveCalcDirAction"
-          GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2"
+          GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.columnSpan="2"
   >
     <toggleGroup>
-      <fx:reference source="showWaveMoveCalc"/>
+      <fx:reference source="showWaveMoveCalcGroup"/>
     </toggleGroup>
   </RadioButton>
   <RadioButton
           fx:id="showAllWaveMoveCalcDirProb"
           text="All Probs."
-          onAction="#handleShowActualWaveMoveCalcDirAction"
-          GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.columnSpan="2"
+          GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.columnSpan="2"
   >
     <toggleGroup>
-      <fx:reference source="showWaveMoveCalc"/>
+      <fx:reference source="showWaveMoveCalcGroup"/>
     </toggleGroup>
   </RadioButton>
   <!--==================================================================================================================
@@ -84,34 +90,34 @@
   -->
   <Label
           text="Statistic:"
-          GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="3"
+          GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.columnSpan="3"
   />
   <Label
           text="Run time Step:"
-          GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.columnSpan="1"
+          GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.columnSpan="1"
   />
   <Label
           fx:id="statisticCalcRunTimeLabel"
           text="0"
-          GridPane.columnIndex="2" GridPane.rowIndex="9" GridPane.columnSpan="1"
+          GridPane.columnIndex="2" GridPane.rowIndex="10" GridPane.columnSpan="1"
   />
   <Label
           text="Step count:"
-          GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.columnSpan="1"
+          GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.columnSpan="1"
   />
   <Label
           fx:id="statisticCalcStepCountLabel"
           text="0"
-          GridPane.columnIndex="2" GridPane.rowIndex="10" GridPane.columnSpan="1"
+          GridPane.columnIndex="2" GridPane.rowIndex="11" GridPane.columnSpan="1"
   />
   <Label
           text="Waves:"
-          GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.columnSpan="1"
+          GridPane.columnIndex="1" GridPane.rowIndex="12" GridPane.columnSpan="1"
   />
   <Label
           fx:id="statisticWavesCountLabel"
           text="0"
-          GridPane.columnIndex="2" GridPane.rowIndex="11" GridPane.columnSpan="1"
+          GridPane.columnIndex="2" GridPane.rowIndex="12" GridPane.columnSpan="1"
   />
   <!--==================================================================================================================
 

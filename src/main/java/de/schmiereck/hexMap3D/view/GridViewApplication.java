@@ -2,6 +2,8 @@ package de.schmiereck.hexMap3D.view;
 
 import de.schmiereck.hexMap3D.service.CellStateService;
 import de.schmiereck.hexMap3D.service.Universe;
+import de.schmiereck.hexMap3D.service.WaveMoveCalcService;
+import de.schmiereck.hexMap3D.service.WaveMoveDirService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -33,6 +35,7 @@ public class GridViewApplication extends Application {
     private int zSizeGrid;
     private GridViewNodeSpace nodeSpace;
     private GridViewModel gridViewModel;
+    private boolean initFinished = false;
 
     @FunctionalInterface
     public interface RunStepCallback {
@@ -47,6 +50,34 @@ public class GridViewApplication extends Application {
         this.zSizeGrid = zSizeGrid;
         this.nodeSpace = new GridViewNodeSpace(universe, xSizeGrid, ySizeGrid, zSizeGrid);
         this.gridViewModel = new GridViewModel();
+
+        this.gridViewModel.showWaveMoveCalcGroupProperty().addListener((observable, oldValue, newValue) -> {
+            final String toggleId = (newValue);
+
+            final Universe.ShowWaveMoveCalc showWaveMoveCalc;
+            if (GridViewModel.SWM_showActualWaveMoveCalcDirSum.equals(toggleId)) {
+                showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowActualWaveMoveCalcDirSum;
+            } else {
+                if (GridViewModel.SWM_showAllWaveMoveCalcDirSum.equals(toggleId)) {
+                    showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirSum;
+                } else {
+                    if (GridViewModel.SWM_showAllWaveMoveCalcDirProb.equals(toggleId)) {
+                        showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirProb;
+                    } else {
+                        if (GridViewModel.SWM_showNoWaveMoveDir.equals(toggleId)) {
+                            showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowNoWaveMoveDir;
+                        } else {
+                            throw new RuntimeException("Unexpected showWaveMoveCalc \"" + toggleId + "\".");
+                        }
+                    }
+                }
+            }
+            if (this.initFinished) {
+                this.setShowActualWaveMoveCalcDir(showWaveMoveCalc);
+                this.calcReality();
+                this.updateReality();
+            }
+        });
     }
 
     @Override
@@ -68,8 +99,6 @@ public class GridViewApplication extends Application {
         final GridViewController gridViewController = loader.<GridViewController>getController();
         gridViewController.init(this.runStepCallback, this, this.gridViewModel);
         //rootGroup.getChildren().add(sampleGui);
-
-        this.gridViewModel.setStatisticWavesCount("---1");
 
         //-----------------------------------------------------------------------------
         GridViewUtils.generateViewGrid(this.nodeSpace, rootGroup, xSizeGrid, ySizeGrid, zSizeGrid);
@@ -176,7 +205,12 @@ public class GridViewApplication extends Application {
             mouseLook.handleMouseScrolling(event);
         });
         //-----------------------------------------------------------------------------
+        this.gridViewModel.setStatisticWavesCount("---1");
+        this.gridViewModel.setShowWaveMoveCalcGroup(GridViewModel.SWM_showActualWaveMoveCalcDirSum);
+
         this.updateReality();
+
+        this.initFinished = true;
 
         //-----------------------------------------------------------------------------
     }
@@ -200,6 +234,11 @@ public class GridViewApplication extends Application {
         this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", this.universe.getStatisticCalcRunTime() / 1000.0F));
         this.gridViewModel.setStatisticCalcStepCount(Long.toString(this.universe.getStatisticCalcStepCount()));
 
-        System.out.println("CS-Cache:" + CellStateService.getCellStateCacheSize() + ", next:" + CellStateService.getNextCellStateCacheSize());
+        System.out.println("Cache: " +
+                "CS:" + CellStateService.getCellStateCacheSize() + ", next:" + CellStateService.getNextCellStateCacheSize() +
+                " | " +
+                "MC:" + WaveMoveCalcService.getWaveMoveCalcCacheSize() +
+                " | " +
+                "MD:" + WaveMoveDirService.getWaveMoveDirCacheMapSize() + ", rotate:" + WaveMoveDirService.getRotateMoveDirCacheMapSize());
     }
 }

@@ -47,7 +47,7 @@ public class CellStateService {
     private static final Map<CellState, CellState> cellStateCacheSet = new HashMap<>();
     private static CellState initialCellStateCache;
 
-    public static boolean useCellStateCache = false;
+    public static boolean useCellStateCache = true;
 
     public static CellState createInitialCellState() {
         final CellState cellState;

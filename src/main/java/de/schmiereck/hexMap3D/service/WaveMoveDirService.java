@@ -14,8 +14,8 @@ import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
 
 public class WaveMoveDirService {
 
-    public static boolean useRotateMoveDirCache = false;
-    public static boolean useWaveMoveDirCache = false;
+    public static boolean useRotateMoveDirCache = true;
+    public static boolean useWaveMoveDirCache = true;
 
     @FunctionalInterface
     private interface CreateWaveMoveDirInterface {
@@ -231,5 +231,13 @@ public class WaveMoveDirService {
             probSum += moveCalcDir.getDirMoveProb();
         }
         return probSum;
+    }
+
+    public static int getWaveMoveDirCacheMapSize() {
+        return waveMoveDirCacheMap.size();
+    }
+
+    public static int getRotateMoveDirCacheMapSize() {
+        return rotateMoveDirCacheMap.size();
     }
 }

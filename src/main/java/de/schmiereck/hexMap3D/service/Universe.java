@@ -21,6 +21,7 @@ public class Universe {
     private ArrayList<Event> eventList = new ArrayList<>();
 
     public enum ShowWaveMoveCalc {
+        ShowNoWaveMoveDir,
         ShowActualWaveMoveCalcDirSum,
         ShowAllWaveMoveCalcDirSum,
         ShowAllWaveMoveCalcDirProb
@@ -115,6 +116,9 @@ public class Universe {
                 });
             });
             switch (this.showWaveMoveCalc) {
+                case ShowNoWaveMoveDir -> {
+                    // Nothing to do.
+                }
                 case ShowActualWaveMoveCalcDirSum -> {
                     cell.getWaveListStream().forEach(wave -> {
                         final Cell.Dir dir = wave.getActualDirCalcPos();

@@ -5,9 +5,7 @@ import java.util.Objects;
 import de.schmiereck.hexMap3D.service.Universe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
 
 public class GridViewController {
     private GridViewApplication gridViewApplication;
@@ -22,6 +20,9 @@ public class GridViewController {
 
     @FXML
     private Label statisticCalcStepCountLabel;
+    
+    @FXML
+    private ToggleGroup showWaveMoveCalcGroup;
 
     public void init(final GridViewApplication.RunStepCallback runStepCallback, final GridViewApplication gridViewApplication,
                      final GridViewModel gridViewModel) {
@@ -33,6 +34,18 @@ public class GridViewController {
         this.statisticWavesCountLabel.textProperty().bind(this.gridViewModel.statisticWavesCountProperty());
         this.statisticCalcRunTimeLabel.textProperty().bind(this.gridViewModel.statisticCalcRunTimeProperty());
         this.statisticCalcStepCountLabel.textProperty().bind(this.gridViewModel.statisticCalcStepCountProperty());
+        this.showWaveMoveCalcGroup.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
+            //RadioButton chk = (RadioButton)newToggle.getToggleGroup().getSelectedToggle();
+            final String toggleId = ((RadioButton)newToggle).getId();
+            this.gridViewModel.showWaveMoveCalcGroupProperty().set(toggleId);
+        });
+        this.gridViewModel.showWaveMoveCalcGroupProperty().addListener((observable, oldValue, newValue) -> {
+            for (final Toggle toggle : this.showWaveMoveCalcGroup.getToggles()) {
+                final String toggleId = ((RadioButton)toggle).getId();
+                final boolean selected = toggleId.equals(newValue);
+                toggle.setSelected(selected);
+            }
+        });
     }
 
     public void handleRunStepAction(final ActionEvent actionEvent) {
@@ -46,29 +59,6 @@ public class GridViewController {
         if (Objects.nonNull(this.gridViewApplication)) {
             final CheckBox checkBox = (CheckBox)actionEvent.getSource();
             this.gridViewApplication.setShowGrid(checkBox.isSelected());
-            this.gridViewApplication.calcReality();
-            this.gridViewApplication.updateReality();
-        }
-    }
-
-    public void handleShowActualWaveMoveCalcDirAction(final ActionEvent actionEvent) {
-        if (Objects.nonNull(this.gridViewApplication)) {
-            final RadioButton radioButton = (RadioButton)actionEvent.getSource();
-            final Universe.ShowWaveMoveCalc showWaveMoveCalc;
-            if ("showActualWaveMoveCalcDirSum".equals(radioButton.getId())) {
-                showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowActualWaveMoveCalcDirSum;
-            } else {
-                if ("showAllWaveMoveCalcDirSum".equals(radioButton.getId())) {
-                    showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirSum;
-                } else {
-                    if ("showAllWaveMoveCalcDirProb".equals(radioButton.getId())) {
-                        showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirProb;
-                    } else {
-                        throw new RuntimeException("Unexpected showWaveMoveCalc \"" + radioButton.getId() + "\".");
-                    }
-                }
-            }
-            this.gridViewApplication.setShowActualWaveMoveCalcDir(showWaveMoveCalc);
             this.gridViewApplication.calcReality();
             this.gridViewApplication.updateReality();
         }
