@@ -1,6 +1,7 @@
 package de.schmiereck.hexMap3D.service;
 
 import de.schmiereck.hexMap3D.GridUtils;
+import de.schmiereck.hexMap3D.MapMathUtils;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -50,10 +51,14 @@ public class WaveRotationService {
         final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(sourceWaveMoveCalc, newWaveMoveDir);
 
         newWave = WaveService.createNextRotatedWave(sourceWave.getEvent(), newWaveMoveCalc,
-                sourceWave.nextRotationCalcPos(),
+                nextRotationCalcPos(sourceWave),
                 newWaveProb);//sourceWave.getWaveProb());
                 //sourceWave.getRotationCalcPos());
 
         return newWave;
+    }
+
+    public static int nextRotationCalcPos(final Wave wave) {
+        return MapMathUtils.wrap(wave.getRotationCalcPos() + 1, WaveRotationService.rotationMatrixXYZ.length);
     }
 }

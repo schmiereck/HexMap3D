@@ -75,28 +75,20 @@ public class Wave {
     //    return this.waveMoveDir.nextDirCalcPos();
     //}
 
-    public int nextRotationCalcPos() {
-        return MapMathUtils.wrap(this.rotationCalcPos + 1, WaveRotationService.rotationMatrixXYZ.length);
-    }
-
     //public void setDir(final Cell.Dir dir, final int dirCalcProp) {
     //    this.waveMoveDir.setDir(dir, dirCalcProp);
     //}
 
-    public WaveMoveDirProb[] getMoveCalcDirArr() {
+    public int[] getMoveCalcDirArr() {
         return this.waveMoveCalc.getWaveMoveDir().getMoveDirProbArr();
     }
 
-    public WaveMoveDirProb getMoveCalcDir(final Cell.Dir dir) {
+    public int getMoveCalcDir(final Cell.Dir dir) {
         return this.waveMoveCalc.getWaveMoveDir().getDirMoveProb(dir);
     }
 
-    public WaveMoveDirProb getActualWaveMoveCalcDir() {
+    public int getActualWaveMoveCalcDir() {
         return this.waveMoveCalc.getActualWaveMoveCalcDir();
-    }
-
-    public void calcActualWaveMoveCalcDir() {
-        this.waveMoveCalc.calcActualWaveMoveCalcDir();
     }
 
     public Cell.Dir getActualDirCalcPos() {
@@ -120,8 +112,7 @@ public class Wave {
     }
 
     public int getDirCalcProb(Cell.Dir dir) {
-        final WaveMoveDirProb waveMoveDirProb = this.getMoveCalcDirArr()[dir.dir()];
-        return waveMoveDirProb.getDirMoveProb();
+        return this.getMoveCalcDirArr()[dir.dir()];
     }
 
     public void setWaveProb(final int waveProb) {

@@ -25,7 +25,7 @@ public class WaveMoveCalc {
         this.dirCalcProbSumArr = Arrays.copyOf(dirCalcProbSumArr, dirCalcProbSumArr.length);
     }
 
-    public WaveMoveDirProb getActualWaveMoveCalcDir() {
+    public int getActualWaveMoveCalcDir() {
         return this.waveMoveDir.getWaveMoveDirProb(this.dirCalcPos);
     }
 
@@ -69,10 +69,6 @@ public class WaveMoveCalc {
         this.dirCalcProbSumArr[dirPos] += dirCalcPropSum;
     }
 
-    public int nextDirCalcPos() {
-        return wrap(this.dirCalcPos + 1, Cell.Dir.values().length);
-    }
-
     public int getActualDirCalcPos() {
         return this.dirCalcPos;
     }
@@ -81,34 +77,16 @@ public class WaveMoveCalc {
         return Cell.Dir.values()[this.dirCalcPos];
     }
 
-    public void calcDirMoved(final int dirMovePos) {
-        //final Cell.Dir actualMoveDir = this.getActualMoveDir();
-        this.setDirCalcPropSum(dirMovePos, this.getDirCalcProbSum(dirMovePos) - waveMoveDir.getMaxProb());
-    }
-
-    public void calcActualWaveMoveCalcDir() {
-        int startDirCalcCount = 0;
-        do {
-            this.dirCalcPos = nextDirCalcPos();
-            final WaveMoveDirProb waveMoveDirProb = this.waveMoveDir.getDirMoveProb(this.dirCalcPos);
-            this.addDirCalcProbSum(this.dirCalcPos, waveMoveDirProb.getDirMoveProb());
-            if (startDirCalcCount >= Cell.Dir.values().length) {
-                throw new RuntimeException("Do not found next dirCalcPos: " + this.waveMoveDir.toString());
-            }
-            startDirCalcCount++;
-        } while (this.getDirCalcProbSum(this.dirCalcPos) < this.waveMoveDir.getMaxProb());
-    }
-
     public int getMaxProb() {
         return this.waveMoveDir.getMaxProb();
     }
 
-    public WaveMoveDirProb[] getMoveCalcDirArr() {
-        return this.waveMoveDir.getMoveDirProbArr();
+    public int getDirMoveProb(final int dirCalcPos) {
+        return this.waveMoveDir.getDirMoveProb(dirCalcPos);
     }
 
-    public void adjustMaxProb() {
-        this.waveMoveDir.adjustMaxProb();
+    public int[] getMoveDirProbArr() {
+        return this.waveMoveDir.getMoveDirProbArr();
     }
 
     public int[] getDirCalcProbSumArr() {

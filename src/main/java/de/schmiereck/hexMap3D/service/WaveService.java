@@ -1,6 +1,12 @@
 package de.schmiereck.hexMap3D.service;
 
+import de.schmiereck.hexMap3D.MapMathUtils;
+
 public class WaveService {
+
+    public static void calcActualWaveMoveCalcDir(final Wave wave) {
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(wave.getWaveMoveCalc());
+    }
 
     public static Wave createNextRotatedWave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
                                              final int waveProb) {
@@ -12,7 +18,7 @@ public class WaveService {
         final Event event = sourceWave.getEvent();
         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
         final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(sourceWaveMoveCalc);
-        final Wave newWave = new Wave(event, newWaveMoveCalc, sourceWave.nextRotationCalcPos(), waveProb);
+        final Wave newWave = new Wave(event, newWaveMoveCalc, WaveRotationService.nextRotationCalcPos(sourceWave), waveProb);
         return newWave;
     }
 

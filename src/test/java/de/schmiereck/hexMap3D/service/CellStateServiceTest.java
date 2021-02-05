@@ -55,8 +55,8 @@ public class CellStateServiceTest {
                  final WaveMoveDir waveMoveDir = new WaveMoveDir();
                  waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
                  final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
-                 wave.getWaveMoveDir().adjustMaxProb();
-                 wave.calcActualWaveMoveCalcDir();
+                 WaveMoveDirService.adjustMaxProb(wave.getWaveMoveDir());
+                 WaveService.calcActualWaveMoveCalcDir(wave);
                  cellState = CellStateService.createCellStateWithNewWave(particleEvent, wave);
              } else {
                  cellState = CellStateService.createInitialCellState();

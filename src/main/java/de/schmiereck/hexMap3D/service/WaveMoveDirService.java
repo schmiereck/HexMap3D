@@ -55,7 +55,9 @@ public class WaveMoveDirService {
     }
 
     private static final Map<WaveMoveDir, WaveMoveDir> waveMoveDirCacheMap = new HashMap<>();
+    private static int waveMoveDirCacheHitCount = 0;
     private static final Map<RotateMoveDirCacheEntry, RotateMoveDirCacheEntry> rotateMoveDirCacheMap = new HashMap<>();
+    private static int rotateMoveDirCacheHitCount = 0;
 
     public static WaveMoveDir createNewWaveMoveDir(final WaveMoveDir givenWaveMoveDir) {
         final WaveMoveDir waveMoveDir;
@@ -63,6 +65,7 @@ public class WaveMoveDirService {
             final WaveMoveDir cachedWaveMoveDir = waveMoveDirCacheMap.get(givenWaveMoveDir);
             if (cachedWaveMoveDir != null) {
                 waveMoveDir = cachedWaveMoveDir;
+                waveMoveDirCacheHitCount++;
             } else {
                 waveMoveDir = givenWaveMoveDir;//createWaveMoveDirInterface.createWaveMoveDir();
                 waveMoveDirCacheMap.put(waveMoveDir, waveMoveDir);
@@ -73,15 +76,15 @@ public class WaveMoveDirService {
         return waveMoveDir;
     }
 
-    public static WaveMoveDir createWaveMoveDir(final WaveMoveDirProb[] givenMoveCalcDirArr) {
-        final WaveMoveDirProb[] moveCalcDirArr = new WaveMoveDirProb[Cell.Dir.values().length];
+    public static WaveMoveDir createWaveMoveDir(final int[] givenMoveCalcDirArr) {
+        final int[] moveCalcDirArr = new int[Cell.Dir.values().length];
         int maxProp = 0;
 
         //IntStream.range(0, moveCalcDirArr.length).forEach(pos -> {
         for (int pos = 0; pos < moveCalcDirArr.length; pos++) {
-            moveCalcDirArr[pos] = WaveMoveDirPropService.createWaveMoveCalcDir(givenMoveCalcDirArr[pos]);
-            if (moveCalcDirArr[pos].getDirMoveProb() > maxProp) {
-                maxProp = moveCalcDirArr[pos].getDirMoveProb();
+            moveCalcDirArr[pos] = givenMoveCalcDirArr[pos];
+            if (moveCalcDirArr[pos] > maxProp) {
+                maxProp = moveCalcDirArr[pos];
             }
         }
         return createNewWaveMoveDir(new WaveMoveDir(moveCalcDirArr, maxProp));
@@ -96,6 +99,7 @@ public class WaveMoveDirService {
             final RotateMoveDirCacheEntry rotateMoveDirCacheEntry = rotateMoveDirCacheMap.get(newRotateMoveDirCacheEntry);
             if (rotateMoveDirCacheEntry != null) {
                 newWaveMoveDir = rotateMoveDirCacheEntry.outWaveMoveDir;
+                rotateMoveDirCacheHitCount++;
             } else {
                 newWaveMoveDir = createNewRotatedWaveMoveDir(sourceWaveMoveDir, xRotPercent, yRotPercent, zRotPercent);
                 newRotateMoveDirCacheEntry.outWaveMoveDir = newWaveMoveDir;
@@ -114,13 +118,13 @@ public class WaveMoveDirService {
         // If the cross node is empty create a new cross node in the given direction.
         final WaveMoveDir newWaveMoveDir;
         {
-            final WaveMoveDirProb[] givenMoveDirProbArr = waveMoveDir.getMoveDirProbArr();
-            final WaveMoveDirProb[] moveDirProbArr = new WaveMoveDirProb[Cell.Dir.values().length];
+            final int[] givenMoveDirProbArr = waveMoveDir.getMoveDirProbArr();
+            final int[] moveDirProbArr = new int[Cell.Dir.values().length];
             final int maxProp = waveMoveDir.getMaxProb();
 
             //IntStream.range(0, moveCalcDirArr.length).forEach(pos -> {
             for (int pos = 0; pos < moveDirProbArr.length; pos++) {
-                moveDirProbArr[pos] = WaveMoveDirPropService.createWaveMoveCalcDir(givenMoveDirProbArr[pos]);
+                moveDirProbArr[pos] = givenMoveDirProbArr[pos];
             }
             newWaveMoveDir = new WaveMoveDir(moveDirProbArr, maxProp);
         }
@@ -143,7 +147,7 @@ public class WaveMoveDirService {
             }
         }
 
-        newWaveMoveDir.adjustMaxProb();
+        adjustMaxProb(newWaveMoveDir);
 
         return createNewWaveMoveDir(newWaveMoveDir);
     }
@@ -169,17 +173,20 @@ public class WaveMoveDirService {
             // Search last zero:
             final int notZeroPos =
                     calcBreakLoopWrap(rotStartPos, rotEndPos, rotDir, pos -> {
-                        final WaveMoveDirProb moveCalcDir = newWaveMoveDir.getDirMoveProb(rotArr[pos]);
-                        final WaveMoveDirProb beforMoveCalcDir = newWaveMoveDir.getDirMoveProb(rotArr[wrap(pos - rotDir, rotArr.length)]);
-                        return ((moveCalcDir.getDirMoveProb() > 0) && (beforMoveCalcDir.getDirMoveProb() == 0));
+                        final Cell.Dir dir = rotArr[pos];
+                        final Cell.Dir beforDir = rotArr[wrap(pos - rotDir, rotArr.length)];
+                        final int dirMoveProb = newWaveMoveDir.getDirMoveProb(dir);
+                        final int beforDirMoveProb = newWaveMoveDir.getDirMoveProb(beforDir);
+                        return ((dirMoveProb > 0) && (beforDirMoveProb == 0));
                     });
             final int moveAmount = getMoveAmount(rotPercent, probSum);
             final AtomicInteger actMoveAmount = new AtomicInteger(moveAmount);
             // Move propability in given direction until "moveAmount" is zero.
             calcBreakLoopWrap2(notZeroPos, rotArr.length, rotDir, pos -> {
-                final WaveMoveDirProb moveCalcDir = newWaveMoveDir.getDirMoveProb(rotArr[pos]);
-                final WaveMoveDirProb nextMoveCalcDir = newWaveMoveDir.getDirMoveProb(rotArr[wrap(pos + rotDir, rotArr.length)]);
-                final int prob = moveCalcDir.getDirMoveProb();
+                final Cell.Dir dir = rotArr[pos];
+                final Cell.Dir nextDir = rotArr[wrap(pos + rotDir, rotArr.length)];
+                final int dirMoveProb = newWaveMoveDir.getDirMoveProb(dir);
+                final int prob = dirMoveProb;
                 final int newProb, probDif;
                 if (prob <= actMoveAmount.get()) {
                     probDif = prob;
@@ -190,8 +197,8 @@ public class WaveMoveDirService {
                     newProb = prob - probDif;
                     actMoveAmount.set(0);
                 }
-                moveCalcDir.setDirMoveProb(newProb);
-                nextMoveCalcDir.addDirMoveProb(probDif);
+                newWaveMoveDir.setDirMoveProb(dir, newProb);
+                newWaveMoveDir.addDirMoveProb(nextDir, probDif);
                 return actMoveAmount.get() == 0;
             });
         } else {
@@ -227,10 +234,53 @@ public class WaveMoveDirService {
     private static int calcProbSum(final WaveMoveDir waveMoveDir, final Cell.Dir[] rotArr) {
         int probSum = 0;
         for (int pos = 0; pos < rotArr.length; pos++) {
-            final WaveMoveDirProb moveCalcDir = waveMoveDir.getDirMoveProb(rotArr[pos]);
-            probSum += moveCalcDir.getDirMoveProb();
+            final int dirMoveProb = waveMoveDir.getDirMoveProb(rotArr[pos]);
+            probSum += dirMoveProb;
         }
         return probSum;
+    }
+
+    public static void adjustMaxProb(final WaveMoveDir waveMoveDir) {
+        final int[] moveDirProbArr = waveMoveDir.getMoveDirProbArr();
+        final int maxProb = calcMaxProb(moveDirProbArr);
+        waveMoveDir.setMaxProb(maxProb);
+    }
+
+    protected static int calcMaxProb(final int[] moveDirProbArr) {
+        int maxProb = 0;
+        for (int pos = 0; pos < moveDirProbArr.length; pos++) {
+            if (moveDirProbArr[pos] > maxProb) {
+                maxProb = moveDirProbArr[pos];
+            }
+//            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
+//                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
+//            }
+//            if (this.moveCalcDirArr[pos].getDirCalcProp() == 0) {
+//                this.moveCalcDirArr[pos].setDirCalcPropSum(0);
+//            }
+        }
+        /*
+        int propPos = -1;
+        for (int pos = 0; pos < this.moveCalcDirArr.length; pos++) {
+            final int dirPos = wrap(this.dirCalcPos + pos, this.moveCalcDirArr.length);
+            final int prop = moveCalcDirArr[dirPos].getDirCalcProp();
+            if (prop > 0) {
+                final int propSum = DIR_CALC_MAX_PROP - (propPos * prop);
+                if (propSum > prop) {
+                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(propSum + prop);
+                } else {
+                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(prop);
+                }
+                propPos++;
+            }
+        }
+        */
+        return maxProb;
+    }
+
+    public static void resetCacheHitCounts() {
+        waveMoveDirCacheHitCount = 0;
+        rotateMoveDirCacheHitCount = 0;
     }
 
     public static int getWaveMoveDirCacheMapSize() {
@@ -240,4 +290,13 @@ public class WaveMoveDirService {
     public static int getRotateMoveDirCacheMapSize() {
         return rotateMoveDirCacheMap.size();
     }
+
+    public static int getWaveMoveDirCacheHitCount() {
+        return waveMoveDirCacheHitCount;
+    }
+
+    public static int getRotateMoveDirCacheHitCount() {
+        return rotateMoveDirCacheHitCount;
+    }
+
 }

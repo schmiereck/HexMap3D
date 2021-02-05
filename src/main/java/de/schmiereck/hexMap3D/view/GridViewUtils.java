@@ -23,10 +23,10 @@ public class GridViewUtils {
     public final static double viewGridStepA = (16.0D) * 4.0D * (16.0D / Main.xSizeGrid);
     public final static double viewGridStepA2 = viewGridStepA / 2.0D;
     public final static double viewGridStepA4 = viewGridStepA / 4.0D;
-    public final static double viewGridStepH = viewGridStepA*Math.sqrt(3.0D)/2.0D;
+    public final static double viewGridStepH = viewGridStepA*triangleHeight;
     public final static double viewGridStepMa = viewGridStepA/Math.sqrt(12.0D);
     public final static double viewGridStepMb = viewGridStepH-viewGridStepMa;
-    public final static double viewGridStepZ = (viewGridStepA/3.0D)*Math.sqrt(6.0D);
+    public final static double viewGridStepZ = (viewGridStepA*tetrahedraHeight);
     public static final double GRID_BOX_SIZE = 16.0;
     public static final double OUTPUT_SIZE = 6.0D;
 

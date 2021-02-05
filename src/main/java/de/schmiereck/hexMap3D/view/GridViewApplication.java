@@ -235,10 +235,12 @@ public class GridViewApplication extends Application {
         this.gridViewModel.setStatisticCalcStepCount(Long.toString(this.universe.getStatisticCalcStepCount()));
 
         System.out.println("Cache: " +
-                "CS:" + CellStateService.getCellStateCacheSize() + ", next:" + CellStateService.getNextCellStateCacheSize() +
+                "CS:" + CellStateService.getCellStateCacheSize() + "(" + CellStateService.getCellStateCacheHitCount() + "), " +
+                        "next:" + CellStateService.getNextCellStateCacheSize() + "(" + CellStateService.getNextCellStateCacheHitCount() + ")" +
                 " | " +
-                "MC:" + WaveMoveCalcService.getWaveMoveCalcCacheSize() +
+                "MC:" + WaveMoveCalcService.getWaveMoveCalcCacheSize() + "(" + WaveMoveCalcService.getWaveMoveCalcCacheHitCount() + ")" +
                 " | " +
-                "MD:" + WaveMoveDirService.getWaveMoveDirCacheMapSize() + ", rotate:" + WaveMoveDirService.getRotateMoveDirCacheMapSize());
+                "MD:" + WaveMoveDirService.getWaveMoveDirCacheMapSize() + "(" + WaveMoveDirService.getWaveMoveDirCacheHitCount() + "), " +
+                        "rotate:" + WaveMoveDirService.getRotateMoveDirCacheMapSize() + "(" + WaveMoveDirService.getRotateMoveDirCacheHitCount() + ")");
     }
 }

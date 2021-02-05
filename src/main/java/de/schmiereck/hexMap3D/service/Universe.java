@@ -9,6 +9,8 @@ import java.util.stream.IntStream;
 import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 
 public class Universe {
+    public static boolean useParallel = false;
+
     private final int xUniverseSize;
     private final int yUniverseSize;
     private final int zUniverseSize;
@@ -53,7 +55,7 @@ public class Universe {
 
     public void forEachCell(final EachCellCallback eachCellCallback) {
         final IntStream zRangeStream = IntStream.range(0, this.zUniverseSize);
-        (Main.useParallel ? zRangeStream.parallel() : zRangeStream).
+        (useParallel ? zRangeStream.parallel() : zRangeStream).
             forEach((final int zPos) ->
                 IntStream.range(0, this.yUniverseSize).
                     forEach((final int yPos) ->
@@ -168,7 +170,7 @@ public class Universe {
             IntStream.rangeClosed(y1Pos, y2Pos).forEach(yPos -> {
                 IntStream.rangeClosed(x1Pos, x2Pos).forEach(xPos -> {
                     final Cell cell = this.getCell(xPos, yPos, zPos);
-                    final WaveMoveDirProb[] moveCalcDirArr = new WaveMoveDirProb[Cell.Dir.values().length];
+                    final int[] moveCalcDirArr = new int[Cell.Dir.values().length];
                     final WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(moveCalcDirArr);
                     final Wave wave = WaveService.createNewInitialWave(event, waveMoveDir, 1);
                     event.addWave(wave);

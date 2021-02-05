@@ -23,6 +23,9 @@ public class Engine {
         final long startTime = System.currentTimeMillis();
 
         this.universe.clearReality();
+        CellStateService.resetCacheHitCounts();
+        WaveMoveCalcService.resetCacheHitCounts();
+        WaveMoveDirService.resetCacheHitCounts();
 
         this.universe.forEachCell((final int xPos, final int yPos, final int zPos) -> {
             final Cell targetCell = this.universe.getCell(xPos, yPos, zPos);

@@ -44,7 +44,9 @@ public class CellStateService {
     }
 
     private static final Map<NextCellStateCacheEntry, NextCellStateCacheEntry> nextCellStateCacheSet = new HashMap<>();
+    private static int nextCellStateCacheHitCount = 0;
     private static final Map<CellState, CellState> cellStateCacheSet = new HashMap<>();
+    private static int cellStateCacheHitCount = 0;
     private static CellState initialCellStateCache;
 
     public static boolean useCellStateCache = true;
@@ -83,11 +85,13 @@ public class CellStateService {
             final NextCellStateCacheEntry nextCellStateCacheEntry = nextCellStateCacheSet.get(newNextCellStateCacheEntry);
             if (nextCellStateCacheEntry != null) {
                 cellState = nextCellStateCacheEntry.outCellState;
+                nextCellStateCacheHitCount++;
             } else {
                 final CellState newCellState = calcNewStateForTargetCell(inCellStateArr);
                 final CellState cachedCellState = cellStateCacheSet.get(newCellState);
                 if (cachedCellState != null) {
                     cellState = cachedCellState;
+                    cellStateCacheHitCount++;
                 } else {
                     cellState = newCellState;
                     cellStateCacheSet.put(cellState, cellState);
@@ -173,12 +177,25 @@ public class CellStateService {
         return ret;
     }
 
+    public static void resetCacheHitCounts() {
+        nextCellStateCacheHitCount = 0;
+        cellStateCacheHitCount = 0;
+    }
+
     public static int getCellStateCacheSize() {
         return cellStateCacheSet.size();
     }
 
+    public static int getCellStateCacheHitCount() {
+        return cellStateCacheHitCount;
+    }
+
     public static int getNextCellStateCacheSize() {
         return nextCellStateCacheSet.size();
+    }
+
+    public static int getNextCellStateCacheHitCount() {
+        return nextCellStateCacheHitCount;
     }
 
     public static CellState createCellStateWithNewWave(final Event event, final Wave wave) {

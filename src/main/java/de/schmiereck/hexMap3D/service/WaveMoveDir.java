@@ -17,70 +17,44 @@ public class WaveMoveDir {
      * Possible Directions.
      * The dir number of {@link Cell.Dir} is the index.
      */
-    private WaveMoveDirProb[] moveDirProbArr;
+    private int[] moveDirProbArr;
     private int maxProb = 0;
 
     public WaveMoveDir() {
-        this.moveDirProbArr = new WaveMoveDirProb[Cell.Dir.values().length];
-        Arrays.stream(Cell.Dir.values()).forEach(dir -> this.moveDirProbArr[dir.dir()] = new WaveMoveDirProb(0));
+        this.moveDirProbArr = new int[Cell.Dir.values().length];
+        //Arrays.stream(Cell.Dir.values()).forEach(dir -> this.moveDirProbArr[dir.dir()] = 0);
         this.maxProb = 0;
     }
 
-    public WaveMoveDir(final WaveMoveDirProb[] moveDirProbArr, final int maxProb) {
+    public WaveMoveDir(final int[] moveDirProbArr, final int maxProb) {
         this.moveDirProbArr = moveDirProbArr;
         this.maxProb = maxProb;
     }
 
     public void setDirMoveProb(final Cell.Dir dir, final int dirCalcProb) {
         //this.moveCalcDirArr[dirNo].setDir(dir);
-        this.moveDirProbArr[dir.dir()].setDirMoveProb(dirCalcProb);
+        this.moveDirProbArr[dir.dir()] = dirCalcProb;
     }
 
-    public WaveMoveDirProb[] getMoveDirProbArr() {
+    public void addDirMoveProb(final Cell.Dir dir, final int dirCalcProb) {
+        //this.moveCalcDirArr[dirNo].setDir(dir);
+        this.moveDirProbArr[dir.dir()] += dirCalcProb;
+    }
+
+    public int[] getMoveDirProbArr() {
         return this.moveDirProbArr;
     }
 
-    public WaveMoveDirProb getDirMoveProb(final Cell.Dir dir) {
+    public int getDirMoveProb(final Cell.Dir dir) {
         return this.moveDirProbArr[dir.dir()];
     }
 
-    public WaveMoveDirProb getDirMoveProb(final int dirPos) {
+    public int getDirMoveProb(final int dirPos) {
         return this.moveDirProbArr[dirPos];
     }
 
-    public WaveMoveDirProb getWaveMoveDirProb(final int dirCalcPos) {
+    public int getWaveMoveDirProb(final int dirCalcPos) {
         return this.moveDirProbArr[dirCalcPos];
-    }
-
-    public void adjustMaxProb() {
-        this.maxProb = 0;
-        for (int pos = 0; pos < this.moveDirProbArr.length; pos++) {
-            if (this.moveDirProbArr[pos].getDirMoveProb() > maxProb) {
-                this.maxProb = this.moveDirProbArr[pos].getDirMoveProb();
-            }
-//            if (this.moveCalcDirArr[pos].getDirCalcPropSum() > this.moveCalcDirArr[pos].getDirCalcProp()) {
-//                this.moveCalcDirArr[pos].setDirCalcPropSum(this.moveCalcDirArr[pos].getDirCalcProp());
-//            }
-//            if (this.moveCalcDirArr[pos].getDirCalcProp() == 0) {
-//                this.moveCalcDirArr[pos].setDirCalcPropSum(0);
-//            }
-        }
-        /*
-        int propPos = -1;
-        for (int pos = 0; pos < this.moveCalcDirArr.length; pos++) {
-            final int dirPos = wrap(this.dirCalcPos + pos, this.moveCalcDirArr.length);
-            final int prop = moveCalcDirArr[dirPos].getDirCalcProp();
-            if (prop > 0) {
-                final int propSum = DIR_CALC_MAX_PROP - (propPos * prop);
-                if (propSum > prop) {
-                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(propSum + prop);
-                } else {
-                    this.moveCalcDirArr[dirPos].setDirCalcPropSum(prop);
-                }
-                propPos++;
-            }
-        }
-        */
     }
 
     public int getMaxProb() {

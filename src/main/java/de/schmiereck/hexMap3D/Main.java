@@ -11,15 +11,20 @@ import static java.lang.String.format;
 
 public class Main {
 
-    public static final boolean useParallel = false;
-
     public static final int xSizeGrid = 3*2 * 4;//16;
     public static final int ySizeGrid = 3*2 * 4;//16;
     public static final int zSizeGrid = 3*2 * 4;//16;
-    public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (32000);
+    //public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (32000);
+    public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (16000);
 
     public static void main(String[] args) {
         //-----------------------------------------------------------------------------
+        Universe.useParallel = true;
+        CellStateService.useCellStateCache = true;
+        CellStateService.useCellStateCache = true;
+        WaveMoveCalcService.useWaveMoveCalcCache = true;
+        WaveMoveDirService.useRotateMoveDirCache = true;
+        WaveMoveDirService.useWaveMoveDirCache = true;
 
         //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);
@@ -56,8 +61,8 @@ public class Main {
             x=0; y=8; z=8;
 
             final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
-            wave.getWaveMoveDir().adjustMaxProb();
-            wave.calcActualWaveMoveCalcDir();
+            WaveMoveDirService.adjustMaxProb(wave.getWaveMoveDir());
+            WaveService.calcActualWaveMoveCalcDir(wave);
             final CellState cellState = CellStateService.createCellStateWithNewWave(particleEvent, wave);
             final Cell cell = universe.getCell(x, y, z);
             //cell.addWave(wave);

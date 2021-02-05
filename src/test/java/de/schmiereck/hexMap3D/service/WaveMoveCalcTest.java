@@ -14,15 +14,15 @@ public class WaveMoveCalcTest {
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
-        waveMoveCalc.adjustMaxProb();
-        waveMoveCalc.calcActualWaveMoveCalcDir();
+        WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
 
         for (int c = 0; c < 100; c++) {
             printWaveMoveDir(c, waveMoveCalc, 6);
 
             //!!!waveMoveCalc.calcActualDirMoved();
             waveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(waveMoveCalc);
-            waveMoveCalc.calcActualWaveMoveCalcDir();
+            WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
             stat[waveMoveCalc.getDirCalcPos()]++;
         }
 
@@ -37,15 +37,15 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(DB_P, 30);
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
-        waveMoveCalc.adjustMaxProb();
-        waveMoveCalc.calcActualWaveMoveCalcDir();
+        WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
 
         for (int c = 0; c < 800; c++) {
             printWaveMoveDir(c, waveMoveCalc, 4);
 
             //!!!waveMoveCalc.calcActualDirMoved();
             waveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(waveMoveCalc);
-            waveMoveCalc.calcActualWaveMoveCalcDir();
+            WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
         }
     }
 
@@ -57,15 +57,15 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(DB_P, 30);
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
-        waveMoveCalc.adjustMaxProb();
-        waveMoveCalc.calcActualWaveMoveCalcDir();
+        WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
 
         for (int c = 0; c < 800; c++) {
             printWaveMoveDir(c, waveMoveCalc, 4);
 
             //!!!waveMoveCalc.calcActualDirMoved();
             waveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(waveMoveCalc);
-            waveMoveCalc.calcActualWaveMoveCalcDir();
+            WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
         }
     }
 
@@ -76,15 +76,15 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(LG_N, 13);
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
-        waveMoveCalc.adjustMaxProb();
-        waveMoveCalc.calcActualWaveMoveCalcDir();
+        WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
 
         for (int c = 0; c < 800; c++) {
             printWaveMoveDir(c, waveMoveCalc, 7);
 
             //!!!waveMoveCalc.calcActualDirMoved();
             waveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(waveMoveCalc);
-            waveMoveCalc.calcActualWaveMoveCalcDir();
+            WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
         }
     }
 
@@ -102,15 +102,15 @@ public class WaveMoveCalcTest {
         //int dirCalcPos = OR_N.dir(); // OR_N
         int dirCalcPos = OR_N.dir(); // OR_N
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
-        waveMoveCalc.adjustMaxProb();
-        waveMoveCalc.calcActualWaveMoveCalcDir();
+        WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
 
         for (int c = 0; c < 800; c++) {
             printWaveMoveDir(c, waveMoveCalc, 7);
 
             //!!!waveMoveCalc.calcActualDirMoved();
             waveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(waveMoveCalc);
-            waveMoveCalc.calcActualWaveMoveCalcDir();
+            WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
         }
     }
 
@@ -122,15 +122,15 @@ public class WaveMoveCalcTest {
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
-        waveMoveCalc.adjustMaxProb();
-        waveMoveCalc.calcActualWaveMoveCalcDir();
+        WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
 
         for (int c = 0; c < 100; c++) {
             printWaveMoveDir(c, waveMoveCalc, 10);
 
             //!!!waveMoveCalc.calcActualDirMoved();
             waveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(waveMoveCalc);
-            waveMoveCalc.calcActualWaveMoveCalcDir();
+            WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
             stat[waveMoveCalc.getDirCalcPos()]++;
         }
 
@@ -169,15 +169,15 @@ public class WaveMoveCalcTest {
         final int stat[] = new int[12];
         int dirCalcPos = 0;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
-        waveMoveCalc.adjustMaxProb();
-        waveMoveCalc.calcActualWaveMoveCalcDir();
+        WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
 
         for (int c = 0; c < 100; c++) {
             printWaveMoveDir(c, waveMoveCalc, 10);
 
             //!!!waveMoveCalc.calcActualDirMoved();
             waveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(waveMoveCalc);
-            waveMoveCalc.calcActualWaveMoveCalcDir();
+            WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
             stat[waveMoveCalc.getDirCalcPos()]++;
         }
 
@@ -186,7 +186,7 @@ public class WaveMoveCalcTest {
 
     private void printWaveMoveDir(int c, WaveMoveCalc waveMoveCalc, int i) {
         final Cell.Dir actualMoveDir = waveMoveCalc.getActualMoveDir();
-        final WaveMoveDirProb actualWaveMoveDirProb = waveMoveCalc.getActualWaveMoveCalcDir();
+        final int actualWaveMoveDirProb = waveMoveCalc.getActualWaveMoveCalcDir();
         if (c % i == 0) System.out.println();
         System.out.printf("%s(%d), ", actualMoveDir, waveMoveCalc.getDirCalcProbSum(actualMoveDir));
     }

@@ -24,7 +24,7 @@ public class TestUtils {
         for (int axisPos = 0; axisPos < xRotArr.length; axisPos++) {
             final Cell.Dir[] rotArr = GridUtils.xRotArr[axisPos];
             for (int pos = 0; pos < rotArr.length; pos++) {
-                assertEquals(expectedProps[axisPos][pos], newWave.getMoveCalcDir(xRotArr[axisPos][pos]).getDirMoveProb(),
+                assertEquals(expectedProps[axisPos][pos], newWave.getMoveCalcDir(xRotArr[axisPos][pos]),
                         String.format("%sdir:\"%s\" - axisPos:\"%d\", pos:\"%d\"", msg, xRotArr[axisPos][pos].toString(), axisPos, pos));
             }
         }
