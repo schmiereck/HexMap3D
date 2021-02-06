@@ -1,13 +1,20 @@
 package de.schmiereck.hexMap3D.service;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
 public class CellState {
-    private final HashMap<Wave, Wave> waveHashMap = new HashMap();
+    private final AbstractMap<Wave, Wave> waveHashMap;
 
     public CellState() {
+        if (CellStateService.useCellStateCache) {
+            this.waveHashMap = new TreeMap();
+        } else {
+            this.waveHashMap = new HashMap();
+        }
     }
 
     public void addWave(final Wave wave) {

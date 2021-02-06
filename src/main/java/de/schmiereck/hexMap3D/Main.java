@@ -20,8 +20,7 @@ public class Main {
     public static void main(String[] args) {
         //-----------------------------------------------------------------------------
         Universe.useParallel = true;
-        CellStateService.useCellStateCache = true;
-        CellStateService.useCellStateCache = true;
+        CellStateService.useCellStateCache = false;
         WaveMoveCalcService.useWaveMoveCalcCache = true;
         WaveMoveDirService.useRotateMoveDirCache = true;
         WaveMoveDirService.useWaveMoveDirCache = true;

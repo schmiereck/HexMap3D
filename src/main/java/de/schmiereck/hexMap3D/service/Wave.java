@@ -47,7 +47,7 @@ import java.util.Objects;
  *
  *  f() = (100 / localProp) / count
  */
-public class Wave {
+public class Wave  implements Comparable<Wave> {
     private final Event event;
     private WaveMoveCalc waveMoveCalc;
     /**
@@ -121,6 +121,23 @@ public class Wave {
 
     public int getWaveProb() {
         return this.waveProb;
+    }
+
+    @Override
+    public int compareTo(final Wave wave) {
+        int ret = this.waveProb - wave.waveProb;
+        if (ret == 0) {
+            final int[] thisMoveDirProbArr = this.waveMoveCalc.getWaveMoveDir().getMoveDirProbArr();
+            final int[] waveMoveDirProbArr = wave.waveMoveCalc.getWaveMoveDir().getMoveDirProbArr();
+            for (int pos = 0; pos < thisMoveDirProbArr.length; pos++) {
+                final int diff = thisMoveDirProbArr[pos] - waveMoveDirProbArr[pos];
+                if (diff != 0) {
+                    ret = diff;
+                    break;
+                }
+            }
+        }
+        return ret;
     }
 
     private int hashCode = 0;
