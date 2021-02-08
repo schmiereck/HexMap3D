@@ -3,7 +3,7 @@ package de.schmiereck.hexMap3D;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import de.schmiereck.hexMap3D.service.ProbabilityCalc;
+import de.schmiereck.hexMap3D.utils.ProbabilityCalc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;

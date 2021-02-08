@@ -2,7 +2,7 @@ package de.schmiereck.hexMap3D.view;
 
 import de.schmiereck.hexMap3D.GridUtils;
 import de.schmiereck.hexMap3D.Main;
-import de.schmiereck.hexMap3D.service.Cell;
+import de.schmiereck.hexMap3D.service.universe.Cell;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;

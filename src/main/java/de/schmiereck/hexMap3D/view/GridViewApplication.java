@@ -1,9 +1,8 @@
 package de.schmiereck.hexMap3D.view;
 
-import de.schmiereck.hexMap3D.service.CellStateService;
-import de.schmiereck.hexMap3D.service.Universe;
-import de.schmiereck.hexMap3D.service.WaveMoveCalcService;
-import de.schmiereck.hexMap3D.service.WaveMoveDirService;
+import de.schmiereck.hexMap3D.service.reality.Reality;
+import de.schmiereck.hexMap3D.service.reality.RealityService;
+import de.schmiereck.hexMap3D.service.universe.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -30,6 +29,7 @@ import javafx.stage.Stage;
 public class GridViewApplication extends Application {
     private RunStepCallback runStepCallback;
     private Universe universe;
+    private Reality reality;
     private int xSizeGrid;
     private int ySizeGrid;
     private int zSizeGrid;
@@ -42,30 +42,31 @@ public class GridViewApplication extends Application {
         void run();
     }
 
-    public void init(final RunStepCallback runStepCallback, final Universe universe, final int xSizeGrid, final int ySizeGrid, final int zSizeGrid) {
+    public void init(final RunStepCallback runStepCallback, final Universe universe, final Reality reality, final int xSizeGrid, final int ySizeGrid, final int zSizeGrid) {
         this.runStepCallback = runStepCallback;
         this.universe = universe;
+        this.reality = reality;
         this.xSizeGrid = xSizeGrid;
         this.ySizeGrid = ySizeGrid;
         this.zSizeGrid = zSizeGrid;
-        this.nodeSpace = new GridViewNodeSpace(universe, xSizeGrid, ySizeGrid, zSizeGrid);
+        this.nodeSpace = new GridViewNodeSpace(this.reality, this.xSizeGrid, this.ySizeGrid, this.zSizeGrid);
         this.gridViewModel = new GridViewModel();
 
         this.gridViewModel.showWaveMoveCalcGroupProperty().addListener((observable, oldValue, newValue) -> {
             final String toggleId = (newValue);
 
-            final Universe.ShowWaveMoveCalc showWaveMoveCalc;
+            final Reality.ShowWaveMoveCalc showWaveMoveCalc;
             if (GridViewModel.SWM_showActualWaveMoveCalcDirSum.equals(toggleId)) {
-                showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowActualWaveMoveCalcDirSum;
+                showWaveMoveCalc = Reality.ShowWaveMoveCalc.ShowActualWaveMoveCalcDirSum;
             } else {
                 if (GridViewModel.SWM_showAllWaveMoveCalcDirSum.equals(toggleId)) {
-                    showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirSum;
+                    showWaveMoveCalc = Reality.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirSum;
                 } else {
                     if (GridViewModel.SWM_showAllWaveMoveCalcDirProb.equals(toggleId)) {
-                        showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirProb;
+                        showWaveMoveCalc = Reality.ShowWaveMoveCalc.ShowAllWaveMoveCalcDirProb;
                     } else {
                         if (GridViewModel.SWM_showNoWaveMoveDir.equals(toggleId)) {
-                            showWaveMoveCalc = Universe.ShowWaveMoveCalc.ShowNoWaveMoveDir;
+                            showWaveMoveCalc = Reality.ShowWaveMoveCalc.ShowNoWaveMoveDir;
                         } else {
                             throw new RuntimeException("Unexpected showWaveMoveCalc \"" + toggleId + "\".");
                         }
@@ -216,23 +217,23 @@ public class GridViewApplication extends Application {
     }
 
     public void setShowGrid(final boolean showGrid) {
-        this.universe.setShowGrid(showGrid);
+        RealityService.setShowGrid(this.reality, showGrid);
     }
 
-    public void setShowActualWaveMoveCalcDir(final Universe.ShowWaveMoveCalc showWaveMoveCalc) {
-        this.universe.setShowWaveMoveCalc(showWaveMoveCalc);
+    public void setShowActualWaveMoveCalcDir(final Reality.ShowWaveMoveCalc showWaveMoveCalc) {
+        RealityService.setShowWaveMoveCalc(this.reality, showWaveMoveCalc);
     }
 
     public void calcReality() {
-        this.universe.calcReality();
+        RealityService.calcReality(this.universe, this.reality);
     }
 
     public void updateReality() {
         this.nodeSpace.updateReality();
 
-        this.gridViewModel.setStatisticWavesCount(String.format("%,d", this.universe.getStatisticWaveCount()));
-        this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", this.universe.getStatisticCalcRunTime() / 1000.0F));
-        this.gridViewModel.setStatisticCalcStepCount(Long.toString(this.universe.getStatisticCalcStepCount()));
+        this.gridViewModel.setStatisticWavesCount(String.format("%,d", RealityService.getStatisticWaveCount(this.reality)));
+        this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", RealityService.getStatisticCalcRunTime(this.reality) / 1000.0F));
+        this.gridViewModel.setStatisticCalcStepCount(Long.toString(RealityService.getStatisticCalcStepCount(this.reality)));
 
         System.out.println("Cache: " +
                 "CS:" + CellStateService.getCellStateCacheSize() + "(" + CellStateService.getCellStateCacheHitCount() + "), " +

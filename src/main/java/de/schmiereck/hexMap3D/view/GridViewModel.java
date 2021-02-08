@@ -1,6 +1,5 @@
 package de.schmiereck.hexMap3D.view;
 
-import de.schmiereck.hexMap3D.service.Universe;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

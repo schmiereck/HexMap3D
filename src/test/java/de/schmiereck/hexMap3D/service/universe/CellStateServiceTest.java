@@ -1,16 +1,17 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
 
 import de.schmiereck.hexMap3D.GridUtils;
+import de.schmiereck.hexMap3D.service.Engine;
+import de.schmiereck.hexMap3D.service.reality.Reality;
+import de.schmiereck.hexMap3D.service.universe.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static de.schmiereck.hexMap3D.GridUtils.*;
 import static de.schmiereck.hexMap3D.Main.INITIAL_WAVE_PROB;
-import static de.schmiereck.hexMap3D.service.Cell.Dir.DB_P;
+import static de.schmiereck.hexMap3D.service.universe.Cell.Dir.DB_P;
 import static de.schmiereck.hexMap3D.service.TestUtils.assertWaveProps;
-import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
+import static de.schmiereck.hexMap3D.service.universe.WaveMoveDir.MAX_DIR_PROB;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CellStateServiceTest {
@@ -19,7 +20,8 @@ public class CellStateServiceTest {
     public void testCalcNewStateForTargetCell0() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
 
         final CellState[] inCellStateArr = new CellState[Cell.Dir.values().length];
@@ -42,7 +44,8 @@ public class CellStateServiceTest {
     public void testCalcNewStateForTargetCell1() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         universe.addEvent(particleEvent);
 

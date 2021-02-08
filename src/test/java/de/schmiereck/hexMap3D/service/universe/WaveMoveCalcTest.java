@@ -1,8 +1,13 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
+
+import de.schmiereck.hexMap3D.service.universe.Cell;
+import de.schmiereck.hexMap3D.service.universe.WaveMoveCalc;
+import de.schmiereck.hexMap3D.service.universe.WaveMoveCalcService;
+import de.schmiereck.hexMap3D.service.universe.WaveMoveDir;
 
 import java.util.Arrays;
 
-import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
+import static de.schmiereck.hexMap3D.service.universe.Cell.Dir.*;
 
 public class WaveMoveCalcTest {
 

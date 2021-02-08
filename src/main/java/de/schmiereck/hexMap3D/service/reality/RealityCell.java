@@ -1,4 +1,6 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.reality;
+
+import de.schmiereck.hexMap3D.service.universe.Cell;
 
 import java.util.Arrays;
 

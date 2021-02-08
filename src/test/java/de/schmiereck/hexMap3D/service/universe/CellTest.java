@@ -1,9 +1,14 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
+
+import de.schmiereck.hexMap3D.service.Engine;
+import de.schmiereck.hexMap3D.service.TestUtils;
+import de.schmiereck.hexMap3D.service.reality.Reality;
+import de.schmiereck.hexMap3D.service.universe.*;
 
 import java.util.HashMap;
 
-import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
-import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
+import static de.schmiereck.hexMap3D.service.universe.Cell.Dir.*;
+import static de.schmiereck.hexMap3D.service.universe.WaveMoveDir.MAX_DIR_PROB;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CellTest {
@@ -11,7 +16,8 @@ public class CellTest {
     @org.junit.jupiter.api.Test
     public void test1() {
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         Cell cell = new Cell(universe, 0, 0, 0);
         final Event particleEvent = new Event(engine, 1);
         final Wave wave1;

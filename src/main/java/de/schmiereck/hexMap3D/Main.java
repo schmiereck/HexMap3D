@@ -1,12 +1,14 @@
 package de.schmiereck.hexMap3D;
 
 import de.schmiereck.hexMap3D.service.*;
+import de.schmiereck.hexMap3D.service.reality.Reality;
+import de.schmiereck.hexMap3D.service.universe.*;
 import de.schmiereck.hexMap3D.view.GridViewApplication;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
-import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
+import static de.schmiereck.hexMap3D.service.universe.Cell.Dir.*;
+import static de.schmiereck.hexMap3D.service.universe.WaveMoveDir.*;
 import static java.lang.String.format;
 
 public class Main {
@@ -19,7 +21,7 @@ public class Main {
 
     public static void main(String[] args) {
         //-----------------------------------------------------------------------------
-        Universe.useParallel = true;
+        UniverseService.useParallel = true;
         CellStateService.useCellStateCache = false;
         WaveMoveCalcService.useWaveMoveCalcCache = true;
         WaveMoveDirService.useRotateMoveDirCache = true;
@@ -27,7 +29,8 @@ public class Main {
 
         //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(xSizeGrid, ySizeGrid, zSizeGrid);
+        final Engine engine = new Engine(universe, reality);
 
         //-----------------------------------------------------------------------------
         // Extend Test:
@@ -56,8 +59,12 @@ public class Main {
             //moveCalcDirArr[Cell.Dir.DB_P.dir()].setDirCalcProp(0);
             //x=8; y=8; z=8;
 
+            //waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB3_4);
+            //waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB1_4);
+            //x=0; y=8; z=8;
+
             waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
-            x=0; y=8; z=8;
+            x=0; y=ySizeGrid/2; z=zSizeGrid/2;
 
             final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
             WaveMoveDirService.adjustMaxProb(wave.getWaveMoveDir());
@@ -77,7 +84,7 @@ public class Main {
         //-----------------------------------------------------------------------------
         final GridViewApplication gridViewApplication = new GridViewApplication();
 
-        gridViewApplication.init(() -> engine.run(), universe, xSizeGrid, ySizeGrid, zSizeGrid);
+        gridViewApplication.init(() -> engine.run(), universe, reality, xSizeGrid, ySizeGrid, zSizeGrid);
 
         Platform.startup(() -> {
             // create primary stage

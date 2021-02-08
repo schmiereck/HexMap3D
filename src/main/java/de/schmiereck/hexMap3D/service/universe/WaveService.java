@@ -1,6 +1,4 @@
-package de.schmiereck.hexMap3D.service;
-
-import de.schmiereck.hexMap3D.MapMathUtils;
+package de.schmiereck.hexMap3D.service.universe;
 
 public class WaveService {
 

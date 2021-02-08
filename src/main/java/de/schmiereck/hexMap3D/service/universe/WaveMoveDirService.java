@@ -1,4 +1,4 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
 
 import de.schmiereck.hexMap3D.GridUtils;
 
@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static de.schmiereck.hexMap3D.MapLogicUtils.calcBreakLoopWrap;
 import static de.schmiereck.hexMap3D.MapLogicUtils.calcBreakLoopWrap2;
 import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
-import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
+import static de.schmiereck.hexMap3D.service.universe.WaveMoveDir.MAX_DIR_PROB;
 
 public class WaveMoveDirService {
 

@@ -1,4 +1,7 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
+
+import de.schmiereck.hexMap3D.service.universe.WaveMoveCalcService;
+import de.schmiereck.hexMap3D.service.universe.WaveMoveDirService;
 
 import java.util.Arrays;
 
@@ -312,11 +315,11 @@ public class ProbLineTest {
         int[] moveDirProbSumArr = new int[moveDirProbArr.length];
         int dirCalcPos = -1;
 
-        // de.schmiereck.hexMap3D.service.WaveMoveDirService.adjustMaxProb
+        // de.schmiereck.hexMap3D.service.universe.WaveMoveDirService.adjustMaxProb
         int maxProb = WaveMoveDirService.calcMaxProb(moveDirProbArr);
 
         for (int testPos = 0; testPos < lineLength; testPos++) {
-            // de.schmiereck.hexMap3D.service.WaveMoveCalcService.calcActualWaveMoveCalcDir
+            // de.schmiereck.hexMap3D.service.universe.WaveMoveCalcService.calcActualWaveMoveCalcDir
             dirCalcPos = WaveMoveCalcService.calcWaveMoveCalcDir(moveDirProbArr, maxProb, moveDirProbSumArr, dirCalcPos);
             /*
             int startDirCalcCount = 0;
@@ -350,7 +353,7 @@ public class ProbLineTest {
                         "moveDirProbSumArr:" + Arrays.toString(moveDirProbSumArr) + ", " +
                         "pos:(" + xPos + ", " + yPos + ")");
 
-            // de.schmiereck.hexMap3D.service.WaveMoveCalcService.calcDirMoved
+            // de.schmiereck.hexMap3D.service.universe.WaveMoveCalcService.calcDirMoved
             WaveMoveCalcService.calcDirMoved(moveDirProbSumArr, dirCalcPos, maxProb);
         }
         return lineArr;

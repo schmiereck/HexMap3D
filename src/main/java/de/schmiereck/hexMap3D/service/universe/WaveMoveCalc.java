@@ -1,9 +1,7 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
 
 import java.util.Arrays;
 import java.util.Objects;
-
-import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 
 public class WaveMoveCalc {
     private int dirCalcPos;

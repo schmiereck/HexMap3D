@@ -1,4 +1,4 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
 
 import de.schmiereck.hexMap3D.GridUtils;
 

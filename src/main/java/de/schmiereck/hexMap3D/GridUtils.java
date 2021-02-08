@@ -1,8 +1,8 @@
 package de.schmiereck.hexMap3D;
 
-import de.schmiereck.hexMap3D.service.Cell;
+import de.schmiereck.hexMap3D.service.universe.Cell;
 
-import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
+import static de.schmiereck.hexMap3D.service.universe.Cell.Dir.*;
 import static java.lang.String.format;
 
 public class GridUtils {

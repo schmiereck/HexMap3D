@@ -1,6 +1,7 @@
 package de.schmiereck.hexMap3D.service;
 
 import de.schmiereck.hexMap3D.GridUtils;
+import de.schmiereck.hexMap3D.service.universe.*;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.Arrays;

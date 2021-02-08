@@ -1,4 +1,6 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
+
+import de.schmiereck.hexMap3D.service.Engine;
 
 import java.util.ArrayList;
 import java.util.List;

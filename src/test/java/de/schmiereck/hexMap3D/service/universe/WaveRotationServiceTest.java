@@ -1,12 +1,14 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
 
-import de.schmiereck.hexMap3D.GridUtils;
+import de.schmiereck.hexMap3D.service.Engine;
+import de.schmiereck.hexMap3D.service.TestUtils;
+import de.schmiereck.hexMap3D.service.reality.Reality;
+import de.schmiereck.hexMap3D.service.universe.*;
 
-import static de.schmiereck.hexMap3D.GridUtils.xRotArr;
-import static de.schmiereck.hexMap3D.service.Cell.Dir.*;
+import static de.schmiereck.hexMap3D.service.universe.Cell.Dir.*;
 import static de.schmiereck.hexMap3D.service.TestUtils.assertWaveProps;
-import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB;
-import static de.schmiereck.hexMap3D.service.WaveMoveDir.MAX_DIR_PROB1_2;
+import static de.schmiereck.hexMap3D.service.universe.WaveMoveDir.MAX_DIR_PROB;
+import static de.schmiereck.hexMap3D.service.universe.WaveMoveDir.MAX_DIR_PROB1_2;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WaveRotationServiceTest {
@@ -15,7 +17,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveMiddle0Positive() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
@@ -41,7 +44,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveMiddle0Positive2() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
@@ -67,7 +71,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveFirstMiddleNegative() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
@@ -93,7 +98,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveSeccondMiddlePositive() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(GR_P, MAX_DIR_PROB);
@@ -119,7 +125,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveFirstMiddleYPositive() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
@@ -145,7 +152,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveMiddle2YPositive() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_N, MAX_DIR_PROB);
@@ -171,7 +179,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveMiddle1XPositiveYPositive() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(GR_P, MAX_DIR_PROB);
@@ -197,7 +206,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveMiddle0ZPositive() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
@@ -223,7 +233,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveDB_PyPositive() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
@@ -249,7 +260,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWaveDB_P_xNeg_zNeg() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
@@ -283,7 +295,8 @@ class WaveRotationServiceTest {
     void createMoveRotatedWave25PositiveOneRound() {
         // Arrange
         final Universe universe = new Universe(1, 1, 1);
-        final Engine engine = new Engine(universe);
+        final Reality reality = new Reality(1, 1, 1);
+        final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, 1);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(LB_P, MAX_DIR_PROB);

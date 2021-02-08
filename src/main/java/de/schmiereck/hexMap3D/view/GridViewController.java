@@ -2,7 +2,6 @@ package de.schmiereck.hexMap3D.view;
 
 import java.util.Objects;
 
-import de.schmiereck.hexMap3D.service.Universe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

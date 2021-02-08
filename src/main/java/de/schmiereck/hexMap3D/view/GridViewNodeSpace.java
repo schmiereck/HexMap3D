@@ -3,10 +3,10 @@ package de.schmiereck.hexMap3D.view;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import de.schmiereck.hexMap3D.service.Cell;
-import de.schmiereck.hexMap3D.service.RealityCell;
-import de.schmiereck.hexMap3D.service.Universe;
-import de.schmiereck.hexMap3D.service.WaveRotationService;
+import de.schmiereck.hexMap3D.service.reality.Reality;
+import de.schmiereck.hexMap3D.service.universe.Cell;
+import de.schmiereck.hexMap3D.service.reality.RealityCell;
+import de.schmiereck.hexMap3D.service.universe.Universe;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 
@@ -20,14 +20,14 @@ public class GridViewNodeSpace {
     private final int zSizeGrid;
     private final GridNode[][][] grid;
 
-    public GridViewNodeSpace(final Universe universe, final int xSizeGrid, final int ySizeGrid, final int zSizeGrid) {
+    public GridViewNodeSpace(final Reality reality, final int xSizeGrid, final int ySizeGrid, final int zSizeGrid) {
         this.xSizeGrid = xSizeGrid;
         this.ySizeGrid = ySizeGrid;
         this.zSizeGrid = zSizeGrid;
         this.grid = new GridNode[xSizeGrid][ySizeGrid][zSizeGrid];
 
         forEachNode((final int xPos, final int yPos, final int zPos) -> {
-            final RealityCell realityCell = universe.getRealityCell(xPos, yPos, zPos);
+            final RealityCell realityCell = reality.getRealityCell(xPos, yPos, zPos);
             this.grid[zPos][yPos][xPos] = new GridNode(realityCell);
         });
     }

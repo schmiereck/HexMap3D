@@ -1,4 +1,4 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.utils;
 
 public class ProbabilityCalc {
     // Init:

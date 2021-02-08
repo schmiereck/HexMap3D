@@ -1,10 +1,5 @@
 package de.schmiereck.hexMap3D.utils;
 
-import de.schmiereck.hexMap3D.service.Cell;
-import de.schmiereck.hexMap3D.service.Event;
-import de.schmiereck.hexMap3D.service.Wave;
-import de.schmiereck.hexMap3D.service.WaveMoveCalc;
-
 public class Bruch {
     /**
      * Denominator of {@link #waveProbDenominator}/{@link #waveProbDivisior} representation of the probability.

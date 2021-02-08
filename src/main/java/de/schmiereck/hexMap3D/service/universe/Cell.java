@@ -1,6 +1,5 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
 
-import java.util.HashMap;
 import java.util.stream.Stream;
 
 public class Cell {

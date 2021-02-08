@@ -1,33 +1,34 @@
 package de.schmiereck.hexMap3D.service;
 
-import de.schmiereck.hexMap3D.GridUtils;
-
-import static de.schmiereck.hexMap3D.GridUtils.calcXDirOffset;
-import static de.schmiereck.hexMap3D.GridUtils.calcYDirOffset;
-import static de.schmiereck.hexMap3D.GridUtils.calcZDirOffset;
+import de.schmiereck.hexMap3D.service.reality.Reality;
+import de.schmiereck.hexMap3D.service.reality.RealityService;
+import de.schmiereck.hexMap3D.service.universe.*;
 
 public class Engine {
     private final Universe universe;
+    private final Reality reality;
     private long runNr = 0;
 
-    public Engine(final Universe universe) {
+    public Engine(final Universe universe, final Reality reality) {
         this.universe = universe;
+        this.reality = reality;
     }
 
     public void runInit() {
-        this.universe.calcNext();
-        this.universe.calcReality();
+        UniverseService.calcNext(this.universe);
+        RealityService.calcReality(this.universe, this.reality);
     }
 
     public void run() {
         final long startTime = System.currentTimeMillis();
 
-        this.universe.clearReality();
+        RealityService.clearReality(this.reality);
         CellStateService.resetCacheHitCounts();
         WaveMoveCalcService.resetCacheHitCounts();
         WaveMoveDirService.resetCacheHitCounts();
 
-        this.universe.forEachCell((final int xPos, final int yPos, final int zPos) -> {
+        UniverseService.forEachCell(this.universe.getXUniverseSize(), this.universe.getYUniverseSize(), this.universe.getZUniverseSize(),
+                (final int xPos, final int yPos, final int zPos) -> {
             final Cell targetCell = this.universe.getCell(xPos, yPos, zPos);
             // Stay (Barrier):
             //{
@@ -43,13 +44,13 @@ public class Engine {
             targetCell.setCellState(cellState);
         });
         WaveMoveCalcService.calcAllDirMoved();
-        this.universe.calcNext();
-        this.universe.calcReality();
+        UniverseService.calcNext(this.universe);
+        RealityService.calcReality(this.universe, this.reality);
         this.runNr++;
 
         final long endTime = System.currentTimeMillis();
-        this.universe.setStatisticCalcRunTime(endTime - startTime);
-        this.universe.setStatisticCalcStepCount(this.runNr);
+        RealityService.setStatisticCalcRunTime(this.reality, endTime - startTime);
+        RealityService.setStatisticCalcStepCount(this.reality, this.runNr);
     }
 
     private boolean checkIsBarrier(final Cell cell) {

@@ -1,14 +1,6 @@
-package de.schmiereck.hexMap3D.service;
+package de.schmiereck.hexMap3D.service.universe;
 
-import de.schmiereck.hexMap3D.GridUtils;
 import de.schmiereck.hexMap3D.MapMathUtils;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static de.schmiereck.hexMap3D.MapLogicUtils.calcBreakLoopWrap;
-import static de.schmiereck.hexMap3D.MapLogicUtils.calcBreakLoopWrap2;
-import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 
 public class WaveRotationService {
 
@@ -36,11 +28,11 @@ public class WaveRotationService {
               */
             };
 
-    protected static Wave createMoveRotatedWave(final Wave sourceWave,
-                                                final int xRotPercent,
-                                                final int yRotPercent,
-                                                final int zRotPercent,
-                                                final int newWaveProb) {
+    public static Wave createMoveRotatedWave(final Wave sourceWave,
+                                             final int xRotPercent,
+                                             final int yRotPercent,
+                                             final int zRotPercent,
+                                             final int newWaveProb) {
         final Wave newWave;
 
         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
