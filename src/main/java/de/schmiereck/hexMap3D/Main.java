@@ -1,6 +1,7 @@
 package de.schmiereck.hexMap3D;
 
 import de.schmiereck.hexMap3D.service.*;
+import de.schmiereck.hexMap3D.service.reality.Detector;
 import de.schmiereck.hexMap3D.service.reality.Reality;
 import de.schmiereck.hexMap3D.service.universe.*;
 import de.schmiereck.hexMap3D.view.GridViewApplication;
@@ -94,6 +95,13 @@ public class Main {
                 gridViewApplication.start(primaryStage);
             } catch (Exception e) {
                 throw new RuntimeException("JavaFX startup.", e);
+            }
+
+            {
+                final Detector detector = new Detector(10, 0, 0, 1, ySizeGrid, zSizeGrid);
+
+                reality.addDetector(detector);
+                gridViewApplication.addDetector(detector);
             }
         });
          //-----------------------------------------------------------------------------

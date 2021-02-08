@@ -15,8 +15,8 @@ public class RealityService {
             final RealityCell realityCell = reality.getRealityCell(xPos, yPos, zPos);
             final Cell cell = universe.getCell(xPos, yPos, zPos);
 
-            final int particleCount = (int) cell.getWaveListStream().filter(wave -> wave.getEvent().getEventType() == 1).count();
-            realityCell.addWaveCount(particleCount);
+            final int waveCount = (int) cell.getWaveListStream().filter(wave -> wave.getEvent().getEventType() == 1).count();
+            realityCell.addWaveCount(waveCount);
 
             final int barrierCount = (int) cell.getWaveListStream().filter(wave -> wave.getEvent().getEventType() == 0).count();
             if (barrierCount > 0) {
@@ -65,6 +65,19 @@ public class RealityService {
                     });
                 }
             }
+            reality.getDetectorStream().forEach((detector) -> {
+                if ((xPos >= detector.getXPos()) && (yPos >= detector.getYPos()) && (zPos >= detector.getZPos()) &&
+                    (xPos <= detector.getXPos() + detector.getXSize()) && (yPos <= detector.getYPos() + detector.getYSize()) && (zPos <= detector.getZPos() + detector.getZSize())) {
+                    final DetectorCell detectorCell;
+                    if (waveCount > 0) {
+                        detectorCell = new DetectorCell();
+                    } else {
+                        detectorCell = null;
+                    }
+                    detector.setDetectorCell(xPos - detector.getXPos(), yPos - detector.getYPos(), zPos - detector.getZPos(),
+                            detectorCell);
+                }
+            });
         });
     }
 

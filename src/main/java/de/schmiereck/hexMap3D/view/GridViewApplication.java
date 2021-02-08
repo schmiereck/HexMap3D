@@ -1,5 +1,6 @@
 package de.schmiereck.hexMap3D.view;
 
+import de.schmiereck.hexMap3D.service.reality.Detector;
 import de.schmiereck.hexMap3D.service.reality.Reality;
 import de.schmiereck.hexMap3D.service.reality.RealityService;
 import de.schmiereck.hexMap3D.service.universe.*;
@@ -15,6 +16,9 @@ import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -26,6 +30,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
+import java.util.Optional;
+
 public class GridViewApplication extends Application {
     private RunStepCallback runStepCallback;
     private Universe universe;
@@ -36,6 +42,7 @@ public class GridViewApplication extends Application {
     private GridViewNodeSpace nodeSpace;
     private GridViewModel gridViewModel;
     private boolean initFinished = false;
+    private GridViewController gridViewController = null;
 
     @FunctionalInterface
     public interface RunStepCallback {
@@ -97,7 +104,7 @@ public class GridViewApplication extends Application {
         //final Parent sampleGui = FXMLLoader.load(getClass().getResource("gridControll.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gridControll.fxml"));
         final Parent gridControllGui = loader.load();
-        final GridViewController gridViewController = loader.<GridViewController>getController();
+        this.gridViewController = loader.<GridViewController>getController();
         gridViewController.init(this.runStepCallback, this, this.gridViewModel);
         //rootGroup.getChildren().add(sampleGui);
 
@@ -152,7 +159,7 @@ public class GridViewApplication extends Application {
         gridScene.setCamera(camera);
 
         final double w2 = 160;
-        final double h2 = 300;
+        final double h2 = 500;
         final SubScene guiScene = new SubScene(gridControllGui, w2, h2);
 
         final double w3 = 10.0D;
@@ -235,6 +242,11 @@ public class GridViewApplication extends Application {
         this.gridViewModel.setStatisticCalcRunTime(String.format("%.2f s", RealityService.getStatisticCalcRunTime(this.reality) / 1000.0F));
         this.gridViewModel.setStatisticCalcStepCount(Long.toString(RealityService.getStatisticCalcStepCount(this.reality)));
 
+        final Optional<Detector> optionalDetector = this.reality.getDetectorStream().findFirst();
+        if (optionalDetector.isPresent()) {
+            this.gridViewController.updateDetector(optionalDetector.get());
+        }
+
         System.out.println("Cache: " +
                 "CS:" + CellStateService.getCellStateCacheSize() + "(" + CellStateService.getCellStateCacheHitCount() + "), " +
                         "next:" + CellStateService.getNextCellStateCacheSize() + "(" + CellStateService.getNextCellStateCacheHitCount() + ")" +
@@ -243,5 +255,9 @@ public class GridViewApplication extends Application {
                 " | " +
                 "MD:" + WaveMoveDirService.getWaveMoveDirCacheMapSize() + "(" + WaveMoveDirService.getWaveMoveDirCacheHitCount() + "), " +
                         "rotate:" + WaveMoveDirService.getRotateMoveDirCacheMapSize() + "(" + WaveMoveDirService.getRotateMoveDirCacheHitCount() + ")");
+    }
+
+    public void addDetector(final Detector detector) {
+        this.gridViewController.addDetector(detector);
     }
 }

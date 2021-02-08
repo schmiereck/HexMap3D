@@ -2,6 +2,10 @@ package de.schmiereck.hexMap3D.service.reality;
 
 import de.schmiereck.hexMap3D.service.universe.UniverseService;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
 
 public class Reality {
@@ -13,6 +17,7 @@ public class Reality {
     private int statisticWaveCount = 0;
     private long statisticCalcStepCount = 0;
     private long statisticCalcRunTime = 0;
+    private final List<Detector> detectorList = new ArrayList<>();
 
     public enum ShowWaveMoveCalc {
         ShowNoWaveMoveDir,
@@ -97,4 +102,11 @@ public class Reality {
         this.showGrid = showGrid;
     }
 
+    public void addDetector(final Detector detector) {
+        this.detectorList.add(detector);
+    }
+
+    public Stream<Detector> getDetectorStream() {
+        return this.detectorList.stream();
+    }
 }

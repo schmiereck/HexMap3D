@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ToggleGroup?>
 <GridPane
         fx:controller="de.schmiereck.hexMap3D.view.GridViewController"
+        fx:id="gridPane"
         xmlns:fx="http://javafx.com/fxml"
         alignment="center"
         hgap="5"
@@ -120,6 +121,10 @@
           GridPane.columnIndex="2" GridPane.rowIndex="12" GridPane.columnSpan="1"
   />
   <!--==================================================================================================================
-
+    Detector:
   -->
+  <Label
+          text="Detector:"
+          GridPane.columnIndex="1" GridPane.rowIndex="13" GridPane.columnSpan="1"
+  />
 </GridPane>
