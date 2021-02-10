@@ -10,6 +10,9 @@ public class RealityService {
 
     public static void calcReality(final Universe universe, final Reality reality) {
         reality.setStatisticWaveCount(0);
+        reality.getDetectorStream().forEach((detector) -> {
+            detector.setMaxWaveProbSum(0);
+                });
         UniverseService.forEachCell(reality.getXUniverseSize(), reality.getYUniverseSize(), reality.getZUniverseSize(),
                 (final int xPos, final int yPos, final int zPos) -> {
             final RealityCell realityCell = reality.getRealityCell(xPos, yPos, zPos);
@@ -69,8 +72,11 @@ public class RealityService {
                 if ((xPos >= detector.getXPos()) && (yPos >= detector.getYPos()) && (zPos >= detector.getZPos()) &&
                     (xPos <= detector.getXPos() + detector.getXSize()) && (yPos <= detector.getYPos() + detector.getYSize()) && (zPos <= detector.getZPos() + detector.getZSize())) {
                     final DetectorCell detectorCell;
-                    if (waveCount > 0) {
-                        detectorCell = new DetectorCell();
+                    if (waveProbSum > 0) {
+                        detectorCell = new DetectorCell(waveProbSum);
+                        if (waveProbSum > detector.getMaxWaveProbSum()) {
+                            detector.setMaxWaveProbSum(waveProbSum);
+                        }
                     } else {
                         detectorCell = null;
                     }

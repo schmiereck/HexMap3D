@@ -9,6 +9,7 @@ public class Detector {
     private final int xDetectorSize;
     private final int yDetectorSize;
     private final int zSize;
+    private int maxWaveProbSum;
     private final DetectorCell[][] detectorCellArr;
     /**
      * z = 1:
@@ -101,5 +102,13 @@ public class Detector {
 
     public DetectorCell getDetectorCell(final int xPos, final int yPos) {
         return this.detectorCellArr[xPos][yPos];
+    }
+
+    public int getMaxWaveProbSum() {
+        return this.maxWaveProbSum;
+    }
+
+    public void setMaxWaveProbSum(final int maxWaveProbSum) {
+        this.maxWaveProbSum = maxWaveProbSum;
     }
 }

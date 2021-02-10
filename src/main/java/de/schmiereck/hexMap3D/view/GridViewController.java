@@ -12,6 +12,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
+import static de.schmiereck.hexMap3D.Main.INITIAL_WAVE_PROB;
+
 public class GridViewController {
     private GridViewApplication gridViewApplication;
     private GridViewApplication.RunStepCallback runStepCallback;
@@ -108,6 +110,7 @@ public class GridViewController {
         this.gridPane.add(ab, 1, 14, 2, 1);
     }
 
+    private boolean useMaxWaveProbSum = true;
     public void updateDetector(final Detector detector) {
 
         //Reading color from the loaded image
@@ -121,7 +124,13 @@ public class GridViewController {
                 final DetectorCell detectorCell = detector.getDetectorCell(x, y);
                 final Color color;
                 if (detectorCell != null) {
-                    color = Color.WHITE;
+                    final double cc;
+                    if (this.useMaxWaveProbSum) {
+                        cc = detectorCell.getWaveProbSum() / ((double)detector.getMaxWaveProbSum());
+                    } else {
+                        cc = detectorCell.getWaveProbSum() / ((double)INITIAL_WAVE_PROB);
+                    }
+                    color = Color.color(cc, cc, cc);
                 } else {
                     color = Color.BLACK;
                 }
