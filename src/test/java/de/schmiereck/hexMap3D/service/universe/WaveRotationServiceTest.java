@@ -307,7 +307,9 @@ class WaveRotationServiceTest {
         final int yRotPercent = 0;
         final int zRotPercent = 0;
 
-        WaveMoveCalcService.useWaveMoveCalcCache = true;
+        BasicService.setUseCache(true);
+        WaveMoveDirService.setUseWaveMoveDirCache(true);
+        WaveMoveCalcService.setUseWaveMoveCalcCache(true);
 
         // Act
         final Wave newWave1 = WaveRotationService.createMoveRotatedWave(sourceWave, xRotPercent, yRotPercent, zRotPercent, 2);

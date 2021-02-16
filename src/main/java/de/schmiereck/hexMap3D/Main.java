@@ -23,10 +23,12 @@ public class Main {
     public static void main(String[] args) {
         //-----------------------------------------------------------------------------
         UniverseService.useParallel = true;
+        BasicService.setUseCache(true);
+        WaveMoveDirService.setUseWaveMoveDirCache(true);
+        WaveMoveDirService.setUseRotateMoveDirCache(true);
+        WaveMoveCalcService.setUseWaveMoveCalcCache(true);
         CellStateService.useCellStateCache = false;
-        WaveMoveCalcService.useWaveMoveCalcCache = true;
-        WaveMoveDirService.useRotateMoveDirCache = true;
-        WaveMoveDirService.useWaveMoveDirCache = true;
+        CellStateService.useRotationDivider = true;
 
         //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);
@@ -62,10 +64,15 @@ public class Main {
 
             //waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB3_4);
             //waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB1_4);
-            //x=0; y=8; z=8;
+            //x=0; y=8; z=zSizeGrid/2;
 
+            waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB7_8);
+            waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB1_8);
+            x=0; y=ySizeGrid/3; z=zSizeGrid/2;
+            /*
             waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
             x=0; y=ySizeGrid/2; z=zSizeGrid/2;
+            */
 
             final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
             WaveMoveDirService.adjustMaxProb(wave.getWaveMoveDir());

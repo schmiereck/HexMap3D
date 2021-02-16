@@ -15,7 +15,10 @@ public class WaveMoveCalcService {
     private static final Map<WaveMoveDir, WaveMoveCalc> waveMoveCalcCacheMap = new HashMap<>();
     private static int waveMoveCalcCacheHitCount = 0;
 
-    public static boolean useWaveMoveCalcCache = true;
+    /**
+     * {@link WaveMoveDirService#getUseWaveMoveDirCache()}
+     */
+    private static boolean useWaveMoveCalcCache = true;
 
     @FunctionalInterface
     private interface CreateWaveMoveCalcInterface {
@@ -184,6 +187,22 @@ public class WaveMoveCalcService {
             //waveMoveCalc.setDirCalcPos(nextDirCalcPos);
             WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
         });
+    }
+
+    public static void setUseWaveMoveCalcCache(final boolean useWaveMoveCalcCache) {
+        if (useWaveMoveCalcCache == true) {
+            if (BasicService.getUseCache() == false) {
+                throw new RuntimeException("BasicService.getUseCache() == false");
+            }
+            if (WaveMoveDirService.getUseWaveMoveDirCache() == false) {
+                throw new RuntimeException("WaveMoveDirService.getUseWaveMoveDirCache() == false");
+            }
+        }
+        WaveMoveCalcService.useWaveMoveCalcCache = useWaveMoveCalcCache;
+    }
+
+    public static boolean getUseWaveMoveCalcCache() {
+        return WaveMoveCalcService.useWaveMoveCalcCache;
     }
 
     public static void resetCacheHitCounts() {

@@ -95,8 +95,9 @@ public class WaveMoveCalc {
     @Override
     public int hashCode() {
         if (hashCode == 0) {
-            //hashCode = Objects.hash(this.dirCalcPos, this.waveMoveDir, Arrays.hashCode(this.dirCalcProbSumArr));
-            hashCode = Objects.hash(this.waveMoveDir);
+            hashCode = Objects.hash(this.dirCalcPos, this.waveMoveDir, Arrays.hashCode(this.dirCalcProbSumArr));
+            //hashCode = Objects.hash(this.dirCalcPos, this.waveMoveDir);
+            //hashCode = Objects.hash(this.waveMoveDir);
         }
         return hashCode;
     }
@@ -107,8 +108,8 @@ public class WaveMoveCalc {
         if (obj == null) return false;
         if (this.getClass() != obj.getClass()) return false;
         final WaveMoveCalc entry = (WaveMoveCalc) obj;
-        return //(this.dirCalcPos == entry.dirCalcPos) &&
-                //Arrays.equals(this.dirCalcProbSumArr, entry.dirCalcProbSumArr) &&
+        return (this.dirCalcPos == entry.dirCalcPos) &&
+                Arrays.equals(this.dirCalcProbSumArr, entry.dirCalcProbSumArr) &&
                 this.waveMoveDir.equals(entry.waveMoveDir);
     }
 }

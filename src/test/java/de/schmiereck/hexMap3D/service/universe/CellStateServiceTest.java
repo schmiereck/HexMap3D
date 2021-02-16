@@ -67,7 +67,12 @@ public class CellStateServiceTest {
             inCellStateArr[calcDir.dir()] = cellState;
         }
 
+        BasicService.setUseCache(false);
+        WaveMoveDirService.setUseWaveMoveDirCache(false);
+        WaveMoveDirService.setUseRotateMoveDirCache(false);
+        WaveMoveCalcService.setUseWaveMoveCalcCache(false);
         CellStateService.useCellStateCache = false;
+        CellStateService.useRotationDivider = true;
 
         // Act
         final CellState newCellState = CellStateService.calcNewStateForTargetCell(inCellStateArr);
@@ -102,8 +107,8 @@ public class CellStateServiceTest {
                             return aWave.getWaveMoveDir().hashCode() - bWave.getWaveMoveDir().hashCode();
                         }).
                         collect(Collectors.toList());
-        //for (int pos = 0; pos < expectedProps.length; pos++) {
-        for (int pos = 0; pos < waveList.size(); pos++) {
+        for (int pos = 0; pos < expectedProps.length; pos++) {
+        //for (int pos = 0; pos < waveList.size(); pos++) {
            assertWaveProps(waveList.get(pos), expectedProps[pos], "pos:" + pos + " - ");
         }
     }

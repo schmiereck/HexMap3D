@@ -10,8 +10,10 @@ import java.util.Objects;
 public class WaveMoveDir {
     public static final int MAX_DIR_PROB = 100;
     public static final int MAX_DIR_PROB1_2 = MAX_DIR_PROB / 2;
-    public static final int MAX_DIR_PROB1_4 = MAX_DIR_PROB / 4;
+    public static final int MAX_DIR_PROB1_4 = MAX_DIR_PROB1_2 / 2;
+    public static final int MAX_DIR_PROB1_8 = MAX_DIR_PROB1_4 / 2;
     public static final int MAX_DIR_PROB3_4 = MAX_DIR_PROB - MAX_DIR_PROB1_4;
+    public static final int MAX_DIR_PROB7_8 = MAX_DIR_PROB - MAX_DIR_PROB1_8;
 
     /**
      * Possible Directions.

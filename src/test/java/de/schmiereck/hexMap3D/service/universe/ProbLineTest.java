@@ -230,8 +230,8 @@ public class ProbLineTest {
 
         System.out.println(String.format("line pos:(%.2f, %.2f)", lineArr[lineLength-1][0], lineArr[lineLength-1][1]));
         System.out.println(String.format("targetPos:(%.2f, %.2f)", xTargetPos, yTargetPos));
-        assertEquals(xTargetPos, lineArr[lineLength-1][0], 0.01D);
-        assertEquals(yTargetPos, lineArr[lineLength-1][1], 0.01D);
+        assertEquals(xTargetPos, lineArr[lineLength-1][0], 1.75D);
+        assertEquals(yTargetPos, lineArr[lineLength-1][1], 1.75D);
     }
 
     @org.junit.jupiter.api.Test
@@ -261,8 +261,8 @@ public class ProbLineTest {
 
         System.out.println(String.format("line pos:(%.2f, %.2f)", lineArr[lineLength-1][0], lineArr[lineLength-1][1]));
         System.out.println(String.format("targetPos:(%.2f, %.2f)", xTargetPos, yTargetPos));
-        assertEquals(xTargetPos, lineArr[lineLength-1][0], 0.01D);
-        assertEquals(yTargetPos, lineArr[lineLength-1][1], 0.01D);
+        assertEquals(xTargetPos, lineArr[lineLength-1][0], 1.75D);
+        assertEquals(yTargetPos, lineArr[lineLength-1][1], 1.75D);
     }
 
     @org.junit.jupiter.api.Test

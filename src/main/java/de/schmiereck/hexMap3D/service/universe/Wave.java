@@ -29,21 +29,45 @@ import java.util.Objects;
  *
  * Solution 2:
  * -----------
- * Wird eine Welle abgespalten wird ihr Wahrscheinlichkeitzähler auf das doppelte der Ausgangswelle gesetzt.
- * Wird eine Welle abgespalten wird ihr Wahrscheinlichkeitzähler um einen höher der Ausgangswelle gesetzt.
+ * Wird eine Welle abgespalten wird ihr Wahrscheinlichswert waveProb
+ *  wenn > 1: aufgeteilt.
+ *  wenn = 1: bleibt für beide Wellen.
+ * Verschmelzen zwei Wellen ändert sich für waveProbEventSum nichts.
+ * Wird eine Welle glöscht, wird waveProbEventSum um waveProb reduziert.
  *              wave1
- *  localProp:  1
- *  f():        100
+ *  waveProb:   1
+ *  waveProbEventSum: 1
+ *  f():        1/1
  *
  *              wave1   wave1.1
- *  localProp:  1       2
- *  f():        50     25
+ *  waveProb:   1       1
+ *  waveProbEventSum: 2
+ *  f():        1/2     1/2
  *
  *              wave1   wave1.1   wave1.1.1  wave1.2
- *  localProp:  1       2         4          2
- *  f():        25      12        6,..       12
+ *  waveProb:   1       1         1          2
+ *  waveProbEventSum: 5
+ *  f():        1/5     1/5       1/5        2/5
  *
- *  f() = (100 / localProp) / count
+ *              1
+ *  f():        1/1
+ *              1       1
+ *  f():        1/2     1/2
+ *              1       1       1
+ *  f():        1/3     1/3     1/3
+ *              1       2
+ *  f():        1/3     2/3
+ *              1       1       1
+ *  f():        1/3     1/3     1/3
+ *  ???:
+ *              1       3
+ *  f():        1/4     3/4
+ *              0,25    0,75
+ *              1       3       3
+ *  f():        1/7     3/7     3/7
+ *              0,14    0,42    0,42
+ *
+ *  f() = (waveProb / SumOfAllWaveProbs-for-Event)
  */
 public class Wave  implements Comparable<Wave> {
     private final Event event;
@@ -54,6 +78,8 @@ public class Wave  implements Comparable<Wave> {
     private int rotationCalcPos;
     /**
      * If two waves combines, their probabilities are added.
+     * Calculation of the Probalility:
+     * p = waveProb / SumOfAllWaveProbs-for-Event
      */
     private int waveProb;
 
@@ -154,7 +180,7 @@ public class Wave  implements Comparable<Wave> {
         if (this.getClass() != obj.getClass()) return false;
         final Wave entry = (Wave) obj;
         return (this.waveProb == entry.waveProb) &&
-               (this.event.equals(entry.event)) &&
-               (this.waveMoveCalc.equals(entry.waveMoveCalc));
+                Objects.equals(this.event, entry.event) &&
+                Objects.equals(this.waveMoveCalc, entry.waveMoveCalc);
     }
 }

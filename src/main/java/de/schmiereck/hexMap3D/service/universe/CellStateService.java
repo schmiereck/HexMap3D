@@ -55,16 +55,20 @@ public class CellStateService {
         final CellState cellState;
         if (useCellStateCache) {
             if (initialCellStateCache == null) {
-                initialCellStateCache = new CellState();
+                initialCellStateCache = createCellState();
                 cellStateCacheSet.put(initialCellStateCache, initialCellStateCache);
                 cellState = initialCellStateCache;
             } else {
                 cellState = initialCellStateCache;
             }
         } else {
-            cellState = new CellState();
+            cellState = createCellState();
         }
         return cellState;
+    }
+
+    private static CellState createCellState() {
+        return new CellState();
     }
 
     public static CellState calcNewStateForTargetCell(final Universe universe, int xPos, int yPos, int zPos, final Cell targetCell) {
@@ -105,16 +109,16 @@ public class CellStateService {
         return cellState;
     }
 
-    public static boolean useRotationDivider = true;
+    public static boolean useRotationDivider = false;
 
     public static CellState calcNewStateForTargetCell(final CellState[] inCellStateArr) {
         final CellState cellState = new CellState();
         for (final Cell.Dir calcDir : Cell.Dir.values()) {
             final CellState sourceCellState = inCellStateArr[calcDir.dir()];
             final Cell.Dir oppositeCalcDir = GridUtils.calcOppositeDir(calcDir);
-            sourceCellState.getWaveListStream().
+            sourceCellState.getWaveListStream()
                     //.filter(sourceWave -> checkSourceWaveHasOutput(sourceWave, oppositeCalcDir))
-                            forEach((sourceWave) -> {
+                    .forEach((sourceWave) -> {
                         final Event sourceEvent = sourceWave.getEvent();
                         final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
                         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();

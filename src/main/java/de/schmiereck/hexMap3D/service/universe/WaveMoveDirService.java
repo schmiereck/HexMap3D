@@ -14,8 +14,19 @@ import static de.schmiereck.hexMap3D.service.universe.WaveMoveDir.MAX_DIR_PROB;
 
 public class WaveMoveDirService {
 
-    public static boolean useRotateMoveDirCache = true;
-    public static boolean useWaveMoveDirCache = true;
+    /**
+     * {@link WaveMoveDirService#useWaveMoveDirCache}
+     */
+    private static boolean useRotateMoveDirCache = true;
+
+    /**
+     * {@link BasicService#getUseCache()}
+     */
+    private static boolean useWaveMoveDirCache = true;
+
+    public static boolean getUseRotateMoveDirCache() {
+        return WaveMoveDirService.useRotateMoveDirCache;
+    }
 
     @FunctionalInterface
     private interface CreateWaveMoveDirInterface {
@@ -281,6 +292,31 @@ public class WaveMoveDirService {
     public static void resetCacheHitCounts() {
         waveMoveDirCacheHitCount = 0;
         rotateMoveDirCacheHitCount = 0;
+    }
+
+    public static void setUseWaveMoveDirCache(final boolean useWaveMoveDirCache) {
+        if (useWaveMoveDirCache == true) {
+            if (BasicService.getUseCache() == false) {
+                throw new RuntimeException("BasicService.getUseCache() == false");
+            }
+        }
+        WaveMoveDirService.useWaveMoveDirCache = useWaveMoveDirCache;
+    }
+
+    public static boolean getUseWaveMoveDirCache() {
+        return WaveMoveDirService.useWaveMoveDirCache;
+    }
+
+    public static void setUseRotateMoveDirCache(final boolean useRotateMoveDirCache) {
+        if (useRotateMoveDirCache == true) {
+            if (BasicService.getUseCache() == false) {
+                throw new RuntimeException("BasicService.getUseCache() == false");
+            }
+            if (WaveMoveDirService.getUseWaveMoveDirCache() == false) {
+                throw new RuntimeException("WaveMoveDirService.getUseWaveMoveDirCache() == false");
+            }
+        }
+        WaveMoveDirService.useRotateMoveDirCache = useRotateMoveDirCache;
     }
 
     public static int getWaveMoveDirCacheMapSize() {
