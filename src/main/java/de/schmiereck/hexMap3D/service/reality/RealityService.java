@@ -1,6 +1,8 @@
 package de.schmiereck.hexMap3D.service.reality;
 
 import de.schmiereck.hexMap3D.service.universe.Cell;
+import de.schmiereck.hexMap3D.service.universe.Event;
+import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 import de.schmiereck.hexMap3D.service.universe.Universe;
 import de.schmiereck.hexMap3D.service.universe.UniverseService;
 
@@ -18,10 +20,13 @@ public class RealityService {
             final RealityCell realityCell = reality.getRealityCell(xPos, yPos, zPos);
             final Cell cell = universe.getCell(xPos, yPos, zPos);
 
-            final int waveCount = (int) cell.getWaveListStream().filter(wave -> wave.getEvent().getEventType() == 1).count();
+            final int waveCount = (int) cell.getWaveListStream().filter(wave ->
+                    (wave.getEvent().getEventType() == EventType.ClassicParticle)// ||
+                    //(wave.getEvent().getEventType() == EventType.EasyWave)
+            ).count();
             realityCell.addWaveCount(waveCount);
 
-            final int barrierCount = (int) cell.getWaveListStream().filter(wave -> wave.getEvent().getEventType() == 0).count();
+            final int barrierCount = (int) cell.getWaveListStream().filter(wave -> wave.getEvent().getEventType() == EventType.Barrier).count();
             if (barrierCount > 0) {
                 realityCell.setBarrier(true);
             }

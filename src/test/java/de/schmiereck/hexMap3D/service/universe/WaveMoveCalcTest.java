@@ -1,5 +1,6 @@
 package de.schmiereck.hexMap3D.service.universe;
 
+import de.schmiereck.hexMap3D.service.Engine;
 import de.schmiereck.hexMap3D.service.universe.Cell;
 import de.schmiereck.hexMap3D.service.universe.WaveMoveCalc;
 import de.schmiereck.hexMap3D.service.universe.WaveMoveCalcService;
@@ -18,6 +19,7 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(LG_N, 25);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
+        Engine.useClassicParticle = true;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
         WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
         WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
@@ -41,6 +43,7 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(LG_N, 30);
         waveMoveDir.setDirMoveProb(DB_P, 30);
         int dirCalcPos = 0;
+        Engine.useClassicParticle = true;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
         WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
         WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
@@ -61,6 +64,7 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(OR_P, 40);
         waveMoveDir.setDirMoveProb(DB_P, 30);
         int dirCalcPos = 0;
+        Engine.useClassicParticle = true;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
         WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
         WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
@@ -80,6 +84,7 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(OR_P, 87);
         waveMoveDir.setDirMoveProb(LG_N, 13);
         int dirCalcPos = 0;
+        Engine.useClassicParticle = true;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
         WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
         WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
@@ -106,6 +111,7 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(LG_N, 21);
         //int dirCalcPos = OR_N.dir(); // OR_N
         int dirCalcPos = OR_N.dir(); // OR_N
+        Engine.useClassicParticle = true;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
         WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
         WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
@@ -126,6 +132,7 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(LG_N, 1);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
+        Engine.useClassicParticle = true;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
         WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
         WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
@@ -173,6 +180,7 @@ public class WaveMoveCalcTest {
         waveMoveDir.setDirMoveProb(LG_N, 1);
         final int stat[] = new int[12];
         int dirCalcPos = 0;
+        Engine.useClassicParticle = true;
         WaveMoveCalc waveMoveCalc = WaveMoveCalcService.createNewInitalWaveMoveCalc(dirCalcPos, waveMoveDir);
         WaveMoveCalcService.adjustMaxProb(waveMoveCalc);
         WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);

@@ -1,6 +1,8 @@
 package de.schmiereck.hexMap3D.service.universe;
 
 import de.schmiereck.hexMap3D.GridUtils;
+import de.schmiereck.hexMap3D.service.Engine;
+import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -112,6 +114,10 @@ public class CellStateService {
     public static boolean useRotationDivider = false;
 
     public static CellState calcNewStateForTargetCell(final CellState[] inCellStateArr) {
+        return calcNewStateForTargetCellClassicParticle(inCellStateArr);
+    }
+
+    public static CellState calcNewStateForTargetCellClassicParticle(final CellState[] inCellStateArr) {
         final CellState cellState = new CellState();
         for (final Cell.Dir calcDir : Cell.Dir.values()) {
             final CellState sourceCellState = inCellStateArr[calcDir.dir()];
@@ -123,7 +129,7 @@ public class CellStateService {
                         final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
                         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
                         // Source-Cell-Wave is a Particle and is moving in this direction?
-                        if ((sourceEvent.getEventType() == 1) &&
+                        if ((Engine.useClassicParticle) &&
                                 checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir))
                         {
                             //!!!sourceWaveMoveCalc.calcActualDirMoved();
@@ -164,6 +170,12 @@ public class CellStateService {
                                         //newTargetWave.calcActualWaveMoveCalcDir();
                                         addWave(sourceEvent, cellState, newTargetWave);
                                     }
+                            }
+                        } else {
+                            if (//(sourceEvent.getEventType() == EventType.EasyWave) &&
+                                    checkSourceWaveHasOutput(sourceWaveMoveCalc, oppositeCalcDir))
+                            {
+
                             }
                         }
                     });

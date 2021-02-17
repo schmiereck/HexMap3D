@@ -6,11 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Event {
+
+    public enum EventType {
+        Barrier,
+        ClassicParticle,
+        //EasyWave
+    }
+
     private final List<Wave> waveList[] = new List[2];
     private final Engine engine;
-    private final int eventType;
+    private final EventType eventType;
 
-    public Event(final Engine engine, final int eventType) {
+    public Event(final Engine engine, final EventType eventType) {
         this.engine = engine;
         this.eventType = eventType;
         this.waveList[0] = new ArrayList<>();
@@ -25,7 +32,7 @@ public class Event {
         return this.waveList[this.engine.getNextCalcPos()];
     }
 
-    public int getEventType() {
+    public EventType getEventType() {
         return this.eventType;
     }
 

@@ -1,7 +1,6 @@
 package de.schmiereck.hexMap3D.service.universe;
 
-import de.schmiereck.hexMap3D.service.universe.WaveMoveCalcService;
-import de.schmiereck.hexMap3D.service.universe.WaveMoveDirService;
+import de.schmiereck.hexMap3D.service.Engine;
 
 import java.util.Arrays;
 
@@ -314,13 +313,14 @@ public class ProbLineTest {
         double[][] lineArr = new double[lineLength][2];
         int[] moveDirProbSumArr = new int[moveDirProbArr.length];
         int dirCalcPos = -1;
+        Engine.useClassicParticle = true;
 
         // de.schmiereck.hexMap3D.service.universe.WaveMoveDirService.adjustMaxProb
         int maxProb = WaveMoveDirService.calcMaxProb(moveDirProbArr);
 
         for (int testPos = 0; testPos < lineLength; testPos++) {
             // de.schmiereck.hexMap3D.service.universe.WaveMoveCalcService.calcActualWaveMoveCalcDir
-            dirCalcPos = WaveMoveCalcService.calcWaveMoveCalcDir(moveDirProbArr, maxProb, moveDirProbSumArr, dirCalcPos);
+            dirCalcPos = WaveMoveCalcService.calcWaveMoveDirCalcPos(moveDirProbArr, maxProb, moveDirProbSumArr, dirCalcPos);
             /*
             int startDirCalcCount = 0;
             do {

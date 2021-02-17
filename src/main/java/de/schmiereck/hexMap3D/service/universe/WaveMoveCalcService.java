@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static de.schmiereck.hexMap3D.MapMathUtils.wrap;
+import static de.schmiereck.hexMap3D.service.Engine.useClassicParticle;
 
 /**
  * Cache für WaveMoveCalc aufbauen und zentral die Berechnung für den nächsten Schritt dort machen.
@@ -30,25 +31,29 @@ public class WaveMoveCalcService {
         final int[] moveDirProbArr = waveMoveCalc.getMoveDirProbArr();
         final int[] dirCalcProbSumArr = waveMoveCalc.getDirCalcProbSumArr();
         final int startDirCalcPos = waveMoveCalc.getDirCalcPos();
-        final int dirCalcPos = calcWaveMoveCalcDir(moveDirProbArr, maxProb, dirCalcProbSumArr, startDirCalcPos);
+        final int dirCalcPos = calcWaveMoveDirCalcPos(moveDirProbArr, maxProb, dirCalcProbSumArr, startDirCalcPos);
         waveMoveCalc.setDirCalcPos(dirCalcPos);
     }
 
-    public static int calcWaveMoveCalcDir(final int[] moveDirProbArr, final int maxProb, final int[] dirCalcProbSumArr, final int startDirCalcPos) {
+    public static int calcWaveMoveDirCalcPos(final int[] moveDirProbArr, final int maxProb, final int[] dirCalcProbSumArr, final int startDirCalcPos) {
         int startDirCalcCount = 0;
         int dirCalcPos = startDirCalcPos;
         for (int pos = 0; pos < moveDirProbArr.length; pos++) {
             dirCalcProbSumArr[pos] += moveDirProbArr[pos];
         }
-        do {
+        if (useClassicParticle) {
+            do {
+                dirCalcPos = nextDirCalcPos(dirCalcPos, moveDirProbArr.length);
+                //final int waveMoveDirProb = moveDirProbArr[dirCalcPos];
+                //dirCalcProbSumArr[dirCalcPos] += waveMoveDirProb;
+                if (startDirCalcCount >= moveDirProbArr.length) {
+                    throw new RuntimeException("Do not found next dirCalcPos: " + Arrays.toString(moveDirProbArr));
+                }
+                startDirCalcCount++;
+            } while (dirCalcProbSumArr[dirCalcPos] < maxProb);
+        } else {
             dirCalcPos = nextDirCalcPos(dirCalcPos, moveDirProbArr.length);
-            final int waveMoveDirProb = moveDirProbArr[dirCalcPos];
-            //dirCalcProbSumArr[dirCalcPos] += waveMoveDirProb;
-            if (startDirCalcCount >= moveDirProbArr.length) {
-                throw new RuntimeException("Do not found next dirCalcPos: " + Arrays.toString(moveDirProbArr));
-            }
-            startDirCalcCount++;
-        } while (dirCalcProbSumArr[dirCalcPos] < maxProb);
+        }
             /*
             int startDirCalcCount = 0;
             do {
@@ -123,6 +128,7 @@ public class WaveMoveCalcService {
                         () -> {
                             final WaveMoveCalc waveMoveCalc = new WaveMoveCalc(actualDirCalcPos, newWaveMoveDir, dirCalcPropSumArr);
                             adjustDirCalcPropSum(waveMoveCalc);
+                            // TODO Why not ??? WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc, useClassicParticle);
                             return waveMoveCalc;
                         });
         //newWaveMoveCalc.calcDirMoved(actualDirCalcPos);
@@ -179,14 +185,16 @@ public class WaveMoveCalcService {
         return waveMoveCalc;
     }
 
-    public static void calcAllDirMoved() {
-        waveMoveCalcCacheMap.values().forEach((waveMoveCalc) -> {
-            final int actualDirCalcPos = waveMoveCalc.getDirCalcPos();
-            //final int nextDirCalcPos = waveMoveCalc.nextDirCalcPos();
-            calcDirMoved(waveMoveCalc, actualDirCalcPos);
-            //waveMoveCalc.setDirCalcPos(nextDirCalcPos);
-            WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
-        });
+    public static void calcAllDirMoved(final boolean useClassicParticle) {
+        if (useWaveMoveCalcCache) {
+            waveMoveCalcCacheMap.values().forEach((waveMoveCalc) -> {
+                final int actualDirCalcPos = waveMoveCalc.getDirCalcPos();
+                //final int nextDirCalcPos = waveMoveCalc.nextDirCalcPos();
+                calcDirMoved(waveMoveCalc, actualDirCalcPos);
+                //waveMoveCalc.setDirCalcPos(nextDirCalcPos);
+                WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
+            });
+        }
     }
 
     public static void setUseWaveMoveCalcCache(final boolean useWaveMoveCalcCache) {

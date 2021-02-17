@@ -3,11 +3,13 @@ package de.schmiereck.hexMap3D.service;
 import de.schmiereck.hexMap3D.service.reality.Reality;
 import de.schmiereck.hexMap3D.service.reality.RealityService;
 import de.schmiereck.hexMap3D.service.universe.*;
+import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 
 public class Engine {
     private final Universe universe;
     private final Reality reality;
     private long runNr = 0;
+    public static boolean useClassicParticle = true;
 
     public Engine(final Universe universe, final Reality reality) {
         this.universe = universe;
@@ -43,7 +45,7 @@ public class Engine {
             final CellState cellState = CellStateService.calcNewStateForTargetCell(this.universe, xPos, yPos, zPos, targetCell);
             targetCell.setCellState(cellState);
         });
-        WaveMoveCalcService.calcAllDirMoved();
+        WaveMoveCalcService.calcAllDirMoved(useClassicParticle);
         UniverseService.calcNext(this.universe);
         RealityService.calcReality(this.universe, this.reality);
         this.runNr++;
@@ -54,7 +56,7 @@ public class Engine {
     }
 
     private boolean checkIsBarrier(final Cell cell) {
-        return cell.getWaveListStream().anyMatch(wave -> wave.getEvent().getEventType() == 0);
+        return cell.getWaveListStream().anyMatch(wave -> wave.getEvent().getEventType() == EventType.Barrier);
     }
 
     public int getNextCalcPos() {

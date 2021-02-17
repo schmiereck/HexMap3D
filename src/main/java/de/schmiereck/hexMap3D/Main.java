@@ -4,6 +4,7 @@ import de.schmiereck.hexMap3D.service.*;
 import de.schmiereck.hexMap3D.service.reality.Detector;
 import de.schmiereck.hexMap3D.service.reality.Reality;
 import de.schmiereck.hexMap3D.service.universe.*;
+import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 import de.schmiereck.hexMap3D.view.GridViewApplication;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -29,6 +30,7 @@ public class Main {
         WaveMoveCalcService.setUseWaveMoveCalcCache(true);
         CellStateService.useCellStateCache = false;
         CellStateService.useRotationDivider = true;
+        Engine.useClassicParticle = true;
 
         //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);
@@ -38,7 +40,8 @@ public class Main {
         //-----------------------------------------------------------------------------
         // Extend Test:
         {
-            final Event particleEvent = new Event(engine, 1);
+            final Event particleEvent = new Event(engine, EventType.ClassicParticle);
+
             universe.addEvent(particleEvent);
 
             final WaveMoveDir waveMoveDir = new WaveMoveDir();

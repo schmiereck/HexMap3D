@@ -48,9 +48,9 @@ public class Detector {
                 this.xDetectorSize = xSize;
                 this.yDetectorSize = zSize;
             } else {
-                this.mapMatrix = new int[][] { { 0, 1, 0 }, { 0, 0, 1 } };
-                this.xDetectorSize = zSize;
-                this.yDetectorSize = ySize;
+                this.mapMatrix = new int[][] { { 0, 0, 1 }, { 0, 1, 0 } };
+                this.xDetectorSize = ySize;
+                this.yDetectorSize = zSize;
             }
         }
         //this.xDetectorSize = this.mapMatrix[0][0] * xSize + this.mapMatrix[0][1] * ySize + this.mapMatrix[0][2] * zSize;
@@ -97,7 +97,7 @@ public class Detector {
     public void setDetectorCell(final int xPos, final int yPos, final int zPos, final DetectorCell detectorCell) {
         final int x = this.mapMatrix[0][0] * xPos + this.mapMatrix[0][1] * yPos + this.mapMatrix[0][2] * zPos;
         final int y = this.mapMatrix[1][0] * xPos + this.mapMatrix[1][1] * yPos + this.mapMatrix[1][2] * zPos;
-        this.detectorCellArr[x][y] = detectorCell;
+        this.detectorCellArr[x][(this.yDetectorSize - 1) - y] = detectorCell;
     }
 
     public DetectorCell getDetectorCell(final int xPos, final int yPos) {
