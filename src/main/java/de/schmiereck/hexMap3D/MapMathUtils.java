@@ -37,4 +37,16 @@ public class MapMathUtils {
         }
         return ret;
     }
+
+    public static int divide(final int numerator, final int denominator, final boolean withRest) {
+        final int retResult;
+         final int result = numerator / denominator;
+         if (withRest) {
+             final int rest = numerator - (result * denominator);
+             retResult = result + rest;
+         } else {
+             retResult = result;
+         }
+         return retResult;
+    }
 }

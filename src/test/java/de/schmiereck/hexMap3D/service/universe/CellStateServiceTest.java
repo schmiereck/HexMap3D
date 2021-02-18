@@ -4,6 +4,7 @@ import de.schmiereck.hexMap3D.GridUtils;
 import de.schmiereck.hexMap3D.service.Engine;
 import de.schmiereck.hexMap3D.service.reality.Reality;
 import de.schmiereck.hexMap3D.service.universe.*;
+import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class CellStateServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, EventType.ClassicParticle);
 
         final CellState[] inCellStateArr = new CellState[Cell.Dir.values().length];
 
@@ -46,7 +47,7 @@ public class CellStateServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, EventType.ClassicParticle);
         universe.addEvent(particleEvent);
 
         final Cell.Dir oppositeCalcDir = GridUtils.calcOppositeDir(DB_P);

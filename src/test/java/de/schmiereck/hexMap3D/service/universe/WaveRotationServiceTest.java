@@ -19,7 +19,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -46,7 +46,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -73,7 +73,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -100,7 +100,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(GR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -127,7 +127,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -154,7 +154,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_N, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -181,7 +181,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(GR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -208,7 +208,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -235,7 +235,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -262,7 +262,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
         final Wave sourceWave = TestUtils.createNewTestWave(particleEvent, waveMoveDir);
@@ -297,7 +297,7 @@ class WaveRotationServiceTest {
         final Universe universe = new Universe(1, 1, 1);
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, Event.EventType.ClassicParticle);
         final WaveMoveDir waveMoveDir = new WaveMoveDir();
         waveMoveDir.setDirMoveProb(LB_P, MAX_DIR_PROB);
         waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB);

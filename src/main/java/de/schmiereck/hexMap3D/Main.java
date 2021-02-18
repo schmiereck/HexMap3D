@@ -6,6 +6,7 @@ import de.schmiereck.hexMap3D.service.reality.Reality;
 import de.schmiereck.hexMap3D.service.universe.*;
 import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 import de.schmiereck.hexMap3D.view.GridViewApplication;
+import de.schmiereck.hexMap3D.view.GridViewUtils;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ public class Main {
 
     public static void main(String[] args) {
         //-----------------------------------------------------------------------------
+        GridViewUtils.useGridConnections = false;
         UniverseService.useParallel = true;
         BasicService.setUseCache(true);
         WaveMoveDirService.setUseWaveMoveDirCache(true);
@@ -30,7 +32,7 @@ public class Main {
         WaveMoveCalcService.setUseWaveMoveCalcCache(true);
         CellStateService.useCellStateCache = false;
         CellStateService.useRotationDivider = true;
-        Engine.useClassicParticle = true;
+        Engine.useClassicParticle = false;
 
         //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);
@@ -68,18 +70,34 @@ public class Main {
             //waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB3_4);
             //waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB1_4);
             //x=0; y=8; z=zSizeGrid/2;
-
+/*
             waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB7_8);
             waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB1_8);
             x=0; y=ySizeGrid/3; z=zSizeGrid/2;
+            */
             /*
             waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
             x=0; y=ySizeGrid/2; z=zSizeGrid/2;
             */
 
+            /*
+             *         (+)
+             *     +---OR---+    (+)
+             *     |   RE   |    LB
+             *     |        |  +---GR---+
+             * (+)LG    (+)DB  |   (+)  |
+             *     |        |  |        |
+             *     |   (-)  |  DB(-)    LG(-)
+             *     +---GR---+  |        |
+             *       LB(-)     |  RE    |
+             *                 +---OR---+
+             *                     (-)
+             */
+            waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB7_8);
+            waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB1_8);
+            x=0; y=ySizeGrid/3; z=zSizeGrid/2;
+
             final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
-            WaveMoveDirService.adjustMaxProb(wave.getWaveMoveDir());
-            WaveService.calcActualWaveMoveCalcDir(wave);
             final CellState cellState = CellStateService.createCellStateWithNewWave(particleEvent, wave);
             final Cell cell = universe.getCell(x, y, z);
             //cell.addWave(wave);

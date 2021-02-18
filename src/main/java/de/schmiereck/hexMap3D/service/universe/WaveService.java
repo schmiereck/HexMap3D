@@ -6,17 +6,13 @@ import static de.schmiereck.hexMap3D.service.Engine.useClassicParticle;
 
 public class WaveService {
 
-    public static void calcActualWaveMoveCalcDir(final Wave wave) {
-        WaveMoveCalcService.calcActualWaveMoveCalcDir(wave.getWaveMoveCalc());
-    }
-
-    public static Wave createNextRotatedWave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
-                                             final int waveProb) {
+    public static Wave createNextMovedWave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
+                                           final int waveProb) {
         final Wave newWave = new Wave(event, waveMoveCalc, rotationCalcPos, waveProb);
         return newWave;
     }
 
-    public static Wave createNextRotatedWave(final Wave sourceWave, final int newWaveProb) {
+    public static Wave createNextMovedWave(final Wave sourceWave, final int newWaveProb) {
         final Event event = sourceWave.getEvent();
         final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
         final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(sourceWaveMoveCalc);
@@ -30,6 +26,8 @@ public class WaveService {
                 WaveMoveCalcService.createNewInitalWaveMoveCalc(0, newWaveMoveDir);
         //final Wave newWave = new Wave(event, waveMoveCalc, 0, 1, 1);
         final Wave newWave = new Wave(event, waveMoveCalc, 0, newWaveProb);
+        WaveMoveDirService.adjustMaxProb(newWave.getWaveMoveDir());
+        WaveMoveCalcService.calcActualWaveMoveCalcDir(newWave.getWaveMoveCalc());
         return newWave;
     }
 

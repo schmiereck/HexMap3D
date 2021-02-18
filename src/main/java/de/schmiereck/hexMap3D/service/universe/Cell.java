@@ -3,7 +3,8 @@ package de.schmiereck.hexMap3D.service.universe;
 import java.util.stream.Stream;
 
 public class Cell {
-    /**        (+)
+    /**
+     *         (+)
      *     +---OR---+    (+)
      *     |   RE   |    LB
      *     |        |  +---GR---+

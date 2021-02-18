@@ -4,6 +4,7 @@ import de.schmiereck.hexMap3D.service.Engine;
 import de.schmiereck.hexMap3D.service.TestUtils;
 import de.schmiereck.hexMap3D.service.reality.Reality;
 import de.schmiereck.hexMap3D.service.universe.*;
+import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 
 import java.util.HashMap;
 
@@ -19,7 +20,7 @@ public class CellTest {
         final Reality reality = new Reality(1, 1, 1);
         final Engine engine = new Engine(universe, reality);
         Cell cell = new Cell(universe, 0, 0, 0);
-        final Event particleEvent = new Event(engine, 1);
+        final Event particleEvent = new Event(engine, EventType.ClassicParticle);
         final Wave wave1;
         {
             final WaveMoveDir waveMoveDir = new WaveMoveDir();

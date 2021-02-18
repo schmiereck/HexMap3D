@@ -42,7 +42,7 @@ public class WaveRotationService {
 
         final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(sourceWaveMoveCalc, newWaveMoveDir);
 
-        newWave = WaveService.createNextRotatedWave(sourceWave.getEvent(), newWaveMoveCalc,
+        newWave = WaveService.createNextMovedWave(sourceWave.getEvent(), newWaveMoveCalc,
                 nextRotationCalcPos(sourceWave),
                 newWaveProb);//sourceWave.getWaveProb());
                 //sourceWave.getRotationCalcPos());

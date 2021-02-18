@@ -29,6 +29,7 @@ public class GridViewUtils {
     public final static double viewGridStepZ = (viewGridStepA*tetrahedraHeight);
     public static final double GRID_BOX_SIZE = 16.0;
     public static final double OUTPUT_SIZE = 6.0D;
+    public static boolean useGridConnections = true;
 
     public static void generateViewGrid(final GridViewNodeSpace nodeSpace, final Group rootGroup,
             final int xSizeGrid, final int ySizeGrid, final int zSizeGrid) {
@@ -65,52 +66,58 @@ public class GridViewUtils {
                     switch (zPos % 3) {
                         case 0 -> { // A
                             if (yPos % 2 == 0) {
-                                // A -> A
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
-                                // A -> B
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 1, 0, +1);
-
+                                if (useGridConnections) {
+                                    // A -> A
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
+                                    // A -> B
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 1, 0, +1);
+                                }
                                 createOutputs(gridNode, rootChildList, point3D, xPos, yPos, zPos, GridUtils.a0ConArr);
                             } else {
-                                // A -> A
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, 0, +1, 0, +1, 0);
-                                // A -> B
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, 1, 0, 1, 0, +1);
-
+                                if (useGridConnections) {
+                                    // A -> A
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, 0, +1, 0, +1, 0);
+                                    // A -> B
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, 1, 0, 1, 0, +1);
+                                }
                                 createOutputs(gridNode, rootChildList, point3D, xPos, yPos, zPos, GridUtils.a1ConArr);
                             }
                         }
                         case 1 -> { // B
                             if (yPos % 2 == 0) {
-                                // B -> B
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, 0, 1, 0, 1, 0);
-                                // B -> C
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, 0, 1, 1, 0, 1);
-
+                                if (useGridConnections) {
+                                    // B -> B
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, 0, 1, 0, 1, 0);
+                                    // B -> C
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, 0, 1, 1, 0, 1);
+                                }
                                 createOutputs(gridNode, rootChildList, point3D, xPos, yPos, zPos, GridUtils.b0ConArr);
                             } else {
-                                // B -> B
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
-                                // B -> C
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 1, 0, 1);
-
+                                if (useGridConnections) {
+                                    // B -> B
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
+                                    // B -> C
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 1, 0, 1);
+                                }
                                 createOutputs(gridNode, rootChildList, point3D, xPos, yPos, zPos, GridUtils.b1ConArr);
                             }
                         }
                         case 2 -> { // C
                             if (yPos % 2 == 0) {
-                                // C -> C
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
-                                // C -> A
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 0, -1, 1);
-
+                                if (useGridConnections) {
+                                    // C -> C
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 1, -1, 0, 0, 1, 0);
+                                    // C -> A
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, -1, 0, 0, -1, 1);
+                                }
                                 createOutputs(gridNode, rootChildList, point3D, xPos, yPos, zPos, GridUtils.c0ConArr);
                             } else {
-                                // C -> C
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, 1, 0, 0, 1, 0);
-                                // C -> A
-                                createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, 0, 1, 0, -1, 1);
-
+                                if (useGridConnections) {
+                                    // C -> C
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, 1, 0, 0, 1, 0);
+                                    // C -> A
+                                    createConnections(gridNode, rootChildList, point3D, xPos, yPos, zPos, 0, 0, 1, 0, -1, 1);
+                                }
                                 createOutputs(gridNode, rootChildList, point3D, xPos, yPos, zPos, GridUtils.c1ConArr);
                             }
                         }

@@ -36,12 +36,12 @@ public class WaveMoveCalcService {
     }
 
     public static int calcWaveMoveDirCalcPos(final int[] moveDirProbArr, final int maxProb, final int[] dirCalcProbSumArr, final int startDirCalcPos) {
-        int startDirCalcCount = 0;
         int dirCalcPos = startDirCalcPos;
-        for (int pos = 0; pos < moveDirProbArr.length; pos++) {
-            dirCalcProbSumArr[pos] += moveDirProbArr[pos];
-        }
         if (useClassicParticle) {
+            for (int pos = 0; pos < moveDirProbArr.length; pos++) {
+                dirCalcProbSumArr[pos] += moveDirProbArr[pos];
+            }
+            int startDirCalcCount = 0;
             do {
                 dirCalcPos = nextDirCalcPos(dirCalcPos, moveDirProbArr.length);
                 //final int waveMoveDirProb = moveDirProbArr[dirCalcPos];
@@ -52,6 +52,7 @@ public class WaveMoveCalcService {
                 startDirCalcCount++;
             } while (dirCalcProbSumArr[dirCalcPos] < maxProb);
         } else {
+            dirCalcProbSumArr[dirCalcPos] += moveDirProbArr[dirCalcPos];
             dirCalcPos = nextDirCalcPos(dirCalcPos, moveDirProbArr.length);
         }
             /*
@@ -113,6 +114,7 @@ public class WaveMoveCalcService {
                 createNewWaveMoveCalc(waveMoveDir,
                         () -> {
                             final WaveMoveCalc waveMoveCalc = new WaveMoveCalc(dirCalcPos, waveMoveDir);
+                            //WaveMoveDirService.adjustMaxProb(waveMoveCalc.getWaveMoveDir());
                             WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
                             return waveMoveCalc;
                         });
@@ -128,7 +130,7 @@ public class WaveMoveCalcService {
                         () -> {
                             final WaveMoveCalc waveMoveCalc = new WaveMoveCalc(actualDirCalcPos, newWaveMoveDir, dirCalcPropSumArr);
                             adjustDirCalcPropSum(waveMoveCalc);
-                            // TODO Why not ??? WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc, useClassicParticle);
+                            // TODO Why not ??? WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
                             return waveMoveCalc;
                         });
         //newWaveMoveCalc.calcDirMoved(actualDirCalcPos);
@@ -145,6 +147,7 @@ public class WaveMoveCalcService {
                         () -> {
                             final WaveMoveCalc waveMoveCalc = new WaveMoveCalc(actualDirCalcPos, newWaveMoveDir, dirCalcPropSumArr);
                             adjustDirCalcPropSum(waveMoveCalc);
+                            // TODO Why not ??? WaveMoveCalcService.calcActualWaveMoveCalcDir(waveMoveCalc);
                             return waveMoveCalc;
                         });
         //newWaveMoveCalc.calcDirMoved(actualDirCalcPos);
@@ -185,7 +188,7 @@ public class WaveMoveCalcService {
         return waveMoveCalc;
     }
 
-    public static void calcAllDirMoved(final boolean useClassicParticle) {
+    public static void calcAllDirMoved() {
         if (useWaveMoveCalcCache) {
             waveMoveCalcCacheMap.values().forEach((waveMoveCalc) -> {
                 final int actualDirCalcPos = waveMoveCalc.getDirCalcPos();

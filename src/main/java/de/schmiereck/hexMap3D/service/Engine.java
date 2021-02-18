@@ -45,7 +45,7 @@ public class Engine {
             final CellState cellState = CellStateService.calcNewStateForTargetCell(this.universe, xPos, yPos, zPos, targetCell);
             targetCell.setCellState(cellState);
         });
-        WaveMoveCalcService.calcAllDirMoved(useClassicParticle);
+        WaveMoveCalcService.calcAllDirMoved();
         UniverseService.calcNext(this.universe);
         RealityService.calcReality(this.universe, this.reality);
         this.runNr++;
