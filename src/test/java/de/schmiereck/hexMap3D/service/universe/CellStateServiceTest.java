@@ -25,6 +25,7 @@ public class CellStateServiceTest {
         final Engine engine = new Engine(universe, reality);
         final Event particleEvent = new Event(engine, EventType.ClassicParticle);
 
+        final CellState targetInCellState = CellStateService.createInitialCellState();
         final CellState[] inCellStateArr = new CellState[Cell.Dir.values().length];
 
         for (final Cell.Dir calcDir : Cell.Dir.values()) {
@@ -35,7 +36,7 @@ public class CellStateServiceTest {
         CellStateService.useCellStateCache = false;
 
         // Act
-        final CellState cellState = CellStateService.calcNewStateForTargetCell(inCellStateArr);
+        final CellState cellState = CellStateService.calcNewStateForTargetCell(targetInCellState, inCellStateArr);
 
         // Assert
         assertEquals(0, cellState.getWaveListStream().count());
@@ -51,6 +52,7 @@ public class CellStateServiceTest {
         universe.addEvent(particleEvent);
 
         final Cell.Dir oppositeCalcDir = GridUtils.calcOppositeDir(DB_P);
+        final CellState targetInCellState = CellStateService.createInitialCellState();
         final CellState[] inCellStateArr = new CellState[Cell.Dir.values().length];
 
         for (final Cell.Dir calcDir : Cell.Dir.values()) {
@@ -59,8 +61,8 @@ public class CellStateServiceTest {
                  final WaveMoveDir waveMoveDir = new WaveMoveDir();
                  waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
                  final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
-                 WaveMoveDirService.adjustMaxProb(wave.getWaveMoveDir());
-                 WaveService.calcActualWaveMoveCalcDir(wave);
+                 //WaveMoveDirService.adjustMaxProb(wave.getWaveMoveDir());
+                 //WaveMoveCalcService.calcActualWaveMoveCalcDir(wave.getWaveMoveCalc());
                  cellState = CellStateService.createCellStateWithNewWave(particleEvent, wave);
              } else {
                  cellState = CellStateService.createInitialCellState();
@@ -73,10 +75,11 @@ public class CellStateServiceTest {
         WaveMoveDirService.setUseRotateMoveDirCache(false);
         WaveMoveCalcService.setUseWaveMoveCalcCache(false);
         CellStateService.useCellStateCache = false;
+        Engine.useClassicParticle = true;
         CellStateService.useRotationDivider = true;
 
         // Act
-        final CellState newCellState = CellStateService.calcNewStateForTargetCell(inCellStateArr);
+        final CellState newCellState = CellStateService.calcNewStateForTargetCell(targetInCellState, inCellStateArr);
 
         // Assert
         assertEquals(13, newCellState.getWaveListStream().count());

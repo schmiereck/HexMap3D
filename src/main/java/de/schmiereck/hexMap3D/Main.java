@@ -16,9 +16,9 @@ import static java.lang.String.format;
 
 public class Main {
 
-    public static final int xSizeGrid = 3*2 * 4;//16;
-    public static final int ySizeGrid = 3*2 * 4;//16;
-    public static final int zSizeGrid = 3*2 * 4;//16;
+    public static final int xSizeGrid = 3*2 * 2*2;//16;
+    public static final int ySizeGrid = 3*2 * 2*2;//16;
+    public static final int zSizeGrid = 3*2 * 2*2;//16;
     //public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (32000);
     public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (16000);
 
@@ -33,6 +33,7 @@ public class Main {
         CellStateService.useCellStateCache = false;
         CellStateService.useRotationDivider = true;
         Engine.useClassicParticle = false;
+        Engine.useWaveDividerTwoWay = false;
 
         //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);

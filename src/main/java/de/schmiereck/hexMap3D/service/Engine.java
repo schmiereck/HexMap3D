@@ -10,6 +10,7 @@ public class Engine {
     private final Reality reality;
     private long runNr = 0;
     public static boolean useClassicParticle = true;
+    public static boolean useWaveDividerTwoWay = true;
 
     public Engine(final Universe universe, final Reality reality) {
         this.universe = universe;
