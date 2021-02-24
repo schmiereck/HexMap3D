@@ -34,14 +34,18 @@ public class RealityService {
             final int waveProbSum = cell.getWaveListStream().mapToInt(wave -> wave.getWaveProb()).sum();
             realityCell.setWaveProb(waveProbSum);
 
+            final int[] colors = new int[Cell.Dir.values().length];
+
             realityCell.setShowGrid(reality.showGrid);
 
             final int[] outputs = realityCell.getOutputs();
+            Arrays.stream(Cell.Dir.values()).forEach(dir -> {
+                outputs[dir.dir()] = 0;
+            });
+
             cell.getWaveListStream().forEach(wave -> {
                 reality.incStatisticWaveCount();
-                Arrays.stream(Cell.Dir.values()).forEach(dir -> {
-                    outputs[dir.dir()] = 0;
-                });
+                colors[wave.getWaveDirCalcPos()]++;
             });
             switch (reality.getShowWaveMoveCalc()) {
                 case ShowNoWaveMoveDir -> {
@@ -78,7 +82,7 @@ public class RealityService {
                     (xPos <= detector.getXPos() + detector.getXSize()) && (yPos <= detector.getYPos() + detector.getYSize()) && (zPos <= detector.getZPos() + detector.getZSize())) {
                     final DetectorCell detectorCell;
                     if (waveProbSum > 0) {
-                        detectorCell = new DetectorCell(waveProbSum);
+                        detectorCell = new DetectorCell(waveProbSum, colors);
                         if (waveProbSum > detector.getMaxWaveProbSum()) {
                             detector.setMaxWaveProbSum(waveProbSum);
                         }

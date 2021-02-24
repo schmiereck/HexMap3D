@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class WaveMoveCalc {
+    /**
+     * {@link Cell.Dir#dir()}
+     */
     private int dirCalcPos;
     private WaveMoveDir waveMoveDir;
     /**

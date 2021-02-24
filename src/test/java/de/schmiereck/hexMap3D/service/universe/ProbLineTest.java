@@ -313,7 +313,7 @@ public class ProbLineTest {
         double[][] lineArr = new double[lineLength][2];
         int[] moveDirProbSumArr = new int[moveDirProbArr.length];
         int dirCalcPos = -1;
-        Engine.useClassicParticle = true;
+        Engine.engineWaveType = Engine.EngineWaveType.ClassicParticle;
 
         // de.schmiereck.hexMap3D.service.universe.WaveMoveDirService.adjustMaxProb
         int maxProb = WaveMoveDirService.calcMaxProb(moveDirProbArr);

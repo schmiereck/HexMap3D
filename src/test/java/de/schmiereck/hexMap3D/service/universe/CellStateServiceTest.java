@@ -75,7 +75,7 @@ public class CellStateServiceTest {
         WaveMoveDirService.setUseRotateMoveDirCache(false);
         WaveMoveCalcService.setUseWaveMoveCalcCache(false);
         CellStateService.useCellStateCache = false;
-        Engine.useClassicParticle = true;
+        Engine.engineWaveType = Engine.EngineWaveType.ClassicParticle;
         CellStateService.useRotationDivider = true;
 
         // Act

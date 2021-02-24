@@ -43,7 +43,7 @@ public class WaveRotationService {
         final WaveMoveCalc newWaveMoveCalc = WaveMoveCalcService.createRotatedWaveMoveCalc(sourceWaveMoveCalc, newWaveMoveDir);
 
         newWave = WaveService.createNextMovedWave(sourceWave.getEvent(), newWaveMoveCalc,
-                nextRotationCalcPos(sourceWave),
+                nextRotationCalcPos(sourceWave), nextWaveDirCalcPos(sourceWave),
                 newWaveProb);//sourceWave.getWaveProb());
                 //sourceWave.getRotationCalcPos());
 
@@ -52,5 +52,9 @@ public class WaveRotationService {
 
     public static int nextRotationCalcPos(final Wave wave) {
         return MapMathUtils.wrap(wave.getRotationCalcPos() + 1, WaveRotationService.rotationMatrixXYZ.length);
+    }
+
+    public static int nextWaveDirCalcPos(final Wave wave) {
+        return MapMathUtils.wrap(wave.getWaveDirCalcPos() + 1, Cell.Dir.values().length);
     }
 }

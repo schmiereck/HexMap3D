@@ -16,7 +16,7 @@ import static java.lang.String.format;
 
 public class Main {
 
-    public static final int xSizeGrid = 3*2 * 2*2;//16;
+    public static final int xSizeGrid = 3*2 * 2*3;//16;
     public static final int ySizeGrid = 3*2 * 2*2;//16;
     public static final int zSizeGrid = 3*2 * 2*2;//16;
     //public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (32000);
@@ -32,8 +32,10 @@ public class Main {
         WaveMoveCalcService.setUseWaveMoveCalcCache(true);
         CellStateService.useCellStateCache = false;
         CellStateService.useRotationDivider = true;
-        Engine.useClassicParticle = false;
-        Engine.useWaveDividerTwoWay = false;
+        //Engine.engineWaveType = Engine.EngineWaveType.ClassicParticle;
+        //Engine.engineWaveType = Engine.EngineWaveType.WaveDividerTwoWay;
+        //Engine.engineWaveType = Engine.EngineWaveType.WaveDividerOneWay;
+        Engine.engineWaveType = Engine.EngineWaveType.WaveDividerClassicMove;
 
         //-----------------------------------------------------------------------------
         final Universe universe = new Universe(xSizeGrid, ySizeGrid, zSizeGrid);
@@ -77,9 +79,9 @@ public class Main {
             x=0; y=ySizeGrid/3; z=zSizeGrid/2;
             */
             /*
+             */
             waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB);
             x=0; y=ySizeGrid/2; z=zSizeGrid/2;
-            */
 
             /*
              *         (+)
@@ -93,10 +95,10 @@ public class Main {
              *       LB(-)     |  RE    |
              *                 +---OR---+
              *                     (-)
-             */
             waveMoveDir.setDirMoveProb(DB_P, MAX_DIR_PROB7_8);
             waveMoveDir.setDirMoveProb(OR_P, MAX_DIR_PROB1_8);
             x=0; y=ySizeGrid/3; z=zSizeGrid/2;
+             */
 
             final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
             final CellState cellState = CellStateService.createCellStateWithNewWave(particleEvent, wave);

@@ -5,12 +5,19 @@ import de.schmiereck.hexMap3D.service.reality.RealityService;
 import de.schmiereck.hexMap3D.service.universe.*;
 import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 
+import static de.schmiereck.hexMap3D.service.Engine.EngineWaveType.ClassicParticle;
+
 public class Engine {
     private final Universe universe;
     private final Reality reality;
     private long runNr = 0;
-    public static boolean useClassicParticle = true;
-    public static boolean useWaveDividerTwoWay = true;
+    public static EngineWaveType engineWaveType = ClassicParticle;
+    public enum EngineWaveType {
+        ClassicParticle,
+        WaveDividerOneWay,
+        WaveDividerTwoWay,
+        WaveDividerClassicMove
+    }
 
     public Engine(final Universe universe, final Reality reality) {
         this.universe = universe;

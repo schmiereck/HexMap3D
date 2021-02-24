@@ -28,7 +28,7 @@ public class GridViewNodeSpace {
 
         forEachNode((final int xPos, final int yPos, final int zPos) -> {
             final RealityCell realityCell = reality.getRealityCell(xPos, yPos, zPos);
-            this.grid[zPos][yPos][xPos] = new GridNode(realityCell);
+            this.grid[xPos][yPos][zPos] = new GridNode(realityCell);
         });
     }
 
@@ -86,6 +86,6 @@ public class GridViewNodeSpace {
     }
 
     public GridNode getGridNode(final int xPos, final int yPos, final int zPos) {
-        return this.grid[zPos][yPos][xPos];
+        return this.grid[xPos][yPos][zPos];
     }
 }

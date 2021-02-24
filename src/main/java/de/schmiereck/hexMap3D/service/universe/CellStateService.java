@@ -13,7 +13,7 @@ import static de.schmiereck.hexMap3D.GridUtils.*;
 
 public class CellStateService {
 
-    private static final int ROT_PERCENT = 1;
+    protected static final int ROT_PERCENT = 1;
 
     private static class NextCellStateCacheEntry {
         final CellState inCellState;
@@ -115,122 +115,24 @@ public class CellStateService {
     public static boolean useRotationDivider = false;
 
     public static CellState calcNewStateForTargetCell(final CellState targetInCellState, final CellState[] inCellStateArr) {
-        final CellState newTargetCellState = new CellState();
-        for (final Cell.Dir calcDir : Cell.Dir.values()) {
-            final CellState sourceCellState = inCellStateArr[calcDir.dir()];
-            final Cell.Dir oppositeCalcDir = GridUtils.calcOppositeDir(calcDir);
-            sourceCellState.getWaveListStream()
-                    //.filter(sourceWave -> checkSourceWaveHasOutput(sourceWave, oppositeCalcDir))
-                    .forEach((sourceWave) -> {
-                        final Event sourceEvent = sourceWave.getEvent();
-                        final WaveMoveDir waveMoveDir = sourceWave.getWaveMoveDir();
-                        final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
-                        // Source-Cell-Wave is a Particle and is moving in this direction?
-                        if (Engine.useClassicParticle) {
-                            if (checkSourceWaveHasMoveOutput(sourceWaveMoveCalc, oppositeCalcDir)) {
-                                //!!!sourceWaveMoveCalc.calcActualDirMoved();
-                                final int sourceWaveProb = sourceWave.getWaveProb();
-                                 final int waveProbDivided1;
-                                final int waveProbDivided2;
-                                if (useRotationDivider) {
-                                    final int probDivider = 1 + WaveRotationService.rotationMatrixXYZ.length;
-                                    if (sourceWaveProb >= probDivider) {
-                                        waveProbDivided2 = (sourceWaveProb) / (probDivider);
-                                        waveProbDivided1 = (sourceWaveProb) - (waveProbDivided2 * (probDivider - 1));
-                                    } else {
-                                        waveProbDivided1 = sourceWaveProb;
-                                        waveProbDivided2 = 0;
-                                    }
-                                } else {
-                                    waveProbDivided1 = sourceWaveProb;
-                                    waveProbDivided2 = 0;
-                                }
-                                {
-                                    final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, waveProbDivided1);
-                                    //newTargetWave.calcActualWaveMoveCalcDir();
-                                    addWave(sourceEvent, newTargetCellState, newTargetWave);
-                                }
-                                if (useRotationDivider) {
-                                    for (int rotCalcPos = 0; rotCalcPos < WaveRotationService.rotationMatrixXYZ.length; rotCalcPos++)
-                                        if (waveProbDivided2 > 0) {
-                                            //final int rotCalcPos = sourceWave.getRotationCalcPos();
-                                            final int[] rotationXYZ = WaveRotationService.rotationMatrixXYZ[rotCalcPos];
-                                            final int xRotPercent = rotationXYZ[0] * ROT_PERCENT;
-                                            final int yRotPercent = rotationXYZ[1] * ROT_PERCENT;
-                                            final int zRotPercent = rotationXYZ[2] * ROT_PERCENT;
-                                            final Wave newTargetWave =
-                                                    WaveRotationService.createMoveRotatedWave(sourceWave,
-                                                            xRotPercent, yRotPercent, zRotPercent,
-                                                            waveProbDivided2);
-                                            //newTargetWave.calcActualWaveMoveCalcDir();
-                                            addWave(sourceEvent, newTargetCellState, newTargetWave);
-                                        }
-                                }
-                            }
-                        } else {
-                            // Has Move-Output in any direction?
-                            if (sourceWaveMoveCalc.getDirCalcProbSum(sourceWaveMoveCalc.getDirCalcPos()) >= sourceWaveMoveCalc.getMaxProb()) {
-                                // Has Move-Output in checked direction?
-                                if (checkSourceWaveHasMoveOutput(sourceWaveMoveCalc, oppositeCalcDir)) {
-                                    // Then Move.
-                                    final int sourceWaveProb = sourceWave.getWaveProb();
-                                    {
-                                        final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, sourceWaveProb);
-                                        //newTargetWave.calcActualWaveMoveCalcDir();
-                                        addWave(sourceEvent, newTargetCellState, newTargetWave);
-                                    }
-                                }
-                            } else {
-                                 if (Engine.useWaveDividerTwoWay) {
-                                    // If no Output and ActualMoveDir (or opposite site) than divide.
-                                    if (checkSourceWaveHasWaveOutput(sourceWaveMoveCalc, calcDir, oppositeCalcDir)) {
-                                        final int sourceWaveProb = MapMathUtils.divide(sourceWave.getWaveProb(), 2,
-                                                calcDir == sourceWaveMoveCalc.getActualMoveDir());
-                                        if (sourceWaveProb > 0) {
-                                            final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, sourceWaveProb);
-                                            //newTargetWave.calcActualWaveMoveCalcDir();
-                                            addWave(sourceEvent, newTargetCellState, newTargetWave);
-                                        }
-                                    }
-                                } else {
-                                    // If no Output and ActualMoveDir than divide.
-                                    if (checkSourceWaveHasWaveOutput(sourceWaveMoveCalc, oppositeCalcDir)) {
-                                        final int sourceWaveProb = MapMathUtils.divide(sourceWave.getWaveProb(), 2,
-                                                false);
-                                        if (sourceWaveProb > 0) {
-                                            final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, sourceWaveProb);
-                                            //newTargetWave.calcActualWaveMoveCalcDir();
-                                            addWave(sourceEvent, newTargetCellState, newTargetWave);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-        }
-        // Itselve
-        if ((Engine.useClassicParticle == false) && (Engine.useWaveDividerTwoWay == false)) {
-            targetInCellState.getWaveListStream()
-                    .forEach((sourceWave) -> {
-                        final Event sourceEvent = sourceWave.getEvent();
-                        final WaveMoveCalc sourceWaveMoveCalc = sourceWave.getWaveMoveCalc();
+        final CellState newTargetCellState;
 
-                        // Has no Move-Output in any direction?
-                        if (sourceWaveMoveCalc.getDirCalcProbSum(sourceWaveMoveCalc.getDirCalcPos()) < sourceWaveMoveCalc.getMaxProb()) {
-                            final int sourceWaveProb = MapMathUtils.divide(sourceWave.getWaveProb(), 2,
-                                    true);
-                            if (sourceWaveProb > 0) {
-                                final Wave newTargetWave = WaveService.createNextMovedWave(sourceWave, sourceWaveProb);
-                                //newTargetWave.calcActualWaveMoveCalcDir();
-                                addWave(sourceEvent, newTargetCellState, newTargetWave);
-                            }
-                        }
-                    });
+        switch (Engine.engineWaveType) {
+            case ClassicParticle ->
+                newTargetCellState = CalcStateClassicService.calcNewStateForTargetCell(targetInCellState, inCellStateArr);
+            case WaveDividerTwoWay ->
+                newTargetCellState = CalcStateWave1Service.calcNewStateForTargetCell(targetInCellState, inCellStateArr);
+           case WaveDividerOneWay ->
+                newTargetCellState = CalcStateWave2Service.calcNewStateForTargetCell(targetInCellState, inCellStateArr);
+           case WaveDividerClassicMove ->
+                newTargetCellState = CalcStateWave3Service.calcNewStateForTargetCell(targetInCellState, inCellStateArr);
+            default ->
+                throw new RuntimeException("Unexpected engineWaveType \"" + Engine.engineWaveType + "\".");
         }
         return newTargetCellState;
     }
 
-    private static boolean checkSourceWaveHasMoveOutput(final WaveMoveCalc waveMoveCalc, final Cell.Dir calcDir) {
+    protected static boolean checkSourceWaveHasMoveOutput(final WaveMoveCalc waveMoveCalc, final Cell.Dir calcDir) {
         final boolean ret;
         if (calcDir == waveMoveCalc.getActualMoveDir()) {
             ret = (waveMoveCalc.getDirCalcProbSum(calcDir) >= waveMoveCalc.getMaxProb());
@@ -240,7 +142,7 @@ public class CellStateService {
         return ret;
     }
 
-    private static boolean checkSourceWaveHasWaveOutput(final WaveMoveCalc waveMoveCalc, final Cell.Dir calcDir, final Cell.Dir oppositeCalcDir) {
+    protected static boolean checkSourceWaveHasWaveOutput(final WaveMoveCalc waveMoveCalc, final Cell.Dir calcDir, final Cell.Dir oppositeCalcDir) {
         final boolean ret;
         if ((calcDir == waveMoveCalc.getActualMoveDir()) || (oppositeCalcDir == waveMoveCalc.getActualMoveDir())) {
             ret = true;//(waveMoveCalc.getDirCalcProbSum(waveMoveCalc.getDirCalcPos()) >= waveMoveCalc.getMaxProb());
@@ -250,9 +152,19 @@ public class CellStateService {
         return ret;
     }
 
-    private static boolean checkSourceWaveHasWaveOutput(final WaveMoveCalc waveMoveCalc, final Cell.Dir calcDir) {
+    protected static boolean checkSourceWaveHasWaveOutput(final WaveMoveCalc waveMoveCalc, final Cell.Dir calcDir) {
         final boolean ret;
         if (calcDir == waveMoveCalc.getActualMoveDir()) {
+            ret = true;//(waveMoveCalc.getDirCalcProbSum(waveMoveCalc.getDirCalcPos()) >= waveMoveCalc.getMaxProb());
+        } else {
+            ret = false;
+        }
+        return ret;
+    }
+
+    protected static boolean checkSourceWaveHasWaveOutput(final Wave wave, final Cell.Dir calcDir) {
+        final boolean ret;
+        if (calcDir.dir() == wave.getWaveDirCalcPos()) {
             ret = true;//(waveMoveCalc.getDirCalcProbSum(waveMoveCalc.getDirCalcPos()) >= waveMoveCalc.getMaxProb());
         } else {
             ret = false;

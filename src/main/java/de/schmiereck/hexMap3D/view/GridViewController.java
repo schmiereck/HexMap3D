@@ -1,9 +1,11 @@
 package de.schmiereck.hexMap3D.view;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import de.schmiereck.hexMap3D.service.reality.Detector;
 import de.schmiereck.hexMap3D.service.reality.DetectorCell;
+import de.schmiereck.hexMap3D.service.universe.Cell;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -130,7 +132,48 @@ public class GridViewController {
                     } else {
                         cc = detectorCell.getWaveProbSum() / ((double)INITIAL_WAVE_PROB);
                     }
-                    color = Color.color(cc, cc, cc);
+
+                    double r = 0.0D, g = 0.0D, b = 0.0D;
+                    final int[] colors = detectorCell.getColors();
+                    // https://www.bilder-plus.de/farbkreis-rgb.php
+                    // Rot (255 0 0)
+                    r += colors[Cell.Dir.DB_P.dir()];
+                    // Orange (255 127 0)
+                    r += colors[Cell.Dir.DB_N.dir()];
+                    g += colors[Cell.Dir.DB_N.dir()] / 2;
+                    // Gelb (255 255 0)
+                    r += colors[Cell.Dir.OR_P.dir()];
+                    g += colors[Cell.Dir.OR_P.dir()];
+                    // Grün-Gelb (127 255 0)
+                    r += colors[Cell.Dir.OR_N.dir()] / 2;
+                    g += colors[Cell.Dir.OR_N.dir()];
+                    // Grün (0 255 0)
+                    g += colors[Cell.Dir.RE_P.dir()];
+                    // Mint-Grün (0 255 127)
+                    g += colors[Cell.Dir.RE_N.dir()];
+                    b += colors[Cell.Dir.RE_N.dir()] / 2;
+                    // Blau-Grün Türkis (0 255 255)
+                    g += colors[Cell.Dir.LB_P.dir()];
+                    b += colors[Cell.Dir.LB_P.dir()];
+                    // Hellblau (0 127 255)
+                    g += colors[Cell.Dir.LB_N.dir()] / 2;
+                    b += colors[Cell.Dir.LB_N.dir()];
+                    // Blau (0 0 255)
+                    b += colors[Cell.Dir.GR_P.dir()];
+                    // Violett (127 0 255)
+                    r += colors[Cell.Dir.GR_N.dir()] / 2;
+                    b += colors[Cell.Dir.GR_N.dir()];
+                    // Pink (255 0 255)
+                    r += colors[Cell.Dir.LG_P.dir()];
+                    b += colors[Cell.Dir.LG_P.dir()];
+                    // Magenta (255 0 127)
+                    r += colors[Cell.Dir.LG_N.dir()];
+                    b += colors[Cell.Dir.LG_N.dir()] / 2;
+
+                    final double m = Math.max(r, Math.max(g, b));
+                    //color = Color.color(cc, cc, cc);
+                    color = Color.color(cc * (r / m), cc * (g / m), cc * (b / m));
+                    //color = Color.color((r / m), (g / m), (b / m));
                 } else {
                     color = Color.BLACK;
                 }

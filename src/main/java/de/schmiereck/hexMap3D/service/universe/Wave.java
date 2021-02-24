@@ -77,17 +77,22 @@ public class Wave  implements Comparable<Wave> {
      */
     private int rotationCalcPos;
     /**
+     * {@link Cell.Dir#dir()}
+     */
+    private int waveDirCalcPos;
+    /**
      * If two waves combines, their probabilities are added.
      * Calculation of the Probalility:
      * p = waveProb / SumOfAllWaveProbs-for-Event
      */
     private int waveProb;
 
-    public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos,
+    public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos, final int waveDirCalcPos,
                 final int waveProb) {
         this.event = event;
         this.waveMoveCalc = waveMoveCalc;
         this.rotationCalcPos = rotationCalcPos;
+        this.waveDirCalcPos = waveDirCalcPos;
         this.waveProb = waveProb;
     }
 
@@ -123,6 +128,10 @@ public class Wave  implements Comparable<Wave> {
         return this.rotationCalcPos;
     }
 
+    public int getWaveDirCalcPos() {
+        return this.waveDirCalcPos;
+    }
+
     public WaveMoveDir getWaveMoveDir() {
         return this.waveMoveCalc.getWaveMoveDir();
     }
@@ -151,13 +160,16 @@ public class Wave  implements Comparable<Wave> {
     public int compareTo(final Wave wave) {
         int ret = this.waveProb - wave.waveProb;
         if (ret == 0) {
-            final int[] thisMoveDirProbArr = this.waveMoveCalc.getWaveMoveDir().getMoveDirProbArr();
-            final int[] waveMoveDirProbArr = wave.waveMoveCalc.getWaveMoveDir().getMoveDirProbArr();
-            for (int pos = 0; pos < thisMoveDirProbArr.length; pos++) {
-                final int diff = thisMoveDirProbArr[pos] - waveMoveDirProbArr[pos];
-                if (diff != 0) {
-                    ret = diff;
-                    break;
+            ret = this.waveDirCalcPos - wave.waveDirCalcPos;
+            if (ret == 0) {
+                final int[] thisMoveDirProbArr = this.waveMoveCalc.getWaveMoveDir().getMoveDirProbArr();
+                final int[] waveMoveDirProbArr = wave.waveMoveCalc.getWaveMoveDir().getMoveDirProbArr();
+                for (int pos = 0; pos < thisMoveDirProbArr.length; pos++) {
+                    final int diff = thisMoveDirProbArr[pos] - waveMoveDirProbArr[pos];
+                    if (diff != 0) {
+                        ret = diff;
+                        break;
+                    }
                 }
             }
         }
@@ -168,7 +180,8 @@ public class Wave  implements Comparable<Wave> {
     @Override
     public int hashCode() {
         if (hashCode == 0) {
-            hashCode = Objects.hash(this.waveProb, this.event, this.waveMoveCalc);
+            //hashCode = Objects.hash(this.waveProb, this.waveDirCalcPos, this.event, this.waveMoveCalc);
+            hashCode = Objects.hash(this.waveDirCalcPos, this.event, this.waveMoveCalc);
         }
         return hashCode;
     }
@@ -179,7 +192,8 @@ public class Wave  implements Comparable<Wave> {
         if (obj == null) return false;
         if (this.getClass() != obj.getClass()) return false;
         final Wave entry = (Wave) obj;
-        return (this.waveProb == entry.waveProb) &&
+        return //(this.waveProb == entry.waveProb) &&
+                (this.waveDirCalcPos == entry.waveDirCalcPos) &&
                 Objects.equals(this.event, entry.event) &&
                 Objects.equals(this.waveMoveCalc, entry.waveMoveCalc);
     }
