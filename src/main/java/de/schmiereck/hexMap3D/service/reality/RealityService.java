@@ -1,12 +1,12 @@
 package de.schmiereck.hexMap3D.service.reality;
 
 import de.schmiereck.hexMap3D.service.universe.Cell;
-import de.schmiereck.hexMap3D.service.universe.Event;
 import de.schmiereck.hexMap3D.service.universe.Event.EventType;
 import de.schmiereck.hexMap3D.service.universe.Universe;
 import de.schmiereck.hexMap3D.service.universe.UniverseService;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RealityService {
 
@@ -34,8 +34,6 @@ public class RealityService {
             final int waveProbSum = cell.getWaveListStream().mapToInt(wave -> wave.getWaveProb()).sum();
             realityCell.setWaveProb(waveProbSum);
 
-            final int[] colors = new int[Cell.Dir.values().length];
-
             realityCell.setShowGrid(reality.showGrid);
 
             final int[] outputs = realityCell.getOutputs();
@@ -43,10 +41,18 @@ public class RealityService {
                 outputs[dir.dir()] = 0;
             });
 
+            final int[] colors = new int[Cell.Dir.values().length];
+            final AtomicInteger waveValue = new AtomicInteger();
+
             cell.getWaveListStream().forEach(wave -> {
                 reality.incStatisticWaveCount();
+                waveValue.addAndGet(wave.getWaveValue().getWaveValue());
                 colors[wave.getWaveDirCalcPos()]++;
             });
+            if (cell.getWaveListSize() > 0) {
+                waveValue.set((int) (waveValue.get() / cell.getWaveListSize()));
+            }
+
             switch (reality.getShowWaveMoveCalc()) {
                 case ShowNoWaveMoveDir -> {
                     // Nothing to do.
@@ -82,7 +88,7 @@ public class RealityService {
                     (xPos <= detector.getXPos() + detector.getXSize()) && (yPos <= detector.getYPos() + detector.getYSize()) && (zPos <= detector.getZPos() + detector.getZSize())) {
                     final DetectorCell detectorCell;
                     if (waveProbSum > 0) {
-                        detectorCell = new DetectorCell(waveProbSum, colors);
+                        detectorCell = new DetectorCell(waveProbSum, colors, waveValue.intValue());
                         if (waveProbSum > detector.getMaxWaveProbSum()) {
                             detector.setMaxWaveProbSum(waveProbSum);
                         }

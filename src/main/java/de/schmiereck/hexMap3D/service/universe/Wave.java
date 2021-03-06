@@ -69,17 +69,19 @@ import java.util.Objects;
  *
  *  f() = (waveProb / SumOfAllWaveProbs-for-Event)
  */
-public class Wave  implements Comparable<Wave> {
+public class Wave implements Comparable<Wave> {
     private final Event event;
     private WaveMoveCalc waveMoveCalc;
     /**
      * Pos in {@link WaveRotationService#rotationMatrixXYZ}.
      */
     private int rotationCalcPos;
+
     /**
      * {@link Cell.Dir#dir()}
      */
     private int waveDirCalcPos;
+
     /**
      * If two waves combines, their probabilities are added.
      * Calculation of the Probalility:
@@ -87,13 +89,16 @@ public class Wave  implements Comparable<Wave> {
      */
     private int waveProb;
 
+    private WaveValue waveValue;
+
     public Wave(final Event event, final WaveMoveCalc waveMoveCalc, final int rotationCalcPos, final int waveDirCalcPos,
-                final int waveProb) {
+                final int waveProb, final WaveValue waveValue) {
         this.event = event;
         this.waveMoveCalc = waveMoveCalc;
         this.rotationCalcPos = rotationCalcPos;
         this.waveDirCalcPos = waveDirCalcPos;
         this.waveProb = waveProb;
+        this.waveValue = waveValue;
     }
 
     public Event getEvent() {
@@ -154,6 +159,10 @@ public class Wave  implements Comparable<Wave> {
 
     public int getWaveProb() {
         return this.waveProb;
+    }
+
+    public WaveValue getWaveValue() {
+        return this.waveValue;
     }
 
     @Override

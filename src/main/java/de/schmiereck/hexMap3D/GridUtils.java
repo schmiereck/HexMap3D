@@ -243,6 +243,47 @@ public class GridUtils {
         zRotArr[2][3] = GR_N;
     }
 
+    /**
+     * Four Circles in one Plane with Points are around a Point at
+     * the surface of a Cuboctahedron (Kuboktaeder).
+     *
+     *      6 Outputs
+     *      a	b	c	an	bn	cn
+     *      -------------------------
+     *      3	2	1	0	1	2
+     */
+    public static final Cell.Dir[][] spinSphereArr = new Cell.Dir[4][6];
+    static {
+        // A (green)
+        spinSphereArr[0][0] = RE_P;
+        spinSphereArr[0][1] = OR_P;
+        spinSphereArr[0][2] = DB_P;
+        spinSphereArr[0][3] = RE_N;
+        spinSphereArr[0][4] = OR_N;
+        spinSphereArr[0][5] = DB_N;
+        // B (red)
+        spinSphereArr[1][0] = LB_P;
+        spinSphereArr[1][1] = OR_P;
+        spinSphereArr[1][2] = LG_P;
+        spinSphereArr[1][3] = LB_N;
+        spinSphereArr[1][4] = OR_N;
+        spinSphereArr[1][5] = LG_N;
+        // C (orange)
+        spinSphereArr[2][0] = GR_P;
+        spinSphereArr[2][1] = RE_P;
+        spinSphereArr[2][2] = LG_P;
+        spinSphereArr[2][3] = GR_N;
+        spinSphereArr[2][4] = RE_N;
+        spinSphereArr[2][5] = LG_N;
+        // D (blue)
+        spinSphereArr[3][0] = GR_P;
+        spinSphereArr[3][1] = LB_P;
+        spinSphereArr[3][2] = DB_P;
+        spinSphereArr[3][3] = GR_N;
+        spinSphereArr[3][4] = LB_N;
+        spinSphereArr[3][5] = DB_N;
+    }
+
     public static int calcXDirOffset(final int xPos, final int yPos, final int zPos, final Cell.Dir calcDir) {
         final OutputDir outputDir = calcDirOffset(xPos, yPos, zPos, calcDir);
         return xPos + outputDir.x;

@@ -34,6 +34,10 @@ public class CellState {
         return this.waveHashMap.values().stream();
     }
 
+    public int getWaveListSize() {
+        return this.waveHashMap.size();
+    }
+
     private int hashCode = 0;
     @Override
     public int hashCode() {

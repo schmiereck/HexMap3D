@@ -83,7 +83,7 @@ public class Universe {
                     final Cell cell = this.getCell(xPos, yPos, zPos);
                     final int[] moveCalcDirArr = new int[Cell.Dir.values().length];
                     final WaveMoveDir waveMoveDir = WaveMoveDirService.createWaveMoveDir(moveCalcDirArr);
-                    final Wave wave = WaveService.createNewInitialWave(event, waveMoveDir, 1);
+                    final Wave wave = WaveService.createNewInitialWave(event, waveMoveDir, 1, 8, 128);
                     event.addWave(wave);
                     cell.addWave(wave);
                 });

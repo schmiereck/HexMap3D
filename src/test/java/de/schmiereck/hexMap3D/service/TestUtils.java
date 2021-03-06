@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestUtils {
 
     public static Wave createNewTestWave(final Event event, final WaveMoveDir waveMoveDir) {
-        final Wave testWave = WaveService.createNewInitialWave(event, waveMoveDir, 1);
+        final Wave testWave = WaveService.createNewInitialWave(event, waveMoveDir, 1, 8, 128);
         event.addWave(testWave);
         return testWave;
     }

@@ -72,4 +72,8 @@ public class Cell {
         return this.cellState[this.universe.getActCalcPos()].getWaveListStream();
     }
 
+    public int getWaveListSize() {
+        return this.cellState[this.universe.getActCalcPos()].getWaveListSize();
+    }
+
 }

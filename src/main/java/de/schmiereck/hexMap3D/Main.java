@@ -19,8 +19,9 @@ public class Main {
     public static final int xSizeGrid = 3*2 * 2*3;//16;
     public static final int ySizeGrid = 3*2 * 2*2;//16;
     public static final int zSizeGrid = 3*2 * 2*2;//16;
-    //public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (32000);
-    public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (16000);
+    //public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (8000*2*2);
+    //public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (8000*2);
+    public static final int INITIAL_WAVE_PROB = WaveRotationService.rotationMatrixXYZ.length * (4000);
 
     public static void main(String[] args) {
         //-----------------------------------------------------------------------------
@@ -100,7 +101,7 @@ public class Main {
             x=0; y=ySizeGrid/3; z=zSizeGrid/2;
              */
 
-            final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB);
+            final Wave wave = WaveService.createNewInitialWave(particleEvent, waveMoveDir, INITIAL_WAVE_PROB, 8*2*2*2, 128);
             final CellState cellState = CellStateService.createCellStateWithNewWave(particleEvent, wave);
             final Cell cell = universe.getCell(x, y, z);
             //cell.addWave(wave);
